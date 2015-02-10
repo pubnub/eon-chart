@@ -21,6 +21,10 @@ var pubnubC3 = function(data) {
     options.flow.length = options.flow.length || 0;
     options.limit = options.limit || 10;
 
+    if(options.limit > 100) {
+      options.limit = 100;
+    }
+
     if(!options.channel) {
       error = "No channel supplied.";
     }
@@ -28,6 +32,74 @@ var pubnubC3 = function(data) {
     if(!self.pubnub) {
       error = "PubNub not found!";
     }        
+
+    var page = function() {
+
+      all_messages = [];
+
+      getAllMessages = function(timetoken) {
+         self.pubnub.history({
+          count: options.limit,
+          channel: options.channel,
+          start: timetoken,
+           callback: function(payload) {
+             
+             var msgs = payload[0];
+             var start = payload[1];
+             var end = payload[2];
+
+             if (msgs != undefined && msgs.length) {
+
+               msgs.reverse();
+
+               i = 0;
+               while(i < msgs.length) {
+                 all_messages.push(msgs[[i]]);
+                 i++;
+               }
+
+             }
+
+             if (msgs.length && all_messages.length < options.limit) {
+               getAllMessages(start);
+             } else {
+
+
+                var data = [];
+
+               i = 0;
+               while(i < all_messages.length) {
+
+                var columns = all_messages[i].columns
+
+                 for(j in columns) {
+                    
+                    if(i == 0) {
+                      data[j] = [];
+                      data[j].push(columns[j][0]);
+                    }
+
+                    data[j].push(columns[j][1]);
+
+                 }
+
+                 i++;
+               
+               }
+
+               // ready to go
+               data.reverse();
+               self.chart.load({columns: data});
+
+             }
+
+           }
+         });
+       };
+
+       getAllMessages();
+
+    }
 
     var needsTrim = function() {
 
@@ -51,6 +123,10 @@ var pubnubC3 = function(data) {
       var pubnub = PUBNUB.init({
         subscribe_key: options.subscribe_key
       });
+
+      if(options.history) {
+        page();
+      }
 
       self.pubnub.subscribe({
         channel: options.channel,

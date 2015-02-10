@@ -19,16 +19,16 @@
     <script>
       
       var chart = pubnubC3({
-        channel: "c3-5",
+        history: true,
+        channel: "c3-spline",
         flow: {
-          duration: 200
+          duration: 100
         },
         generate: {
           bindto: '#chart',
           data: {
             x: 'x',
             columns: [],
-            types: {},
             labels: true
           },
           axis : {
@@ -50,7 +50,7 @@
     setInterval(function(){
       
       pubnub2.publish({
-        channel: 'c3-5',
+        channel: 'c3-spline',
         message: {
           columns: [
             ['x', new Date().getTime()],
@@ -64,3 +64,5 @@
 
     }, 1000);
     </script>
+  </body>
+</html>

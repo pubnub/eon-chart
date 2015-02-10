@@ -12,7 +12,7 @@
     <script>
 
       var chart = pubnubC3({
-        channel: "c3-4",
+        channel: "c3-guage",
         generate: {
           bindto: '#chart',
           data: {
@@ -42,7 +42,7 @@
       setInterval(function(){
         
         pubnub2.publish({
-          channel: 'c3-4',
+          channel: 'c3-guage',
           message: {
             columns: [['data', Math.random() * 99]]
           }
