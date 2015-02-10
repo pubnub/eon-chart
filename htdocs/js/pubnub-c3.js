@@ -8,6 +8,7 @@ var pubnubC3 = function(data) {
 
     var self = this;
     var error = false;
+    var renderNext = function(){};
 
     c3 = c3;
     self.chart = false;
@@ -19,6 +20,7 @@ var pubnubC3 = function(data) {
     options.generate = options.generate || {};
     options.flow = options.flow || false;
     options.flow.length = options.flow.length || 0;
+    options.flow.done = options.flow.done || renderNext;
     options.limit = options.limit || 10;
 
     if(options.limit > 100) {
@@ -63,7 +65,6 @@ var pubnubC3 = function(data) {
              if (msgs.length && all_messages.length < options.limit) {
                getAllMessages(start);
              } else {
-
 
                 var data = [];
 
@@ -116,6 +117,45 @@ var pubnubC3 = function(data) {
 
     }
 
+    var message_buffer = [];
+
+    var renderNext = function() {
+
+      console.log(message_buffer);
+
+      if(message_buffer.length) {
+
+        var m = message_buffer[0];
+        message_buffer.shift();
+
+        if(options.flow) {
+
+          var trimLength = needsTrim();
+
+          if(trimLength)  {
+            options.flow.length = trimLength;
+          }
+
+          options.flow.columns = m.columns;
+          self.chart.flow(options.flow);
+
+        } else {
+          self.chart.load(m); 
+        }
+
+      } else {
+        return false;
+      }
+
+    };
+
+    var buffer = function(message) {
+
+      message_buffer.push(message);
+      renderNext();
+
+    }
+
     var boot = function() {
 
       self.chart = c3.generate(options.generate);
@@ -130,24 +170,7 @@ var pubnubC3 = function(data) {
 
       self.pubnub.subscribe({
         channel: options.channel,
-        message: function(m) {
-
-          if(options.flow) {
-
-            var trimLength = needsTrim();
-
-            if(trimLength)  {
-              options.flow.length = trimLength;
-            }
-
-            options.flow.columns = m.columns;
-            self.chart.flow(options.flow);
-
-          } else {
-            self.chart.load(m); 
-          }
-          
-        }
+        message: buffer
       });
 
       return self;
