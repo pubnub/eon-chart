@@ -1,6 +1,6 @@
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="/css/c3.css">
+    <link rel="stylesheet" type="text/css" href="../css/c3.css">
     <script src="http://cdn.pubnub.com/pubnub.min.js"></script>
 
     <style>
@@ -11,25 +11,34 @@
     </style>
   </head>
   <body>
-    <div id="chart1"></div>
+    <div id="chart"></div>
 
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    <script src="/js/c3.js"></script>
-    <script src="/js/eon.js"></script>
+    <script src="../js/c3.js"></script>
+    <script src="../js/pubnub-c3.js"></script>
     <script>
       
-      var chart = eon({
+      var chart = pubnubC3({
         channel: "c3-5",
         flow: {
           length: 0,
           duration: 200
         },
         generate: {
-          bindto: '#chart1',
+          bindto: '#chart',
           data: {
+            x: 'x',
             columns: [],
             types: {},
             labels: true
+          },
+          axis : {
+            x : {
+              type : 'timeseries',
+              tick: {
+                format: '%H:%M:%S'
+              }
+            }
           },
           grid: {
             x: {
@@ -47,21 +56,20 @@
       publish_key: 'demo',
       subscribe_key: 'demo'
     });
-
     setInterval(function(){
       
       pubnub2.publish({
         channel: 'c3-5',
         message: {
           columns: [
+            ['x', new Date().getTime()],
             ['Austin', Math.floor(Math.random() * 99)],
             ['New York', Math.floor(Math.random() * 99)],
             ['San Francisco', Math.floor(Math.random() * 99)],
             ['Portland', Math.floor(Math.random() * 99)]
           ]
         }
-      })
+      });
 
     }, 1000);
-
     </script>

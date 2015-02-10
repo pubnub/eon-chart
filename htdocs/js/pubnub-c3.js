@@ -1,6 +1,6 @@
-var eon = function(data) {
+var pubnubC3 = function(data) {
 
-  var Eon = function(options) {
+  var PubNubC3 = function(options) {
 
     var self = this;
     var error = false;
@@ -38,8 +38,6 @@ var eon = function(data) {
 
           if(options.flow) {  
 
-            // this disables all other functionality, fix
-            // as it only changed columns
             options.flow.columns = m.columns;
             self.chart.flow(options.flow);
 
@@ -62,6 +60,6 @@ var eon = function(data) {
      
   }
 
-  return new Eon(data);
+  return new PubNubC3(data);
 
 };
