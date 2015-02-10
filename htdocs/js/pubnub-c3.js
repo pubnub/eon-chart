@@ -2,6 +2,10 @@ var pubnubC3 = function(data) {
 
   var PubNubC3 = function(options) {
 
+    if(typeof(PUBNUB) == "undefined" && console) {
+      console.error("PubNub not found. See http://www.pubnub.com/docs/javascript/javascript-sdk.html#_where_do_i_get_the_code");
+    }
+
     var self = this;
     var error = false;
 
@@ -14,6 +18,8 @@ var pubnubC3 = function(data) {
     options.channel = options.channel || false;
     options.generate = options.generate || {};
     options.flow = options.flow || false;
+    options.flow.length = options.flow.length || 0;
+    options.limit = options.limit || 10;
 
     if(!options.channel) {
       error = "No channel supplied.";
@@ -23,20 +29,38 @@ var pubnubC3 = function(data) {
       error = "PubNub not found!";
     }        
 
+    var needsTrim = function() {
+
+      var buffer = self.chart.data();
+
+      for(i in buffer) {
+        if(buffer[i].values.length > options.limit) {
+          return true;
+          break;
+        }
+      }
+
+      return false;
+
+    }
+
     var boot = function() {
 
       self.chart = c3.generate(options.generate);
 
       var pubnub = PUBNUB.init({
-        publish_key: 'demo',
-        subscribe_key: 'demo'
+        subscribe_key: options.subscribe_key
       });
 
       self.pubnub.subscribe({
         channel: options.channel,
         message: function(m) {
 
-          if(options.flow) {  
+          if(options.flow) {
+
+            if(needsTrim())  {
+              options.flow.length = 1;
+            }
 
             options.flow.columns = m.columns;
             self.chart.flow(options.flow);
