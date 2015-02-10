@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <link href="/css/c3.css" rel="stylesheet" type="text/css">
+    <script src="http://cdn.pubnub.com/pubnub.min.js"></script>
+  </head>
+  <body>
+    <div id="chart"></div>
+    <div id="chart1"></div>
+    <div id="chart2"></div>
+    <div id="chart3"></div>
+
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="/js/c3.js"></script>
+    <script src="/js/eon.js"></script>
+    <script>
+
+      var chart = eon({
+        channel: "c3-4",
+        generate: {
+          bindto: '#chart1',
+          data: {
+            columns: [
+              ['data', 0]
+            ],
+            type: 'gauge',
+          },
+          gauge: {
+            min: 0,
+            max: 100
+          },
+          color: {
+            pattern: ['#FF0000', '#F6C600', '#60B044'], 
+            threshold: {
+              values: [30, 60, 90]
+            }
+          }
+        }
+      });
+
+      var pubnub2 = PUBNUB.init({
+        publish_key: 'demo',
+        subscribe_key: 'demo'
+      });
+
+      setInterval(function(){
+        
+        pubnub2.publish({
+          channel: 'c3-4',
+          message: {
+            columns: [['data', Math.random() * 99]]
+          }
+        })
+
+      }, 1000);
+
+    </script>
+  </body>
+</html>
