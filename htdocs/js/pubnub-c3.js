@@ -8,7 +8,6 @@ var pubnubC3 = function(data) {
 
     var self = this;
     var error = false;
-    var renderNext = function(){};
 
     c3 = c3;
     self.chart = false;
@@ -20,7 +19,6 @@ var pubnubC3 = function(data) {
     options.generate = options.generate || {};
     options.flow = options.flow || false;
     options.flow.length = options.flow.length || 0;
-    options.flow.done = options.flow.done || renderNext;
     options.limit = options.limit || 10;
 
     if(options.limit > 100) {
@@ -121,8 +119,6 @@ var pubnubC3 = function(data) {
 
     var renderNext = function() {
 
-      console.log(message_buffer);
-
       if(message_buffer.length) {
 
         var m = message_buffer[0];
@@ -137,14 +133,27 @@ var pubnubC3 = function(data) {
           }
 
           options.flow.columns = m.columns;
+          options.flow.done = function(){
+
+            if(message_buffer.length > 5) {
+              console.error('EON: You\'re publishing messages faster than the chart can render with flow. Consider turning off flow or reducing animation duration.');
+            }
+
+            renderNext();
+          };
           self.chart.flow(options.flow);
 
         } else {
+
           self.chart.load(m); 
+          renderNext();
+
         }
 
       } else {
-        return false;
+        setTimeout(function(){
+          renderNext();
+        }, 10);
       }
 
     };
@@ -152,9 +161,8 @@ var pubnubC3 = function(data) {
     var buffer = function(message) {
 
       message_buffer.push(message);
-      renderNext();
 
-    }
+    };
 
     var boot = function() {
 
@@ -172,6 +180,8 @@ var pubnubC3 = function(data) {
         channel: options.channel,
         message: buffer
       });
+
+      renderNext();
 
       return self;
 
