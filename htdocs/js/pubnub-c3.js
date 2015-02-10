@@ -107,7 +107,7 @@ var pubnubC3 = function(data) {
 
       for(i in buffer) {
         if(buffer[i].values.length > options.limit) {
-          return true;
+          return buffer[i].values.length - options.limit;
           break;
         }
       }
@@ -134,8 +134,10 @@ var pubnubC3 = function(data) {
 
           if(options.flow) {
 
-            if(needsTrim())  {
-              options.flow.length = 1;
+            var trimLength = needsTrim();
+
+            if(trimLength)  {
+              options.flow.length = trimLength;
             }
 
             options.flow.columns = m.columns;
