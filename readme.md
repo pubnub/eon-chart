@@ -69,7 +69,7 @@ Include the Javascripts within your file.
 <script src="../js/pubnub-c3.js"></script>
 ```
 
-Initialize pubnub-c3, plug your normal C3 config into the ```generate``` param. Supply a PubNub channel in ```channel`` param.
+Initialize pubnub-c3, plug your normal C3 config into the ```generate``` param. Supply a PubNub channel in `channel`` param.
 
 ```html
 <div id="chart"></div>
