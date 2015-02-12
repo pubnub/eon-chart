@@ -21,6 +21,7 @@ var pubnubC3 = function(data) {
     options.flow.length = options.flow.length || 0;
     options.limit = options.limit || 10;
     options.rate = options.rate || 10; // refresh rate
+    options.history = options.history || false;
 
     if(options.limit > 100) {
       options.limit = 100;
