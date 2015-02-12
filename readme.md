@@ -51,7 +51,7 @@ Realtime animated graphs with PubNub and C3.
 
 Parameter | Value | Default
 | :------------ |:---------------| -----:|
-| subscribe_key | Your ![PubNub subscribe_key](http://www.pubnub.com/knowledge-base/categories/licensing-api-keys) | ```demo```
+| subscribe_key | Your [PubNub subscribe_key](http://www.pubnub.com/knowledge-base/categories/licensing-api-keys) | ```demo```
 | channel | Your ![PubNub channel name}(http://www.pubnub.com/docs/javascript/overview/data-push.html). | ```false```
 | generate | Your [C3 chart generation config](http://c3js.org/gettingstarted.html#generate). | ```undefined```
 | flow | C3 flow configuration. You should only be concerned with ```flow.duration``` which will adjust how long the animation between updates lasts. | ```350```
@@ -149,4 +149,4 @@ If you happen to publish data at a higher frequency than your ```flow.duration``
 
 ## Message Quene
 
-Incoming messages from PubNub are stored in a message quene until they are rendered. You can use ```options.rate``` to configure how often messages in the quene will be rendered. ```rate``` is set to ```10``` (ms) by default which will render messages immediately. 
+Incoming messages from PubNub are stored in a message quene until they are rendered. You can use ```options.rate``` to configure how often messages in the quene will be rendered. ```rate``` is set to ```10``` (ms) by default which will render messages immediately.
