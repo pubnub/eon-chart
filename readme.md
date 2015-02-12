@@ -52,7 +52,7 @@ Realtime animated graphs with PubNub and C3.
 Parameter | Value | Default
 | :------------ |:---------------| -----:|
 | subscribe_key | Your [PubNub subscribe_key](http://www.pubnub.com/knowledge-base/categories/licensing-api-keys) | ```demo```
-| channel | Your ![PubNub channel name}(http://www.pubnub.com/docs/javascript/overview/data-push.html). | ```false```
+| channel | Your [PubNub channel name}(http://www.pubnub.com/docs/javascript/overview/data-push.html). | ```false```
 | generate | Your [C3 chart generation config](http://c3js.org/gettingstarted.html#generate). | ```undefined```
 | flow | C3 flow configuration. You should only be concerned with ```flow.duration``` which will adjust how long the animation between updates lasts. | ```350```
 | limit | The size of your buffer. How many values to display on the chart before shifting the first value off and appending a new value. This is not native to C3. | ```10```
