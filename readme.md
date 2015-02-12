@@ -1,7 +1,7 @@
 PubNub + C3
 ===============
 
-Realtime animated graphs with PubNub and C3.
+Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.org/).
 
 ## Examples
 
@@ -43,8 +43,8 @@ Realtime animated graphs with PubNub and C3.
   var chart = pubnubC3({
     channel: "c3-spline", // the pubnub channel for real time data
     generate: {},         // c3 chart object
-    flow: {},             
-    limit: 10            // the size of your data buffer
+    flow: {},             // flow configuration
+    limit: 10             // the size of your data buffer
   });
 </script>
 ```
