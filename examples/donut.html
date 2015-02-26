@@ -1,24 +1,24 @@
 <html>
   <head>
-    
-    <link rel="stylesheet" type="text/css" href="../css/c3.css">
-    <script src="http://cdn.pubnub.com/pubnub.min.js"></script>
-    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    <script src="../js/c3.js"></script>
-    <script src="../js/pubnub-c3.js"></script>
 
+    <link rel="stylesheet" type="text/css" href="../bower_components/c3/c3.min.css">
+    <script src="../bower_components/pubnub/web/pubnub.min.js"></script>
+    <script src="../bower_components/d3/d3.min.js"></script>
+    <script src="../bower_components/c3/c3.min.js"></script>
+
+    <script src="../js/pubnub-c3.js"></script>
     <style>
       .c3-region-1 {
         fill: #dd3333;
         fill-opacity: 0.8
       }
     </style>
-    
+
   </head>
   <body>
     <div id="chart"></div>
     <script>
-      
+
       var chart = pubnubC3({
         channel: "c3-donut",
         generate: {
@@ -37,7 +37,7 @@
       subscribe_key: 'demo'
     });
     setInterval(function(){
-      
+
       pubnub2.publish({
         channel: 'c3-donut',
         message: {
