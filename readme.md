@@ -66,7 +66,7 @@ Include the Javascripts within your file.
 <script src="http://cdn.pubnub.com/pubnub.min.js"></script>
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script src="../js/c3.js"></script>
-<script src="../js/eon-chart.js"></script>
+<script src="../js/pubnub-c3.js"></script>
 ```
 
 Plug your normal C3 config into the ```generate``` param. Supply a PubNub channel in `channel`` param. ```eon.chart``` returns the normal c3 chart object.
