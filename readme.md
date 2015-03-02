@@ -9,19 +9,19 @@ Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.o
 
 ![](http://i.imgur.com/MRK20Kb.gif)
 
-[View Example](https://github.com/pubnub/eon-chart/blob/master/htdocs/pubnub/spline.html)
+[View Example](https://github.com/pubnub/eon-chart/blob/master/examples/spline.html)
 
 #### Gauge Chart
 
 ![](http://i.imgur.com/hO4pwDp.gif)
 
-[View Example](https://github.com/pubnub/eon-chart/blob/master/htdocs/pubnub/gauge.html)
+[View Example](https://github.com/pubnub/eon-chart/blob/master/examples/gauge.html)
 
 #### Donut Chart
 
 ![](http://i.imgur.com/YDydwZi.gif)
 
-[View Example](https://github.com/pubnub/eon-chart/blob/master/htdocs/pubnub/donut.html)
+[View Example](https://github.com/pubnub/eon-chart/blob/master/examples/donut.html)
 
 #### Bar Chart
 
@@ -33,7 +33,7 @@ Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.o
 
 ![](http://i.imgur.com/6sUQEDX.gif)
 
-[View Example](https://github.com/pubnub/eon-chart/blob/master/htdocs/pubnub/transform.html)
+[View Example](https://github.com/pubnub/eon-chart/blob/master/examples/transform.html)
 
 ## Quickstart
 
