@@ -9,31 +9,31 @@ Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.o
 
 ![](http://i.imgur.com/MRK20Kb.gif)
 
-[View Example](https://github.com/pubnub/pubnub-c3/blob/master/htdocs/pubnub/spline.html)
+[View Example](https://github.com/pubnub/eon-chart/blob/master/htdocs/pubnub/spline.html)
 
 #### Gauge Chart
 
 ![](http://i.imgur.com/hO4pwDp.gif)
 
-[View Example](https://github.com/pubnub/pubnub-c3/blob/master/htdocs/pubnub/gauge.html)
+[View Example](https://github.com/pubnub/eon-chart/blob/master/htdocs/pubnub/gauge.html)
 
 #### Donut Chart
 
 ![](http://i.imgur.com/YDydwZi.gif)
 
-[View Example](https://github.com/pubnub/pubnub-c3/blob/master/htdocs/pubnub/donut.html)
+[View Example](https://github.com/pubnub/eon-chart/blob/master/htdocs/pubnub/donut.html)
 
 #### Bar Chart
 
 ![](http://i.imgur.com/cgecpFw.gif)
 
-[View Example](https://github.com/pubnub/pubnub-c3/blob/master/htdocs/pubnub/bar.html)
+[View Example](https://github.com/pubnub/eon-chart/blob/master/htdocs/pubnub/bar.html)
 
 #### Transforming Chart
 
 ![](http://i.imgur.com/6sUQEDX.gif)
 
-[View Example](https://github.com/pubnub/pubnub-c3/blob/master/htdocs/pubnub/transform.html)
+[View Example](https://github.com/pubnub/eon-chart/blob/master/htdocs/pubnub/transform.html)
 
 ## Quickstart
 
@@ -66,7 +66,7 @@ Include the Javascripts within your file.
 <script src="http://cdn.pubnub.com/pubnub.min.js"></script>
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script src="../js/c3.js"></script>
-<script src="../js/pubnub-c3.js"></script>
+<script src="../js/eon-chart.js"></script>
 ```
 
 Plug your normal C3 config into the ```generate``` param. Supply a PubNub channel in `channel`` param. ```eon.chart``` returns the normal c3 chart object.
@@ -139,7 +139,7 @@ Check out our docs for more info:
 
 ## Customize Your Graph
 
-PubNub-C3 works will all supported graph types in C3. Just check out the examples above. 
+eon-chart works will all supported graph types in C3. Just check out the examples above. 
 
 You can learn more about customizing your graph from [the official C3 docs](http://c3js.org/gettingstarted.html#customize).
 
