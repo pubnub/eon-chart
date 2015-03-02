@@ -49,7 +49,7 @@ eon.chart = function(options) {
            var start = payload[1];
            var end = payload[2];
 
-           if (msgs != undefined && msgs.length) {
+           if (msgs !== undefined && msgs.length) {
 
              msgs.reverse();
 
@@ -70,9 +70,9 @@ eon.chart = function(options) {
              i = 0;
              while(i < all_messages.length) {
 
-              var columns = all_messages[i].columns
+              var columns = all_messages[i].columns;
 
-               for(j in columns) {
+               for(var j in columns) {
 
                   if(i == 0) {
                     data[j] = [];
