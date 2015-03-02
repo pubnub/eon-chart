@@ -19,7 +19,7 @@
   <body>
     <div id="chart"></div>
     <script>
-      eon.chart({
+      var new_chart = eon.chart({
         channel: "c3-transform",
         flow: {
           duration: 200
@@ -62,14 +62,14 @@
           }
         });
 
-        chart.chart.transform('bar');
+        new_chart.transform('bar');
 
         setTimeout(function () {
-          chart.chart.transform('line');
+          new_chart.transform('line');
         }, 2000);
 
         setTimeout(function () {
-          chart.chart.transform('donut');
+          new_chart.transform('donut');
         }, 4000);
 
       }, 6000);
