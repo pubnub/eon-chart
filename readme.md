@@ -1,4 +1,4 @@
-PubNub + C3
+EON Realtime Charts
 ===============
 
 Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.org/).
@@ -40,7 +40,7 @@ Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.o
 ```html
 <div id="chart"></div>
 <script>
-  var chart = new pubnub_c3({
+  eon.chart({
     channel: "c3-spline", // the pubnub channel for real time data
     generate: {},         // c3 chart object
     flow: {},             // flow configuration
@@ -69,12 +69,12 @@ Include the Javascripts within your file.
 <script src="../js/pubnub-c3.js"></script>
 ```
 
-Initialize pubnub-c3, plug your normal C3 config into the ```generate``` param. Supply a PubNub channel in `channel`` param.
+Plug your normal C3 config into the ```generate``` param. Supply a PubNub channel in `channel`` param. ```eon.chart``` returns the normal c3 chart object.
 
 ```html
 <div id="chart"></div>
 <script>
-var chart = new pubnub_c3({
+eon.chart({
   channel: "c3-spline",
   generate: {
     bindto: '#chart',

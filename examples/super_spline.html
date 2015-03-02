@@ -19,8 +19,7 @@
   <body>
     <div id="chart"></div>
     <script>
-
-      var chart = new pubnub_c3({
+      eon.chart({
         history: true,
         channel: "c3-super-spline",
         flow: {
@@ -42,29 +41,29 @@
             }
           }
         }
-      }
-    );
-
-    var pubnub2 = PUBNUB.init({
-      publish_key: 'demo',
-      subscribe_key: 'demo'
-    });
-    setInterval(function(){
-
-      pubnub2.publish({
-        channel: 'c3-super-spline',
-        message: {
-          columns: [
-            ['x', new Date().getTime()],
-            ['Austin', Math.floor(Math.random() * 99)],
-            ['New York', Math.floor(Math.random() * 99)],
-            ['San Francisco', Math.floor(Math.random() * 99)],
-            ['Portland', Math.floor(Math.random() * 99)]
-          ]
-        }
       });
+    </script>
+    <script>
+      var pubnub2 = PUBNUB.init({
+        publish_key: 'demo',
+        subscribe_key: 'demo'
+      });
+      setInterval(function(){
 
-    }, 500);
+        pubnub2.publish({
+          channel: 'c3-super-spline',
+          message: {
+            columns: [
+              ['x', new Date().getTime()],
+              ['Austin', Math.floor(Math.random() * 99)],
+              ['New York', Math.floor(Math.random() * 99)],
+              ['San Francisco', Math.floor(Math.random() * 99)],
+              ['Portland', Math.floor(Math.random() * 99)]
+            ]
+          }
+        });
+
+      }, 500);
     </script>
   </body>
 </html>

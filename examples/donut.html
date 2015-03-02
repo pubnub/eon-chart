@@ -18,8 +18,7 @@
   <body>
     <div id="chart"></div>
     <script>
-
-      var chart = new pubnub_c3({
+      eon.chart({
         channel: "c3-donut",
         generate: {
           bindto: '#chart',
@@ -29,28 +28,28 @@
             type: 'donut'
           }
         }
-      }
-    );
-
-    var pubnub2 = PUBNUB.init({
-      publish_key: 'demo',
-      subscribe_key: 'demo'
-    });
-    setInterval(function(){
-
-      pubnub2.publish({
-        channel: 'c3-donut',
-        message: {
-          columns: [
-            ['Austin', Math.floor(Math.random() * 99)],
-            ['New York', Math.floor(Math.random() * 99)],
-            ['San Francisco', Math.floor(Math.random() * 99)],
-            ['Portland', Math.floor(Math.random() * 99)]
-          ]
-        }
       });
+    </script>
+    <script>
+      var pubnub2 = PUBNUB.init({
+        publish_key: 'demo',
+        subscribe_key: 'demo'
+      });
+      setInterval(function(){
 
-    }, 1000);
+        pubnub2.publish({
+          channel: 'c3-donut',
+          message: {
+            columns: [
+              ['Austin', Math.floor(Math.random() * 99)],
+              ['New York', Math.floor(Math.random() * 99)],
+              ['San Francisco', Math.floor(Math.random() * 99)],
+              ['Portland', Math.floor(Math.random() * 99)]
+            ]
+          }
+        });
+
+      }, 1000);
     </script>
   </body>
 </html>

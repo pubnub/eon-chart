@@ -12,8 +12,7 @@
   <body>
     <div id="chart"></div>
     <script>
-
-      var chart = new pubnub_c3({
+      eon.chart({
         channel: "c3-gauge",
         generate: {
           bindto: '#chart',
@@ -35,7 +34,8 @@
           }
         }
       });
-
+    </script>
+    <script>
       var pubnub2 = PUBNUB.init({
         publish_key: 'demo',
         subscribe_key: 'demo'

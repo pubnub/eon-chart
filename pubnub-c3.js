@@ -1,4 +1,5 @@
-var pubnub_c3 = function(options) {
+var eon = eon || {};
+eon.chart = function(options) {
 
   if(typeof(PUBNUB) == "undefined" && console) {
     console.error("PubNub not found. See http://www.pubnub.com/docs/javascript/javascript-sdk.html#_where_do_i_get_the_code");
@@ -113,7 +114,7 @@ var pubnub_c3 = function(options) {
 
     return false;
 
-  }
+  };
 
   var message_buffer = [];
 
@@ -168,6 +169,7 @@ var pubnub_c3 = function(options) {
 
   var boot = function() {
 
+    options.generate.data.columns = [];
     self.chart = c3.generate(options.generate);
 
     var pubnub = PUBNUB.init({
@@ -187,7 +189,7 @@ var pubnub_c3 = function(options) {
 
     return self;
 
-  }
+  };
 
   if(error) {
     console.error("EON: " + error);
@@ -195,7 +197,6 @@ var pubnub_c3 = function(options) {
     boot();
   }
 
-};
+  return self.chart;
 
-var eon = eon || {};
-eon.c3 = pubnub_c3;
+};
