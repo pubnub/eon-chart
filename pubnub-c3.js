@@ -13,7 +13,7 @@ eon.chart = function(options) {
 
   self.pubnub = PUBNUB || false;
 
-  options.subscribe_key = options.subscribe_key || "demo";
+  options.subscribe_key = options.subscribe_key || eon.subscribe_key || 'demo';
   options.channel = options.channel || false;
   options.generate = options.generate || {};
   options.flow = options.flow || false;
