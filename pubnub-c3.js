@@ -22,6 +22,9 @@ eon.chart = function(options) {
   options.rate = options.rate || 10; // refresh rate
   options.history = options.history || false;
 
+  options.message = options.message || function(){};
+  options.connect = options.connect || function(){};
+
   if(options.limit > 100) {
     options.limit = 100;
   }
@@ -161,12 +164,6 @@ eon.chart = function(options) {
 
   };
 
-  var buffer = function(message) {
-
-    message_buffer.push(message);
-
-  };
-
   var boot = function() {
 
     options.generate.data.columns = [];
@@ -182,7 +179,11 @@ eon.chart = function(options) {
 
     self.pubnub.subscribe({
       channel: options.channel,
-      message: buffer
+      connect: options.connect,
+      message: function(message) {
+        options.message();
+        message_buffer.push(message);
+      }
     });
 
     renderNext();
