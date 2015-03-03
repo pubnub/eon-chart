@@ -1,5 +1,5 @@
 var eon = eon || {};
-eon.chart = function(options) {
+eon.chart_create = function(options) {
 
   if(typeof(PUBNUB) == "undefined" && console) {
     console.error("PubNub not found. See http://www.pubnub.com/docs/javascript/javascript-sdk.html#_where_do_i_get_the_code");
@@ -200,4 +200,7 @@ eon.chart = function(options) {
 
   return self.chart;
 
+};
+eon.chart = function(o) {
+  return new eon.chart_create(o);
 };
