@@ -180,8 +180,8 @@ eon.chart = function(options) {
     self.pubnub.subscribe({
       channel: options.channel,
       connect: options.connect,
-      message: function(message) {
-        options.message();
+      message: function(message, env, channel) {
+        options.message(message, env, channel);
         message_buffer.push(message);
       }
     });
