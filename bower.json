@@ -28,7 +28,10 @@
     "tests"
   ],
   "dependencies": {
-    "c3": "0.4.8",
+    "c3": "~0.4.9",
     "pubnub": "~3.7.8"
+  },
+  "resolutions": {
+    "c3": "~0.4.9"
   }
 }
