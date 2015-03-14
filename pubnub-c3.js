@@ -168,8 +168,12 @@ eon.c = {
             options.flow.length = trimLength;
           }
 
+
+
           options.flow.columns = m.columns;
           options.flow.done = function(){
+
+            console.log('done called')
 
             if(message_buffer.length > 5) {
               console.error('EON: You\'re publishing messages faster than the chart can render with flow. Consider turning off flow or reducing animation duration.');
