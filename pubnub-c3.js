@@ -148,6 +148,7 @@ eon.c = {
     };
 
     var message_buffer = [];
+    var message_log = [];
 
     var renderNext = function() {
 
@@ -156,22 +157,20 @@ eon.c = {
         var m = message_buffer[0];
         message_buffer.shift();
 
+        console.log('flow?')
+        console.log(options.flow)
+
         if(options.flow) {
 
-          if(options.flow === true) {
-            options.flow = {};
-          }
-
+          var flow_options = {};
           var trimLength = needsTrim();
 
           if(trimLength)  {
-            options.flow.length = trimLength;
+            flow_options.length = trimLength;
           }
 
-
-
-          options.flow.columns = m.columns;
-          options.flow.done = function(){
+          flow_options.columns = m.columns;
+          flow_options.done = function(){
 
             console.log('done called')
 
@@ -183,7 +182,23 @@ eon.c = {
 
           };
 
-          self.chart.flow(options.flow);
+          console.log(m)
+          var i = 0;
+          for(var key in m.columns) {
+            console.log(key)
+            if(typeof(message_log[i]) == 'undefined') {
+              message_log[i] = [];
+              message_log[i].push(key);
+            }
+            message_log[i].push(m.columns[key]);
+            i++;
+          }
+
+          console.log(message_log)
+
+          flow_options.columns = message_log;
+
+          self.chart.flow(flow_options);
 
         } else {
 
