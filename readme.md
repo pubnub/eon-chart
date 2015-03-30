@@ -5,35 +5,9 @@ Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.o
 
 ## Examples
 
-#### Spline Chart
-
-![](http://i.imgur.com/MRK20Kb.gif)
-
-[View Example](https://github.com/pubnub/eon-chart/blob/master/examples/spline.html)
-
-#### Gauge Chart
-
-![](http://i.imgur.com/hO4pwDp.gif)
-
-[View Example](https://github.com/pubnub/eon-chart/blob/master/examples/gauge.html)
-
-#### Donut Chart
-
-![](http://i.imgur.com/YDydwZi.gif)
-
-[View Example](https://github.com/pubnub/eon-chart/blob/master/examples/donut.html)
-
-#### Bar Chart
-
-![](http://i.imgur.com/cgecpFw.gif)
-
-[View Example](https://github.com/pubnub/eon-chart/blob/master/htdocs/pubnub/bar.html)
-
 #### Transforming Chart
 
 ![](http://i.imgur.com/6sUQEDX.gif)
-
-[View Example](https://github.com/pubnub/eon-chart/blob/master/examples/transform.html)
 
 ## Quickstart
 
