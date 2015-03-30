@@ -1,9 +1,9 @@
 EON Realtime Charts
 ===============
 
-![](http://i.imgur.com/MRK20Kb.gif)
-
 Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.org/).
+
+![](http://i.imgur.com/MRK20Kb.gif)
 
 ## Quickstart
 
