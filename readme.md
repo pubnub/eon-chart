@@ -8,6 +8,8 @@ Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.o
 ## Quickstart
 
 ```html
+<script type="text/javascript" src="http://pubnub.github.io/eon/lib/eon-chart.js"></script>
+<link type="text/css" rel="stylesheet" href="http://pubnub.github.io/eon/lib/eon.css" />
 <div id="chart"></div>
 <script>
   eon.chart({
@@ -31,15 +33,6 @@ Parameter | Value | Default
 | connect | A function to call when PubNub makes a connection. See [PubNub subscribe](http://www.pubnub.com/docs/javascript/api/reference.html#subscribe) | function(){} |
 
 ## Simple Example
-
-Include the Javascripts within your file.
-
-```js
-<script src="http://cdn.pubnub.com/pubnub.min.js"></script>
-<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script src="../js/c3.js"></script>
-<script src="../js/pubnub-c3.js"></script>
-```
 
 Plug your normal C3 config into the ```generate``` param. Supply a PubNub channel in `channel`` param. ```eon.chart``` returns the normal c3 chart object.
 
