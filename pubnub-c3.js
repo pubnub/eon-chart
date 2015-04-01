@@ -182,7 +182,7 @@ eon.c = {
           self.chart.flow(options.flow);
 
         } else {
-          self.chart.load(m);
+          self.chart.load(message);
         }
 
       });
