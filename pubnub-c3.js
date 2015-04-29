@@ -10,7 +10,7 @@ eon.c = {
     }
 
   },
-  subscribe: function(channel, connect, callback) {
+  subscribe: function(pubnub, channel, connect, callback) {
 
     console.log('subscribe to ', channel)
 
@@ -18,7 +18,7 @@ eon.c = {
 
       eon.c.observers[channel] = [callback];
 
-      PUBNUB.subscribe({
+      pubnub.subscribe({
         channel: channel,
         connect: connect,
         message: function(message, env, channel) {
@@ -42,9 +42,9 @@ eon.c = {
     c3 = c3;
     self.chart = false;
 
-    var PUBNUB = options.PUBNUB || false;
+    self.pubnub = options.pubnub || false;
 
-    if(!PUBNUB) {
+    if(!self.pubnub) {
       error = "PubNub not found. See http://www.pubnub.com/docs/javascript/javascript-sdk.html#_where_do_i_get_the_code";
     }
 
@@ -71,7 +71,7 @@ eon.c = {
       all_messages = [];
 
       getAllMessages = function(timetoken) {
-         PUBNUB.history({
+         self.pubnub.history({
           count: options.limit,
           channel: options.channel,
           start: timetoken,
@@ -159,7 +159,7 @@ eon.c = {
         page();
       }
 
-      eon.c.subscribe(options.channel, options.connect, function(message, env, channel) {
+      eon.c.subscribe(self.pubnub, options.channel, options.connect, function(message, env, channel) {
 
         options.message(message, env, channel);
 
@@ -200,11 +200,5 @@ eon.c = {
   }
 };
 eon.chart = function(o) {
-
-  console.log('chart pn')
-  console.log(PUBNUB)
-
-  o.PUBNUB = PUBNUB;
-
   return new eon.c.create(o);
 };
