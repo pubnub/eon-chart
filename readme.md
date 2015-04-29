@@ -30,6 +30,8 @@ Parameter | Value | Default
 | history | Fill the buffer by using PubNub history call to retrieve last ```limit``` messages. Requires [PubNub storage](http://www.pubnub.com/how-it-works/storage-and-playback/) to be enabled. | ```false```
 | message | A function to call everytime a PubNub message is recieved. See [PubNub subscribe](http://www.pubnub.com/docs/javascript/api/reference.html#subscribe) | function(message, env, channel){} |
 | connect | A function to call when PubNub makes a connection. See [PubNub subscribe](http://www.pubnub.com/docs/javascript/api/reference.html#subscribe) | function(){} |
+| pubnub | An instance of the PUBNUB javascript global. This is required when using your own keys. See the ```subscribe_key``` example. | ```false```
+
 
 ## Simple Example
 
