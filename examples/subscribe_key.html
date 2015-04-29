@@ -1,12 +1,6 @@
 <html>
   <head>
-
     <link rel="stylesheet" type="text/css" href="../bower_components/c3/c3.min.css">
-    <script src="../bower_components/pubnub/web/pubnub.min.js"></script>
-    <script src="../bower_components/d3/d3.min.js"></script>
-    <script src="../bower_components/c3/c3.min.js"></script>
-
-    <script src="../pubnub-c3.js"></script>
 
     <style>
       .c3-region-1 {
@@ -18,10 +12,20 @@
   </head>
   <body>
     <div id="chart"></div>
+
+    <script src="../bower_components/pubnub/web/pubnub.min.js"></script>
+    <script src="../bower_components/d3/d3.min.js"></script>
+    <script src="../bower_components/c3/c3.min.js"></script>
+
+    <script src="../pubnub-c3.js"></script>
+
     <script>
+      var channel = "c3-spline" + Math.random();
+      var subscribe_key = 'sub-c-2a73818c-d2d3-11e3-9244-02ee2ddab7fe';
+
       eon.chart({
-        history: false,
-        channel: "c3-spline",
+        history: true,
+        channel: channel,
         flow: {
           duration: 100
         },
@@ -29,25 +33,33 @@
           bindto: '#chart',
           data: {
             x: 'x',
-            labels: true
+            labels: false
+          },
+          axis : {
+            x : {
+              type : 'timeseries',
+              tick: {
+                format: '%H:%M:%S'
+              }
+            }
           }
         }
       });
     </script>
     <script>
-      var pubnub2 = PUBNUB.init({
-        publish_key: 'demo',
-        subscribe_key: 'demo'
+      PUBNUB.init({
+        publish_key: 'pub-c-6dbe7bfd-6408-430a-add4-85cdfe856b47',
+        subscribe_key: subscribe_key
       });
-
-      var i = 0;
       setInterval(function(){
 
-        pubnub2.publish({
-          channel: 'c3-spline',
+        console.log('publish to ', channel)
+
+        PUBNUB.publish({
+          channel: channel,
           message: {
             columns: [
-              ['x', i],
+              ['x', new Date().getTime()],
               ['Austin', Math.floor(Math.random() * 99)],
               ['New York', Math.floor(Math.random() * 99)],
               ['San Francisco', Math.floor(Math.random() * 99)],
@@ -55,8 +67,6 @@
             ]
           }
         });
-
-        i++;
 
       }, 1000);
     </script>
