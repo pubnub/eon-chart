@@ -42,7 +42,7 @@ eon.c = {
     c3 = c3;
     self.chart = false;
 
-    self.pubnub = options.pubnub || false;
+    self.pubnub = options.pubnub || PUBNUB || false;
 
     if(!self.pubnub) {
       error = "PubNub not found. See http://www.pubnub.com/docs/javascript/javascript-sdk.html#_where_do_i_get_the_code";

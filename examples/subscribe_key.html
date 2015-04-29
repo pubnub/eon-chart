@@ -55,8 +55,6 @@
     <script>
       setInterval(function(){
 
-        console.log('publish to ', channel)
-
         pubnub.publish({
           channel: channel,
           message: {
