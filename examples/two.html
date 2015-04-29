@@ -73,20 +73,20 @@
       });
     </script>
     <script>
-      var pubnub2 = PUBNUB.init({
+      PUBNUB.init({
         publish_key: 'demo',
         subscribe_key: 'demo'
       });
 
       setInterval(function(){
 
-        pubnub2.publish({
+        PUBNUB.publish({
           channel: 'c3-gauge',
           message: {
             columns: [['data', Math.random() * 99]]
           }
         })
-        pubnub2.publish({
+        PUBNUB.publish({
           channel: 'c3-gauge2',
           message: {
             columns: [['data', Math.random() * 99]]

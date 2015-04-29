@@ -23,7 +23,6 @@ Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.o
 
 Parameter | Value | Default
 | :------------ |:---------------| -----:|
-| subscribe_key | Your [PubNub subscribe_key](http://www.pubnub.com/knowledge-base/categories/licensing-api-keys) | ```demo```
 | channel | Your [PubNub channel name](http://www.pubnub.com/docs/javascript/overview/data-push.html). | ```false```
 | generate | Your [C3 chart generation config](http://c3js.org/gettingstarted.html#generate). | ```undefined```
 | flow | C3 flow configuration. You should only be concerned with ```flow.duration``` which will adjust how long the animation between updates lasts. | ```{duration: 100}```
@@ -92,7 +91,7 @@ setInterval(function(){
 }, 1000);
 ```
 
-Notice how the ```subscribe_key``` and ```channel```  matches.
+Notice how the ```channel```  matches.
 
 ## More on Publishing Messages
 

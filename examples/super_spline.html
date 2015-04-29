@@ -43,13 +43,13 @@
       });
     </script>
     <script>
-      var pubnub2 = PUBNUB.init({
+      PUBNUB.init({
         publish_key: 'demo',
         subscribe_key: 'demo'
       });
       setInterval(function(){
 
-        pubnub2.publish({
+        PUBNUB.publish({
           channel: 'c3-super-spline',
           message: {
             columns: [
