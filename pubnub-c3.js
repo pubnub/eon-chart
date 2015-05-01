@@ -50,7 +50,7 @@ eon.c = {
     options.limit = options.limit || 10;
     options.history = options.history || false;
 
-    options.rate = options.rate || 2000;
+    options.rate = options.rate || 1000;
 
     options.message = options.message || function(){};
     options.connect = options.connect || function(){};
@@ -216,9 +216,7 @@ eon.c = {
 
       });
 
-      setInterval(function(){
-
-        console.log(lastData)
+      setInterval(function() {
 
         if(lastData.length) {
 
