@@ -3,16 +3,12 @@ eon.c = {
   observers: {},
   message: function(message, env, channel) {
 
-    console.log('message found')
-
     for(var i in eon.c.observers[channel]) {
       eon.c.observers[channel][i](message, env, channel);
     }
 
   },
   subscribe: function(pubnub, channel, connect, callback) {
-
-    console.log('subscribe to ', channel)
 
     if(typeof(eon.c.observers[channel]) == "undefined") {
 
@@ -23,7 +19,6 @@ eon.c = {
         connect: connect,
         message: function(message, env, channel) {
 
-          console.log('got message', channel, message)
           eon.c.message(message, env, channel);
 
         }
@@ -54,6 +49,8 @@ eon.c = {
     options.flow.length = options.flow.length || 0;
     options.limit = options.limit || 10;
     options.history = options.history || false;
+
+    options.rate = options.rate || 1000;
 
     options.message = options.message || function(){};
     options.connect = options.connect || function(){};
@@ -139,7 +136,6 @@ eon.c = {
       buffer = self.chart.data();
 
       for(i in buffer) {
-      console.log(buffer[i].values.length)
         if(buffer[i].values.length > options.limit) {
           return buffer[i].values.length - options.limit;
           break;
@@ -150,6 +146,64 @@ eon.c = {
 
     };
 
+    var lastData = [];
+    var mapMessage = function(message) {
+
+      var i = 0;
+
+      // if we have data already
+      if(lastData.length) {
+
+        // loop through the new message
+        while(i < message.columns.length) {
+
+          var j = 0;
+          var found = false;
+
+          // and compare it against the old message
+          while(j < lastData.length) {
+
+            // if it's x, then see if the new one is larger
+            if(
+              message.columns[i][0] == 'x' &&
+              lastData[j][0] == 'x'
+            ) {
+
+              if(message.columns[i][1] > lastData[j][1]) {
+                lastData[j][1] = message.columns[i][1];
+              }
+
+              found = true;
+
+            // if they have the same key, overwrite the buffer              }
+            } else if(lastData[j][0] == message.columns[i][0]) {
+              lastData[j][1] = message.columns[i][1];
+              found = true;
+            }
+
+            j++;
+
+          }
+
+          if(!found) {
+            lastData[j] = message.columns[i];
+          }
+
+          i++;
+
+        }
+
+      } else {
+        lastData = message.columns;
+      }
+
+      message.columns = lastData;
+
+      console.log(message);
+      return message;
+
+    };
+
     var boot = function() {
 
       options.generate.data.columns = [];
@@ -157,6 +211,10 @@ eon.c = {
 
       if(options.history) {
         page();
+      }
+
+      var consumeMessage = function() {
+
       }
 
       eon.c.subscribe(self.pubnub, options.channel, options.connect, function(message, env, channel) {
@@ -175,12 +233,14 @@ eon.c = {
             options.flow.length = trimLength;
           }
 
+          message = mapMessage(message);
+
           options.flow.columns = message.columns;
 
           self.chart.flow(options.flow);
 
         } else {
-          self.chart.load(message);
+          self.chart.load(mapMessage(message));
         }
 
       });
