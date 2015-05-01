@@ -169,15 +169,9 @@ eon.c = {
               lastData[j][0] == 'x'
             ) {
 
-              console.log('both are x')
-              console.log(lastData[j][1])
-              console.log(message.columns[i][1])
-
               if(message.columns[i][1] > lastData[j][1]) {
                 lastData[j][1] = message.columns[i][1];
               }
-
-              console.log(lastData[j])
 
             // if they have the same key, overwrite the buffer              }
             }
