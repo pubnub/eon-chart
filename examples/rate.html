@@ -21,7 +21,7 @@
     <script>
       eon.chart({
         history: false,
-        channel: "c3-spline",
+        channel: "c3-spline-rate",
         flow: {
           duration: 100
         },
@@ -30,7 +30,15 @@
           data: {
             x: 'x',
             labels: true
-          }
+          },
+              axis: {
+                  x: {
+                      type: 'timeseries',
+                      tick: {
+                          format: '%Y-%m-%d'
+                      }
+                  }
+              }
         }
       });
     </script>
@@ -40,14 +48,14 @@
         subscribe_key: 'demo'
       });
 
-      var i = 0;
+      var i = 1;
       setInterval(function(){
 
         PUBNUB.publish({
-          channel: 'c3-spline',
+          channel: 'c3-spline-rate',
           message: {
             columns: [
-              ['x', i],
+              ['x', new Date().getTime()],
               ['San Francisco', Math.floor(Math.random() * 99)],
               ['Portland', Math.floor(Math.random() * 99)]
             ]
@@ -56,18 +64,18 @@
 
         i++;
 
-      }, 2000);
+      }, 1000);
 
       setTimeout(function() {
 
-        var j = 0;
+        var j = 2;
         setInterval(function(){
 
           PUBNUB.publish({
-            channel: 'c3-spline',
+            channel: 'c3-spline-rate',
             message: {
               columns: [
-                ['x', j],
+                ['x',  new Date().getTime()],
                 ['Austin', Math.floor(Math.random() * 99)],
                 ['New York', Math.floor(Math.random() * 99)]
               ]
@@ -76,7 +84,7 @@
 
           j++;
 
-        }, 2000);
+        }, 1000);
 
       }, 1000);
     </script>

@@ -50,7 +50,7 @@ eon.c = {
     options.limit = options.limit || 10;
     options.history = options.history || false;
 
-    options.rate = options.rate || 1000;
+    options.rate = options.rate || 2000;
 
     options.message = options.message || function(){};
     options.connect = options.connect || function(){};
@@ -169,14 +169,20 @@ eon.c = {
               lastData[j][0] == 'x'
             ) {
 
+              console.log('both are x')
+              console.log(lastData[j][1])
+              console.log(message.columns[i][1])
+
               if(message.columns[i][1] > lastData[j][1]) {
                 lastData[j][1] = message.columns[i][1];
               }
 
-              found = true;
+              console.log(lastData[j])
 
             // if they have the same key, overwrite the buffer              }
-            } else if(lastData[j][0] == message.columns[i][0]) {
+            }
+
+            if(lastData[j][0] == message.columns[i][0]) {
               lastData[j][1] = message.columns[i][1];
               found = true;
             }
@@ -197,11 +203,6 @@ eon.c = {
         lastData = message.columns;
       }
 
-      message.columns = lastData;
-
-      console.log(message);
-      return message;
-
     };
 
     var boot = function() {
@@ -213,37 +214,43 @@ eon.c = {
         page();
       }
 
-      var consumeMessage = function() {
-
-      }
-
       eon.c.subscribe(self.pubnub, options.channel, options.connect, function(message, env, channel) {
 
         options.message(message, env, channel);
 
-        if(options.flow) {
-
-          if(options.flow === true) {
-            options.flow = {};
-          }
-
-          var trimLength = needsTrim();
-
-          if(trimLength)  {
-            options.flow.length = trimLength;
-          }
-
-          message = mapMessage(message);
-
-          options.flow.columns = message.columns;
-
-          self.chart.flow(options.flow);
-
-        } else {
-          self.chart.load(mapMessage(message));
-        }
+        mapMessage(message);
 
       });
+
+      setInterval(function(){
+
+        console.log(lastData)
+
+        if(lastData.length) {
+
+          if(options.flow) {
+
+            if(options.flow === true) {
+              options.flow = {};
+            }
+
+            var trimLength = needsTrim();
+
+            if(trimLength)  {
+              options.flow.length = trimLength;
+            }
+
+            options.flow.columns = lastData;
+
+            self.chart.flow(options.flow);
+
+          } else {
+            self.chart.load(lastData);
+          }
+
+        }
+
+      }, options.rate);
 
       return self;
 
