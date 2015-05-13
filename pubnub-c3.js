@@ -49,7 +49,9 @@ eon.c = {
     options.channel = options.channel || false;
     options.generate = options.generate || {};
     options.flow = options.flow || false;
-    options.flow.length = options.flow.length || 0;
+    if(options.flow) {
+      options.flow.length = options.flow.length || 0;
+    }
     options.limit = options.limit || 10;
     options.history = options.history || false;
 
@@ -244,7 +246,9 @@ eon.c = {
             self.chart.flow(options.flow);
 
           } else {
-            self.chart.load(lastData);
+            self.chart.load({
+              columns: lastData
+            });
           }
 
         }
