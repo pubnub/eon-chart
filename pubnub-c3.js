@@ -1,10 +1,14 @@
+"use strict";
+
 var eon = eon || {};
 eon.c = {
   observers: {},
   message: function(message, env, channel) {
 
-    for(var i in eon.c.observers[channel]) {
+    var i = 0;
+    while(i < eon.c.observers[channel].length) {
       eon.c.observers[channel][i](message, env, channel);
+      i++;
     }
 
   },
@@ -34,7 +38,6 @@ eon.c = {
     var self = this;
     var error = false;
 
-    c3 = c3;
     self.chart = false;
 
     self.pubnub = options.pubnub || PUBNUB || false;
@@ -63,11 +66,13 @@ eon.c = {
       error = "No channel supplied.";
     }
 
+    var all_messages = [];
     var page = function() {
 
       all_messages = [];
+      var i = 0;
 
-      getAllMessages = function(timetoken) {
+      var getAllMessages = function(timetoken) {
          self.pubnub.history({
           count: options.limit,
           channel: options.channel,
@@ -82,7 +87,7 @@ eon.c = {
 
                msgs.reverse();
 
-               i = 0;
+              i = 0;
                while(i < msgs.length) {
                  all_messages.push(msgs[[i]]);
                  i++;
@@ -94,7 +99,7 @@ eon.c = {
                getAllMessages(start);
              } else {
 
-                var data = [];
+              var data = [];
 
                i = 0;
                while(i < all_messages.length) {
@@ -103,7 +108,7 @@ eon.c = {
 
                  for(var j in columns) {
 
-                    if(i == 0) {
+                    if(i === 0) {
                       data[j] = [];
                       data[j].push(columns[j][0]);
                     }
@@ -130,16 +135,18 @@ eon.c = {
 
     };
 
-    var buffer = []
+    var buffer = [];
     var needsTrim = function() {
 
       buffer = self.chart.data();
 
-      for(i in buffer) {
+      var i = 0;
+
+      while(i < buffer.length) {
         if(buffer[i].values.length > options.limit) {
           return buffer[i].values.length - options.limit;
-          break;
         }
+        i++;
       }
 
       return false;
