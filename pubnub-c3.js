@@ -50,6 +50,7 @@ eon.c = {
     options.generate = options.generate || {};
     options.flow = options.flow || false;
     if(options.flow) {
+      options.flow = {};
       options.flow.length = options.flow.length || 0;
     }
     options.limit = options.limit || 10;
@@ -142,6 +143,8 @@ eon.c = {
 
       buffer = self.chart.data();
 
+      console.log(buffer)
+
       var i = 0;
 
       while(i < buffer.length) {
@@ -231,15 +234,14 @@ eon.c = {
 
           if(options.flow) {
 
-            if(options.flow === true) {
-              options.flow = {};
-            }
-
             var trimLength = needsTrim();
 
             if(trimLength)  {
               options.flow.length = trimLength;
             }
+
+            // we can't animate because of a bug in c3
+            options.flow.duration = 0;
 
             options.flow.columns = lastData;
 
