@@ -156,9 +156,14 @@ eon.c = {
 
       var i = 0;
 
+      console.log('buffer is')
+      console.log(buffer.length)
+
       while(i < buffer.length) {
         if(buffer[i].values.length > options.limit) {
-          return buffer[i].values.length - options.limit;
+          var trimLength = buffer[i].values.length - options.limit;
+          console.log(trimLength)
+          return trimLength;
         }
         i++;
       }
@@ -221,7 +226,19 @@ eon.c = {
         lastData = message.columns;
       }
 
-      dataStore = lastData;
+      i = 0;
+      if(!dataStore.length) {
+        dataStore = JSON.parse(JSON.stringify(lastData));
+      } else {
+
+        while(i < message.columns.length) {
+          dataStore[i].push(message.columns[i][1]);
+          i++;
+        }
+
+      }
+
+      console.log(dataStore)
 
     };
 
@@ -240,6 +257,7 @@ eon.c = {
 
       console.log('dataStore', dataStore)
       options.generate.data.columns = dataStore;
+      dataStore = [];
 
       self.chart = c3.generate(options.generate);
 
@@ -262,7 +280,7 @@ eon.c = {
 
       updateInterval = setInterval(function() {
 
-        var buffer = self.chart.data();
+        buffer = self.chart.data();
 
         if(lastData.length) {
 
