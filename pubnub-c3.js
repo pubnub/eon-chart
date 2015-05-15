@@ -33,6 +33,19 @@ eon.c = {
     }
 
   },
+  unsubscribe: function(pubnub, channel) {
+
+    if(typeof(eon.c.observers[channel]) != "undefined") {
+
+      delete eon.c.observers[channel];
+
+      pubnub.unsubscribe({
+        channel: channel
+      });
+
+    }
+
+  },
   create: function(options) {
 
     var self = this;
@@ -141,10 +154,6 @@ eon.c = {
     var buffer = [];
     var needsTrim = function() {
 
-      buffer = self.chart.data();
-
-      console.log(buffer)
-
       var i = 0;
 
       while(i < buffer.length) {
@@ -158,7 +167,10 @@ eon.c = {
 
     };
 
+
     var lastData = [];
+
+    var dataStore = [];
     var mapMessage = function(message) {
 
       var i = 0;
@@ -209,12 +221,33 @@ eon.c = {
         lastData = message.columns;
       }
 
+      dataStore = lastData;
+
     };
 
-    var boot = function() {
+    var updateInterval = false;
 
-      options.generate.data.columns = [];
+    var kill = function() {
+      console.log('killed');
+      delete self.chart;
+    };
+
+    var boot = function(){
+
+      console.log('boot')
+
+      console.log('buffer', buffer)
+
+      console.log('dataStore', dataStore)
+      options.generate.data.columns = dataStore;
+
       self.chart = c3.generate(options.generate);
+
+    };
+
+    var init = function() {
+
+      console.log('init')
 
       if(options.history) {
         page();
@@ -223,12 +256,13 @@ eon.c = {
       eon.c.subscribe(self.pubnub, options.channel, options.connect, function(message, env, channel) {
 
         options.message(message, env, channel);
-
         mapMessage(message);
 
       });
 
-      setInterval(function() {
+      updateInterval = setInterval(function() {
+
+        var buffer = self.chart.data();
 
         if(lastData.length) {
 
@@ -264,7 +298,13 @@ eon.c = {
     if(error) {
       console.error("EON: " + error);
     } else {
+      init();
       boot();
+      setInterval(function(){
+        kill();
+        boot();
+      }, 10000);
+
     }
 
     return self.chart;
