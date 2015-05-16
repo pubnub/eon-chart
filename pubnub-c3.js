@@ -161,8 +161,8 @@ eon.c = {
 
       while(i < buffer.length) {
         if(buffer[i].values.length > options.limit) {
-          var trimLength = buffer[i].values.length - options.limit;
-          console.log(trimLength)
+          var trimLength = buffer[i].values.length - 1 - options.limit;
+          console.log('TRIM', trimLength);
           return trimLength;
         }
         i++;
@@ -175,6 +175,7 @@ eon.c = {
 
     var lastData = [];
 
+    var customX = 1;
     var dataStore = [];
     var mapMessage = function(message) {
 
@@ -231,8 +232,18 @@ eon.c = {
         dataStore = JSON.parse(JSON.stringify(lastData));
       } else {
 
+
+        message.columns[i][0] == 'x' &&
+        lastData[j][0] == 'x'
+
         while(i < message.columns.length) {
           dataStore[i].push(message.columns[i][1]);
+
+          if(dataStore[i].length > options.limit) {
+            console.log('its too big, shifting')
+            dataStore[i].splice(1,1);
+          }
+
           i++;
         }
 
@@ -257,7 +268,10 @@ eon.c = {
 
       console.log('dataStore', dataStore)
       options.generate.data.columns = dataStore;
-      dataStore = [];
+
+      if(dataStore.length && dataStore[0].length - 1 > options.limit) {
+        dataStore = [];
+      }
 
       self.chart = c3.generate(options.generate);
 
@@ -292,9 +306,6 @@ eon.c = {
               options.flow.length = trimLength;
             }
 
-            // we can't animate because of a bug in c3
-            options.flow.duration = 0;
-
             options.flow.columns = lastData;
 
             self.chart.flow(options.flow);
@@ -321,7 +332,7 @@ eon.c = {
       setInterval(function(){
         kill();
         boot();
-      }, 10000);
+      }, 60000);
 
     }
 
