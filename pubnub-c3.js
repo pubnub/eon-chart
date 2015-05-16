@@ -154,18 +154,23 @@ eon.c = {
     var buffer = [];
     var needsTrim = function() {
 
+      buffer = self.chart.data();
+
       var i = 0;
 
       console.log('buffer is')
-      console.log(buffer.length)
+      console.log(buffer)
 
       while(i < buffer.length) {
+
         if(buffer[i].values.length > options.limit) {
+          console.log(buffer[i].values.length)
           var trimLength = buffer[i].values.length - 1 - options.limit;
           console.log('TRIM', trimLength);
           return trimLength;
         }
         i++;
+
       }
 
       return false;
@@ -240,7 +245,6 @@ eon.c = {
           dataStore[i].push(message.columns[i][1]);
 
           if(dataStore[i].length > options.limit) {
-            console.log('its too big, shifting')
             dataStore[i].splice(1,1);
           }
 
@@ -292,23 +296,51 @@ eon.c = {
 
       });
 
-      updateInterval = setInterval(function() {
+      var num_loops = 0;
 
-        buffer = self.chart.data();
+      var recursive = function(){
+        console.log('------------------ UPDATE')
+        console.log('loop # ' + num_loops)
 
         if(lastData.length) {
 
           if(options.flow) {
 
+            num_loops++;
+
             var trimLength = needsTrim();
 
-            if(trimLength)  {
-              options.flow.length = trimLength;
+            console.log('checking buffer')
+            if(buffer.length && !buffer[0].values.length) {
+
+              console.log('buffer set')
+
+                console.log('!!! but there are no values, restart')
+
+                kill();
+                boot();
+
+            } else {
+
+              if(trimLength)  {
+                options.flow.length = trimLength;
+              }
+
+              console.log(trimLength)
+              console.log(options.limit)
+
+              options.flow.columns = lastData;
+              self.chart.flow(options.flow);
+
+              /*
+              if(num_loops > 100) {
+                kill();
+                boot();
+                num_loops = 0;
+              }
+              */
+
             }
-
-            options.flow.columns = lastData;
-
-            self.chart.flow(options.flow);
 
           } else {
             self.chart.load({
@@ -317,8 +349,11 @@ eon.c = {
           }
 
         }
-
-      }, options.rate);
+        setTimeout(function(){
+          recursive();
+        }, options.rate);
+      };
+      recursive();
 
       return self;
 
@@ -329,10 +364,6 @@ eon.c = {
     } else {
       init();
       boot();
-      setInterval(function(){
-        kill();
-        boot();
-      }, 60000);
 
     }
 
