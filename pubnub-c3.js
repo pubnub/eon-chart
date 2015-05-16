@@ -158,15 +158,10 @@ eon.c = {
 
       var i = 0;
 
-      console.log('buffer is')
-      console.log(buffer)
-
       while(i < buffer.length) {
 
         if(buffer[i].values.length > options.limit) {
-          console.log(buffer[i].values.length)
           var trimLength = buffer[i].values.length - 1 - options.limit;
-          console.log('TRIM', trimLength);
           return trimLength;
         }
         i++;
@@ -237,10 +232,6 @@ eon.c = {
         dataStore = JSON.parse(JSON.stringify(lastData));
       } else {
 
-
-        message.columns[i][0] == 'x' &&
-        lastData[j][0] == 'x'
-
         while(i < message.columns.length) {
           dataStore[i].push(message.columns[i][1]);
 
@@ -253,24 +244,16 @@ eon.c = {
 
       }
 
-      console.log(dataStore)
-
     };
 
     var updateInterval = false;
 
     var kill = function() {
-      console.log('killed');
       delete self.chart;
     };
 
     var boot = function(){
 
-      console.log('boot')
-
-      console.log('buffer', buffer)
-
-      console.log('dataStore', dataStore)
       options.generate.data.columns = dataStore;
 
       if(dataStore.length && dataStore[0].length - 1 > options.limit) {
@@ -282,8 +265,6 @@ eon.c = {
     };
 
     var init = function() {
-
-      console.log('init')
 
       if(options.history) {
         page();
@@ -299,8 +280,6 @@ eon.c = {
       var num_loops = 0;
 
       var recursive = function(){
-        console.log('------------------ UPDATE')
-        console.log('loop # ' + num_loops)
 
         if(lastData.length) {
 
@@ -310,12 +289,7 @@ eon.c = {
 
             var trimLength = needsTrim();
 
-            console.log('checking buffer')
-            if(buffer.length && !buffer[0].values.length) {
-
-              console.log('buffer set')
-
-                console.log('!!! but there are no values, restart')
+            if((buffer.length && !buffer[0].values.length) || trimLength > 1) {
 
                 kill();
                 boot();
@@ -323,22 +297,11 @@ eon.c = {
             } else {
 
               if(trimLength)  {
-                options.flow.length = trimLength;
+                options.flow.length = 1;
               }
-
-              console.log(trimLength)
-              console.log(options.limit)
 
               options.flow.columns = lastData;
               self.chart.flow(options.flow);
-
-              /*
-              if(num_loops > 100) {
-                kill();
-                boot();
-                num_loops = 0;
-              }
-              */
 
             }
 
