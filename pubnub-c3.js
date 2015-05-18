@@ -60,11 +60,12 @@ eon.c = {
     }
 
     options.channel = options.channel || false;
-    options.generate = options.generate || {
-      data: {
+    options.generate = options.generate || {};
+    if(!options.generate.data) {
+      options.generate.data = {
         columns: null
-      }
-    };
+      };
+    }
     options.flow = options.flow || false;
     if(options.flow) {
       options.flow = {};
@@ -256,7 +257,7 @@ eon.c = {
       delete self.chart;
     };
 
-    var boot = function(){
+    var boot = function() {
 
       options.generate.data.columns = dataStore;
 
