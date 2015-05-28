@@ -5,6 +5,13 @@ Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.o
 
 ![](http://i.imgur.com/MRK20Kb.gif)
 
+# Examples
+
+* [Spline Chart](http://pubnub.github.io/eon/examples/chart/spline.html)
+* [Bar Chart](http://pubnub.github.io/eon/examples/chart/bar.html)
+* [Donut (Pie) Chart](http://pubnub.github.io/eon/examples/chart/donut.html)
+* [Gauge Chart](http://pubnub.github.io/eon/examples/chart/gauge.html)
+
 ## Quickstart
 
 ```html
