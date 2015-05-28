@@ -119,3 +119,7 @@ Check out our docs for more info:
 eon-chart works will all supported graph types in C3. Just check out the examples above. 
 
 You can learn more about customizing your graph from [the official C3 docs](http://c3js.org/gettingstarted.html#customize).
+
+## Distributed Systems
+
+The EON library compiles all messages at designated intervals. This means you can publish from multiple sources into one chart. For example, you can graph the individual memory usage from 3 servers by supplying the same channel to your PubNub publish requests. See the [distributed example](https://github.com/pubnub/eon-chart/blob/master/examples/distributed.html).
