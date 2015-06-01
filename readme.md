@@ -5,6 +5,13 @@ Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.o
 
 ![](http://i.imgur.com/MRK20Kb.gif)
 
+# Examples
+
+* [Spline Chart](http://pubnub.github.io/eon/examples/chart/spline.html)
+* [Bar Chart](http://pubnub.github.io/eon/examples/chart/bar.html)
+* [Donut (Pie) Chart](http://pubnub.github.io/eon/examples/chart/donut.html)
+* [Gauge Chart](http://pubnub.github.io/eon/examples/chart/gauge.html)
+
 ## Quickstart
 
 ```html
@@ -112,3 +119,7 @@ Check out our docs for more info:
 eon-chart works will all supported graph types in C3. Just check out the examples above. 
 
 You can learn more about customizing your graph from [the official C3 docs](http://c3js.org/gettingstarted.html#customize).
+
+## Distributed Systems
+
+The EON library compiles all messages at designated intervals. This means you can publish from multiple sources into one chart. For example, you can graph the individual memory usage from 3 servers by supplying the same channel to your PubNub publish requests. See the [distributed example](https://github.com/pubnub/eon-chart/blob/master/examples/distributed.html).
