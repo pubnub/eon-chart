@@ -1,6 +1,4 @@
-EON Charts
-
-===============
+# EON Charts
 
 Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.org/).
 
