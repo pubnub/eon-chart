@@ -1,4 +1,5 @@
-EON Realtime Charts
+EON Charts
+
 ===============
 
 Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.org/).
@@ -7,10 +8,10 @@ Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.o
 
 # Examples
 
-* [Spline Chart](http://pubnub.github.io/eon/examples/chart/spline.html)
-* [Bar Chart](http://pubnub.github.io/eon/examples/chart/bar.html)
-* [Donut (Pie) Chart](http://pubnub.github.io/eon/examples/chart/donut.html)
-* [Gauge Chart](http://pubnub.github.io/eon/examples/chart/gauge.html)
+* [Spline Chart](http://pubnub.com/developers/eon/chart/spline/)
+* [Bar Chart](http://pubnub.com/developers/eon/chart/bar/)
+* [Donut (Pie) Chart](http://pubnub.com/developers/eon/chart/donut/)
+* [Gauge Chart](http://pubnub.com/developers/eon/chart/gauge/)
 
 ## Quickstart
 
@@ -122,4 +123,4 @@ You can learn more about customizing your graph from [the official C3 docs](http
 
 ## Distributed Systems
 
-The EON library compiles all messages at designated intervals. This means you can publish from multiple sources into one chart. For example, you can graph the individual memory usage from 3 servers by supplying the same channel to your PubNub publish requests. See the [distributed example](https://github.com/pubnub/eon-chart/blob/master/examples/distributed.html).
+The EON library compiles all messages at designated intervals. This means you can publish from multiple sources into one chart. For example, you can graph the individual memory usage from 3 servers by supplying the same channel to your PubNub publish requests.
