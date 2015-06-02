@@ -1,7 +1,7 @@
 # EON Charts
 
 Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.org/).
-
+d
 ![](http://i.imgur.com/MRK20Kb.gif)
 
 # Examples
@@ -111,7 +111,7 @@ C3 framework.
 You probably want to publish data from the back-end instead. 
 Check out our docs for more info:
 
-[http://www.pubnub.com/docs](http://www.pubnub.com/docs)
+[http://www.pubnub.com/documentation/](http://www.pubnub.com/documentation/)
 
 ## Customize Your Graph
 
