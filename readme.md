@@ -1,7 +1,7 @@
 # EON Charts
 
 Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.org/).
-d
+
 ![](http://i.imgur.com/MRK20Kb.gif)
 
 # Examples
