@@ -31,7 +31,8 @@ Parameter | Value | Default
 | :------------ |:---------------| -----:|
 | channel | Your [PubNub channel name](http://www.pubnub.com/docs/javascript/overview/data-push.html). | ```false```
 | generate | Your [C3 chart generation config](http://c3js.org/gettingstarted.html#generate). | ```undefined```
-| rate | How many milliseconds before you  | ```10```
+| transform | Method for changing the payload format of your stream. | ```function(m){return m}```
+| rate | How many milliseconds before you update | ```1000```
 | flow | Used to update spline charts over time series. | ```false```
 | limit | The size of your buffer. How many values to display on the chart before shifting the first value off and appending a new value. This is not native to C3. | ```10```
 | history | Fill the buffer by using PubNub history call to retrieve last ```limit``` messages. Requires [PubNub storage](http://www.pubnub.com/how-it-works/storage-and-playback/) to be enabled. | ```false```
