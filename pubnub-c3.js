@@ -54,6 +54,9 @@ eon.c = {
     }
     options.flow = options.flow || false;
     if(options.flow) { 
+      if(typeof(options.flow) == "boolean") {
+        options.flow = {};
+      }
       options.flow.length = options.flow.length || 0;
     }
     options.limit = options.limit || 10;
