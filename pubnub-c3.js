@@ -270,15 +270,11 @@ eon.c = {
 
       });
 
-      var num_loops = 0;
-
       var recursive = function(){
 
         if(lastData.length) {
 
           if(options.flow) {
-
-            num_loops++;
 
             var trimLength = needsTrim();
 
