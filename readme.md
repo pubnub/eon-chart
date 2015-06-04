@@ -31,13 +31,13 @@ Parameter | Value | Default
 | :------------ |:---------------| -----:|
 | channel | Your [PubNub channel name](http://www.pubnub.com/docs/javascript/overview/data-push.html). | ```false```
 | generate | Your [C3 chart generation config](http://c3js.org/gettingstarted.html#generate). | ```undefined```
-| transform | Method for changing the payload format of your stream. | ```function(m){return m}```
 | rate | How many milliseconds before you update | ```1000```
 | flow | Used to update spline charts over time series. | ```false```
 | limit | The size of your buffer. How many values to display on the chart before shifting the first value off and appending a new value. This is not native to C3. | ```10```
 | history | Fill the buffer by using PubNub history call to retrieve last ```limit``` messages. Requires [PubNub storage](http://www.pubnub.com/how-it-works/storage-and-playback/) to be enabled. | ```false```
 | message | A function to call everytime a PubNub message is recieved. See [PubNub subscribe](http://www.pubnub.com/docs/javascript/api/reference.html#subscribe) | function(message, env, channel){} |
-| connect | A function to call when PubNub makes a connection. See [PubNub subscribe](http://www.pubnub.com/docs/javascript/api/reference.html#subscribe) | function(){} |
+| transform | Method for changing the payload format of your stream. See [example](https://github.com/pubnub/eon-chart/blob/master/examples/transform.html)| ```function(m){return m}```
+| connect | A function to call when PubNub makes a connection. See [PubNub subscribe](http://www.pubnub.com/docs/javascript/api/reference.html#subscribe) | ```function(){}``` |
 | pubnub | An instance of the PUBNUB javascript global. This is required when using your own keys. See the ```subscribe_key``` example. | ```false```
 
 
