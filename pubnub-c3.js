@@ -33,19 +33,6 @@ eon.c = {
     }
 
   },
-  unsubscribe: function(pubnub, channel) {
-
-    if(typeof(eon.c.observers[channel]) != "undefined") {
-
-      delete eon.c.observers[channel];
-
-      pubnub.unsubscribe({
-        channel: channel
-      });
-
-    }
-
-  },
   create: function(options) {
 
     var self = this;
