@@ -20,7 +20,9 @@ Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.o
 <script>
   eon.chart({
     channel: "c3-spline", // the pubnub channel for real time data
-    generate: {},         // c3 chart object
+    generate: {           // c3 chart object
+      bindto: '#chart'
+    },         
     flow: {},             // flow configuration
     limit: 10             // the size of your data buffer
   });
