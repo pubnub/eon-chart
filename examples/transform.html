@@ -1,0 +1,62 @@
+<html>
+  <head>
+
+    <link rel="stylesheet" type="text/css" href="../bower_components/c3/c3.min.css">
+    <script src="../bower_components/pubnub/web/pubnub.min.js"></script>
+    <script src="../bower_components/d3/d3.min.js"></script>
+    <script src="../bower_components/c3/c3.min.js"></script>
+
+    <script src="../pubnub-c3.js"></script>
+
+    <style>
+      .c3-region-1 {
+        fill: #dd3333;
+        fill-opacity: 0.8
+      }
+    </style>
+
+  </head>
+  <body>
+    <div id="chart"></div>
+    <script>
+    // using the example stream from 
+    // http://www.pubnub.com/developers/data-streams/sensor-network
+    var pubnub = PUBNUB.init({
+		subscribe_key: 'sub-c-5f1b7c8e-fbee-11e3-aa40-02ee2ddab7fe'
+	});
+    eon.chart({
+    	pubnub: pubnub,
+    	history: false,
+	    channel: 'pubnub-sensor-network',
+    	flow: true,
+    	generate: {
+    	    bindto: '#chart',
+    	    data: {
+				x: 'x',
+				labels: true
+    	    },
+    	    axis: {
+    	      	x: {
+	    	        type: 'timeseries',
+	    	        tick: {
+	    	            format: '%Y-%m-%d'
+	    	        }
+    	      	}
+    	    }
+    	},
+	    transform: function(m) {
+
+	    	var response = {columns: [
+	    		['x', new Date().getTime()],
+	    		['Humidy', m.humidity],
+	    		['Temperature', m.ambient_temperature],
+	    		['Light', m.photosensor]
+	    	]};
+
+	    	return response;
+
+	    }
+	});
+    </script>
+  </body>
+</html>

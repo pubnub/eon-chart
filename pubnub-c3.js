@@ -22,7 +22,7 @@ eon.c = {
         channel: channel,
         connect: connect,
         message: function(message, env, channel) {
-          eon.c.message( pubnub.options.transform(message), env, channel );
+          eon.c.message(message, env, channel );
         }
       });
 
@@ -44,7 +44,6 @@ eon.c = {
       error = "PubNub not found. See http://www.pubnub.com/docs/javascript/javascript-sdk.html#_where_do_i_get_the_code";
     }
 
-    self.pubnub.options = options;
     options.transform = options.transform || function(m){return m};
     options.channel = options.channel || false;
     options.generate = options.generate || {};
@@ -263,6 +262,8 @@ eon.c = {
       }
 
       eon.c.subscribe(self.pubnub, options.channel, options.connect, function(message, env, channel) {
+
+        var message = options.transform(message);
 
         options.message(message, env, channel);
         mapMessage(message);
