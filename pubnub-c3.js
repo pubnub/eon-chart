@@ -1,36 +1,8 @@
 "use strict";
 
 var eon = eon || {};
+eon.subsub = eon.subsub || subsub;
 eon.c = {
-  observers: {},
-  message: function(message, env, channel) {
-
-    var i = 0;
-    while(i < eon.c.observers[channel].length) {
-      eon.c.observers[channel][i](message, env, channel);
-      i++;
-    }
-
-  },
-  subscribe: function(pubnub, channel, connect, callback) {
-
-    if(typeof(eon.c.observers[channel]) == "undefined") {
-
-      eon.c.observers[channel] = [callback];
-
-      pubnub.subscribe({
-        channel: channel,
-        connect: connect,
-        message: function(message, env, channel) {
-          eon.c.message(message, env, channel );
-        }
-      });
-
-    } else {
-      eon.c.observers[channel].push(callback);
-    }
-
-  },
   create: function(options) {
 
     var self = this;
@@ -263,7 +235,7 @@ eon.c = {
         page();
       }
 
-      eon.c.subscribe(self.pubnub, options.channel, options.connect, function(message, env, channel) {
+      subsub.subscribe(self.pubnub, options.channel, options.connect, function(message, env, channel) {
 
         var message = options.transform(message);
 
