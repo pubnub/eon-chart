@@ -39,10 +39,6 @@ eon.c = {
     options.message = options.message || function(){};
     options.connect = options.connect || function(){};
 
-    if(options.limit > 100) {
-      options.limit = 100;
-    }
-
     if(!options.channel) {
       error = "No channel supplied.";
     }
