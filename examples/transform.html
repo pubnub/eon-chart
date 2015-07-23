@@ -22,8 +22,8 @@
     <script>
     // using the example stream from 
     // http://www.pubnub.com/developers/data-streams/sensor-network
-    var pubnub = PUBNUB.init({
-		subscribe_key: 'sub-c-5f1b7c8e-fbee-11e3-aa40-02ee2ddab7fe'
+    var pubnub = PUBNUB({
+	    subscribe_key: 'sub-c-5f1b7c8e-fbee-11e3-aa40-02ee2ddab7fe'
 	});
     eon.chart({
     	pubnub: pubnub,
@@ -38,7 +38,7 @@
     	    },
     	    axis: {
     	      	x: {
-	    	        type: 'timeseries',
+    	            type: 'timeseries',
 	    	        tick: {
 	    	            format: '%Y-%m-%d'
 	    	        }
@@ -46,16 +46,12 @@
     	    }
     	},
 	    transform: function(m) {
-
-	    	var response = {columns: [
+	    	return {columns: [
 	    		['x', new Date().getTime()],
 	    		['Humidy', m.humidity],
 	    		['Temperature', m.ambient_temperature],
 	    		['Light', m.photosensor]
 	    	]};
-
-	    	return response;
-
 	    }
 	});
     </script>
