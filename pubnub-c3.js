@@ -196,7 +196,7 @@ eon.c = {
         while(i < message.columns.length) {
 
           if(typeof dataStore[i] == "undefined") {
-            dataStore[i] = [];
+            dataStore[i] = [message.columns[i][0]];
           }
 
           dataStore[i].push(message.columns[i][1]);
