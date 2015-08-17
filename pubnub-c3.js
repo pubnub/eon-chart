@@ -296,7 +296,31 @@ eon.c = {
 
     return self.chart;
 
-  }
+  },
+  flatten: function(ob) {
+
+    // this is a utility function for multidimensional data
+    
+    var toReturn = {};
+    
+    for (var i in ob) {
+      if (!ob.hasOwnProperty(i)) continue;
+      
+      if ((typeof ob[i]) == 'object') {
+        var flatObject = flattenObject(ob[i]);
+        for (var x in flatObject) {
+          if (!flatObject.hasOwnProperty(x)) continue;
+          
+          toReturn[i + '.' + x] = flatObject[x];
+        }
+      } else {
+        toReturn[i] = ob[i];
+      }
+    }
+    
+    return toReturn;
+
+  };
 };
 eon.chart = function(o) {
   return new eon.c.create(o);
