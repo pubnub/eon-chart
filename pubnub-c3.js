@@ -320,7 +320,7 @@ eon.c = {
     
     return toReturn;
 
-  };
+  }
 };
 eon.chart = function(o) {
   return new eon.c.create(o);
