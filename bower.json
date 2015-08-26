@@ -1,6 +1,6 @@
 {
   "name": "eon-chart",
-  "version": "0.2.21",
+  "version": "0.3.0",
   "homepage": "https://github.com/pubnub/eon-chart",
   "authors": [
     "Ian Jennings <ian@meetjennings.com>"
@@ -31,7 +31,8 @@
     "d3": "~3.5.5",
     "c3": "~0.4.10",
     "pubnub": "~3.7.8",
-    "subsub": "*"
+    "subsub": "*",
+    "visibility.js": "~1.0.2"
   },
   "resolutions": {
     "d3": "<=3.5.0"

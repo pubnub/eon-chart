@@ -1,0 +1,27 @@
+{
+    "name": "visibility.js",
+    "description": "A cross-browser plugin for using the Page Visibility API",
+    "version": "1.0.2",
+    "author": {
+        "name": "Alex Gibson",
+        "email": "alxgbsn@gmail.com"
+    },
+    "keywords": ["javascript", "page", "visibility", "hidden"],
+    "main": "./visibility.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/alexgibson/visibility.js.git"
+    },
+    "readme": "README.md",
+    "licenses": [{
+        "type": "MIT",
+        "url": "http://opensource.org/licenses/MIT"
+    }],
+    "ignore": [
+        "test",
+        ".jshintrc",
+        "karma.conf.js",
+        "package.json",
+        ".travis.yml"
+    ]
+}

@@ -188,28 +188,6 @@ eon.c = {
         lastData = message.columns;
       }
 
-      i = 0;
-      if(!dataStore.length) {
-        dataStore = JSON.parse(JSON.stringify(lastData));
-      } else {
-
-        while(i < message.columns.length) {
-
-          if(typeof dataStore[i] == "undefined") {
-            dataStore[i] = [message.columns[i][0]];
-          }
-
-          dataStore[i].push(message.columns[i][1]);
-
-          if(dataStore[i].length > options.limit) {
-            dataStore[i].splice(1,1);
-          }
-
-          i++;
-        }
-
-      }
-
     };
 
     var updateInterval = false;
@@ -229,6 +207,17 @@ eon.c = {
       self.chart = c3.generate(options.generate);
 
     };
+
+    var reboot = function() {
+      kill();
+      boot();
+    };
+
+    var visibility = new Visibility({
+      onVisible: function(){
+        reboot();
+      }
+    });
 
     var init = function() {
 
@@ -254,9 +243,8 @@ eon.c = {
             var trimLength = needsTrim();
 
             if((buffer.length && !buffer[0].values.length) || trimLength > 1) {
-
-                kill();
-                boot();
+              
+              reboot();
 
             } else {
 
@@ -270,15 +258,42 @@ eon.c = {
             }
 
           } else {
+
             self.chart.load({
               columns: lastData
             });
+
+          }
+
+          var i = 0;
+          if(!dataStore.length) {
+            dataStore = JSON.parse(JSON.stringify(lastData));
+          } else {
+
+            while(i < lastData.length) {
+
+              // if this is a new key, add the id
+              if(typeof dataStore[i] == "undefined") {
+                dataStore[i] = [lastData[i][0]];
+              }
+
+              dataStore[i].push(lastData[i][1]);
+
+              if(dataStore[i].length > options.limit) {
+                dataStore[i].splice(1,1);
+              }
+
+              i++;
+            }
+
           }
 
         }
+
         setTimeout(function(){
           recursive();
         }, options.rate);
+
       };
       recursive();
 
@@ -299,8 +314,6 @@ eon.c = {
   },
   flatten: function(ob) {
 
-    // this is a utility function for multidimensional data
-    
     var toReturn = {};
     
     for (var i in ob) {

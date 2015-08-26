@@ -6,6 +6,7 @@
     <script src="../bower_components/d3/d3.min.js"></script>
     <script src="../bower_components/c3/c3.min.js"></script>
     <script src="../bower_components/subsub/subsub.js"></script>
+    <script src="../bower_components/visibility.js/visibility.js"></script>
 
     <script src="../pubnub-c3.js"></script>
 
@@ -23,11 +24,12 @@
       var channel = 'c3-spline' + Math.random();
       eon.chart({
         channel: channel,
+        flow: true,
         generate: {
           bindto: '#chart',
           data: {
             labels: true,
-            type: 'bar'
+            type: 'step'
           },
           bar: {
             width: {
@@ -59,7 +61,7 @@
           }
         });
 
-      }, 1000);
+      }, 5000);
     </script>
   </body>
 </html>
