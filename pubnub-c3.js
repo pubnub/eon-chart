@@ -39,6 +39,9 @@ eon.c = {
     options.message = options.message || function(){};
     options.connect = options.connect || function(){};
 
+    //
+    options.xcolumn = options.xcolumn || 'x';
+
     if(!options.channel) {
       error = "No channel supplied.";
     }
@@ -135,9 +138,9 @@ eon.c = {
 
 
     var lastData = [];
-
-    var customX = 1;
+    var lastX = null;
     var dataStore = [];
+
     var mapMessage = function(message) {
 
       var i = 0;
@@ -156,15 +159,15 @@ eon.c = {
 
             // if it's x, then see if the new one is larger
             if(
-              message.columns[i][0] == 'x' &&
-              lastData[j][0] == 'x'
+              message.columns[i][0] == options.xcolumn &&
+              lastData[j][0] == options.xcolumn
             ) {
 
               if(message.columns[i][1] > lastData[j][1]) {
                 lastData[j][1] = message.columns[i][1];
               }
 
-            // if they have the same key, overwrite the buffer              }
+              // if they have the same key, overwrite the buffer              }
             }
 
             if(lastData[j][0] == message.columns[i][0]) {
@@ -198,6 +201,7 @@ eon.c = {
 
     var boot = function() {
 
+      options.generate.data.x = options.xcolumn;
       options.generate.data.columns = dataStore;
 
       if(dataStore.length && dataStore[0].length - 1 > options.limit) {
@@ -236,16 +240,44 @@ eon.c = {
 
       var recursive = function(){
 
-        if(lastData.length) {
+        var newx = false;
+        var i = 0;
+
+        if(!dataStore.length) {
+          newx = true;
+        }
+
+        // find out if this x value is different from the last plotted
+        while(i < lastData.length) {
+
+          if(lastData[i][0] == options.xcolumn) {
+
+            var j = 0;
+
+            while(j < dataStore.length) {
+
+              if(dataStore[j][0] == options.xcolumn &&
+                dataStore[j][dataStore[j].length - 1] !== lastData[i][1]) {
+                newx = true;
+              }
+
+              j++;
+            }
+
+
+          }
+
+          i++;
+        }
+
+        if(newx && lastData.length) {
 
           if(options.flow) {
 
             var trimLength = needsTrim();
 
             if((buffer.length && !buffer[0].values.length) || trimLength > 1) {
-              
               reboot();
-
             } else {
 
               if(trimLength)  {
