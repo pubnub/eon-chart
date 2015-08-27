@@ -219,8 +219,6 @@ eon.c = {
 
     var boot = function() {
 
-      console.log('xcol ' + options.xcolumn)
-
       if(options.xcolumn) {
         options.generate.data.x = options.xcolumn; 
       }
