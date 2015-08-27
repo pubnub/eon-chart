@@ -6,6 +6,7 @@
     <script src="../bower_components/d3/d3.min.js"></script>
     <script src="../bower_components/c3/c3.min.js"></script>
     <script src="../bower_components/subsub/subsub.js"></script>
+    <script src="../bower_components/visibility.js/visibility.js"></script>
 
     <script src="../pubnub-c3.js"></script>
 
@@ -27,19 +28,11 @@
         history: false,
         channel: channel,
         flow: true,
+        xcolumn: 'x',
         generate: {
           bindto: '#chart',
           data: {
-            x: 'x',
             labels: true
-          },
-          axis: {
-            x: {
-              type: 'timeseries',
-              tick: {
-                  format: '%Y-%m-%d'
-              }
-            }
           }
         }
       });

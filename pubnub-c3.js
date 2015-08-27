@@ -39,8 +39,26 @@ eon.c = {
     options.message = options.message || function(){};
     options.connect = options.connect || function(){};
 
-    //
-    options.xcolumn = options.xcolumn || 'x';
+    options.xcolumn = options.xcolumn || false;
+
+    if(options.xcolumn) {
+
+      if(!options.generate.axis) {
+        options.generate.axis = {}
+      }
+
+      if(!options.generate.axis.x) {
+
+        options.generate.axis.x =  {
+          type: 'timeseries',
+          tick: {
+              format: '%Y-%m-%d %H:%M:%S'
+          }
+        }
+
+      }
+       
+    }
 
     if(!options.channel) {
       error = "No channel supplied.";
@@ -201,7 +219,12 @@ eon.c = {
 
     var boot = function() {
 
-      options.generate.data.x = options.xcolumn;
+      console.log('xcol ' + options.xcolumn)
+
+      if(options.xcolumn) {
+        options.generate.data.x = options.xcolumn; 
+      }
+
       options.generate.data.columns = dataStore;
 
       if(dataStore.length && dataStore[0].length - 1 > options.limit) {
@@ -243,7 +266,7 @@ eon.c = {
         var newx = false;
         var i = 0;
 
-        if(!dataStore.length) {
+        if(!dataStore.length || !options.xcolumn) {
           newx = true;
         }
 

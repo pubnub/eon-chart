@@ -21,15 +21,16 @@
   <body>
     <div id="chart"></div>
     <script>
-      var channel = 'c3-spline' + Math.random();
+      var channel = 'c3-spline'  + Math.random();
       eon.chart({
         channel: channel,
         flow: true,
+        history: false,
         generate: {
           bindto: '#chart',
           data: {
             labels: true,
-            type: 'step'
+            type: 'line'
           },
           bar: {
             width: {
@@ -61,7 +62,7 @@
           }
         });
 
-      }, 5000);
+      }, 2000);
     </script>
   </body>
 </html>
