@@ -47,9 +47,10 @@ eon.c = {
         options.generate.axis = {}
       }
 
+      // assume js date
       if(!options.generate.axis.x) {
 
-        options.generate.axis.x =  {
+        options.generate.axis.x = {
           type: 'timeseries',
           tick: {
               format: '%Y-%m-%d %H:%M:%S'
