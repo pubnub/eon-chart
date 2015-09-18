@@ -215,7 +215,7 @@ eon.c = {
     var updateInterval = false;
 
     var kill = function() {
-      self.chart.destroy();
+      // self.chart.destroy(); waiting on #1305
       delete self.chart;
     };
 
@@ -241,11 +241,7 @@ eon.c = {
     };
 
     Visibility.change(function (e, state) {
-      if (Visibility.hidden()) {
-        
-      } else {
-        kill();
-        boot();
+        reboot();
       }
     });
 
