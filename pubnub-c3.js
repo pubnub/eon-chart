@@ -215,8 +215,13 @@ eon.c = {
     var updateInterval = false;
 
     var kill = function() {
-      // self.chart.destroy(); this breaks circular charts (pie, donut, gauge)
+    
+      if(['donut', 'pie', 'gauge'].indexOf(options.generate.data.type) == -1) {
+        self.chart.destroy();
+      }
+
       delete self.chart;
+    
     };
 
     var boot = function() {
