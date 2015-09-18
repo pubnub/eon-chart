@@ -215,7 +215,7 @@ eon.c = {
     var updateInterval = false;
 
     var kill = function() {
-      self.chart.destroy();
+      // self.chart.destroy(); this breaks circular charts (pie, donut, gauge)
       delete self.chart;
     };
 
