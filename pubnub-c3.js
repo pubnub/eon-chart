@@ -215,6 +215,7 @@ eon.c = {
     var updateInterval = false;
 
     var kill = function() {
+      self.chart.destroy();
       delete self.chart;
     };
 
@@ -239,9 +240,12 @@ eon.c = {
       boot();
     };
 
-    var visibility = new Visibility({
-      onVisible: function(){
-        reboot();
+    Visibility.change(function (e, state) {
+      if (Visibility.hidden()) {
+        
+      } else {
+        kill();
+        boot();
       }
     });
 
