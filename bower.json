@@ -29,7 +29,7 @@
   ],
   "dependencies": {
     "d3": "~3.5.5",
-    "c3": "0.4.11-rc4",
+    "c3": "https://github.com/diesburgm/c3.git#~0.4.10",
     "pubnub": "~3.7.8",
     "subsub": "*",
     "visibilityjs": "~1.2.1"

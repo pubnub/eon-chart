@@ -215,7 +215,7 @@ eon.c = {
     var updateInterval = false;
 
     var kill = function() {
-      // self.chart.destroy(); waiting on #1305
+      self.chart.destroy();
       delete self.chart;
     };
 
