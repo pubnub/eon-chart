@@ -241,8 +241,7 @@ eon.c = {
     };
 
     Visibility.change(function (e, state) {
-        reboot();
-      }
+      reboot();
     });
 
     var init = function() {
