@@ -9,8 +9,9 @@ eon.c = {
     var error = false;
 
     self.chart = false;
-    self.killed = false;
+
     self.recursive = false;
+    self.rTick = setTimeout(function(){}, 1);
 
     self.pubnub = options.pubnub || PUBNUB || false;
 
@@ -217,22 +218,18 @@ eon.c = {
     var updateInterval = false;
 
     var kill = function() {
-      self.killed = true;
-    };
-
-    self.destroy = function() {
+      
+      clearTimeout(self.rTick)
 
       if(['donut', 'pie', 'gauge'].indexOf(options.generate.data.type) == -1) {
         self.chart.destroy();
       }
 
       delete self.chart;
-      
-    }
+
+    };
 
     var boot = function() {
-
-      self.killed = false;
 
       if(options.xcolumn) {
         options.generate.data.x = options.xcolumn; 
@@ -260,7 +257,7 @@ eon.c = {
       if (Visibility.hidden()) {
         kill();
       } else {
-        boot(); 
+        boot();
       }
 
     });
@@ -364,14 +361,9 @@ eon.c = {
 
         }
 
-        if(self.killed) {
-          self.destroy();
-        } else {
-          setTimeout(function(){
-            self.recursive();
-          }, options.rate);
-           
-        }
+        self.rTick = setTimeout(function(){
+          self.recursive();
+        }, options.rate);
 
       };
 
