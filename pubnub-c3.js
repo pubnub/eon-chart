@@ -9,6 +9,8 @@ eon.c = {
     var error = false;
 
     self.chart = false;
+    self.killed = false;
+    self.recursive = false;
 
     self.pubnub = options.pubnub || PUBNUB || false;
 
@@ -215,16 +217,22 @@ eon.c = {
     var updateInterval = false;
 
     var kill = function() {
-    
+      self.killed = true;
+    };
+
+    self.destroy = function() {
+
       if(['donut', 'pie', 'gauge'].indexOf(options.generate.data.type) == -1) {
         self.chart.destroy();
       }
 
       delete self.chart;
-    
-    };
+      
+    }
 
     var boot = function() {
+
+      self.killed = false;
 
       if(options.xcolumn) {
         options.generate.data.x = options.xcolumn; 
@@ -238,6 +246,8 @@ eon.c = {
 
       self.chart = c3.generate(options.generate);
 
+      self.recursive();
+
     };
 
     var reboot = function() {
@@ -246,7 +256,13 @@ eon.c = {
     };
 
     Visibility.change(function (e, state) {
-      reboot();
+
+      if (Visibility.hidden()) {
+        kill();
+      } else {
+        boot(); 
+      }
+
     });
 
     var init = function() {
@@ -264,7 +280,7 @@ eon.c = {
 
       });
 
-      var recursive = function(){
+      self.recursive = function(){
 
         var newx = false;
         var i = 0;
@@ -348,12 +364,16 @@ eon.c = {
 
         }
 
-        setTimeout(function(){
-          recursive();
-        }, options.rate);
+        if(self.killed) {
+          self.destroy();
+        } else {
+          setTimeout(function(){
+            self.recursive();
+          }, options.rate);
+           
+        }
 
       };
-      recursive();
 
       return self;
 
