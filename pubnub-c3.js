@@ -189,9 +189,10 @@ eon.c = {
                 lastData[j][1] = message.columns[i][1];
               }
 
-              // if they have the same key, overwrite the buffer              }
+              
             }
-
+            
+            // if they have the same key, overwrite the buffer
             if(lastData[j][0] == message.columns[i][0]) {
               lastData[j][1] = message.columns[i][1];
               found = true;
@@ -214,8 +215,6 @@ eon.c = {
       }
 
     };
-
-    var updateInterval = false;
 
     var kill = function() {
       
