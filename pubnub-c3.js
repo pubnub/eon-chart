@@ -159,7 +159,7 @@ eon.c = {
     };
 
 
-    var lastData = [];
+    var nextData = [];
     var lastX = null;
     var dataStore = [];
 
@@ -168,7 +168,7 @@ eon.c = {
       var i = 0;
 
       // if we have data already
-      if(lastData.length) {
+      if(nextData.length) {
 
         // loop through the new message
         while(i < message.columns.length) {
@@ -177,24 +177,24 @@ eon.c = {
           var found = false;
 
           // and compare it against the old message
-          while(j < lastData.length) {
+          while(j < nextData.length) {
 
             // if it's x, then see if the new one is larger
             if(
               message.columns[i][0] == options.xcolumn &&
-              lastData[j][0] == options.xcolumn
+              nextData[j][0] == options.xcolumn
             ) {
 
-              if(message.columns[i][1] > lastData[j][1]) {
-                lastData[j][1] = message.columns[i][1];
+              if(message.columns[i][1] > nextData[j][1]) {
+                nextData[j][1] = message.columns[i][1];
               }
 
               
             }
             
             // if they have the same key, overwrite the buffer
-            if(lastData[j][0] == message.columns[i][0]) {
-              lastData[j][1] = message.columns[i][1];
+            if(nextData[j][0] == message.columns[i][0]) {
+              nextData[j][1] = message.columns[i][1];
               found = true;
             }
 
@@ -203,7 +203,7 @@ eon.c = {
           }
 
           if(!found) {
-            lastData[j] = message.columns[i];
+            nextData[j] = message.columns[i];
           }
 
           i++;
@@ -211,7 +211,7 @@ eon.c = {
         }
 
       } else {
-        lastData = message.columns;
+        nextData = message.columns;
       }
 
     };
@@ -286,16 +286,16 @@ eon.c = {
         }
 
         // find out if this x value is different from the last plotted
-        while(i < lastData.length) {
+        while(i < nextData.length) {
 
-          if(lastData[i][0] == options.xcolumn) {
+          if(nextData[i][0] == options.xcolumn) {
 
             var j = 0;
 
             while(j < dataStore.length) {
 
               if(dataStore[j][0] == options.xcolumn &&
-                dataStore[j][dataStore[j].length - 1] !== lastData[i][1]) {
+                dataStore[j][dataStore[j].length - 1] !== nextData[i][1]) {
                 newx = true;
               }
 
@@ -308,7 +308,7 @@ eon.c = {
           i++;
         }
 
-        if(newx && lastData.length) {
+        if(newx && nextData.length) {
 
           if(options.flow) {
 
@@ -322,7 +322,7 @@ eon.c = {
                 options.flow.length = 1;
               }
 
-              options.flow.columns = lastData;
+              options.flow.columns = nextData;
               self.chart.flow(options.flow);
 
             }
@@ -330,24 +330,24 @@ eon.c = {
           } else {
 
             self.chart.load({
-              columns: lastData
+              columns: nextData
             });
 
           }
 
           var i = 0;
           if(!dataStore.length) {
-            dataStore = JSON.parse(JSON.stringify(lastData));
+            dataStore = JSON.parse(JSON.stringify(nextData));
           } else {
 
-            while(i < lastData.length) {
+            while(i < nextData.length) {
 
               // if this is a new key, add the id
               if(typeof dataStore[i] == "undefined") {
-                dataStore[i] = [lastData[i][0]];
+                dataStore[i] = [nextData[i][0]];
               }
 
-              dataStore[i].push(lastData[i][1]);
+              dataStore[i].push(nextData[i][1]);
 
               if(dataStore[i].length > options.limit) {
                 dataStore[i].splice(1,1);
