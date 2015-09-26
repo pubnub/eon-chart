@@ -6,7 +6,7 @@
     <script src="../bower_components/d3/d3.min.js"></script>
     <script src="../bower_components/c3/c3.min.js"></script>
     <script src="../bower_components/subsub/subsub.js"></script>
-    <script src="../bower_components/visibility.js/visibility.js"></script>
+    <script src="../bower_components/visibilityjs/lib/visibility.core.js"></script>
 
     <script src="../pubnub-c3.js"></script>
 
@@ -22,11 +22,9 @@
     <div id="chart"></div>
     <script>
 
-      var channel = 'c3-spline' + Math.random();
-
       eon.chart({
-        history: false,
-        channel: channel,
+        history: true,
+        channel: 'process-memory-demo',
         flow: true,
         xcolumn: 'x',
         generate: {
@@ -36,52 +34,6 @@
           }
         }
       });
-    </script>
-    <script>
-      PUBNUB.init({
-        publish_key: 'demo',
-        subscribe_key: 'demo'
-      });
-
-      var i = 1;
-      setInterval(function(){
-
-        PUBNUB.publish({
-          channel: channel,
-          message: {
-            columns: [
-              ['x', new Date().getTime()],
-              ['San Francisco', Math.floor(Math.random() * 99)],
-              ['Portland', Math.floor(Math.random() * 99)]
-            ]
-          }
-        });
-
-        i++;
-
-      }, 1000);
-
-      setTimeout(function() {
-
-        var j = 2;
-        setInterval(function(){
-
-          PUBNUB.publish({
-            channel: 'c3-spline-rate',
-            message: {
-              columns: [
-                ['x',  new Date().getTime()],
-                ['Austin', Math.floor(Math.random() * 99)],
-                ['New York', Math.floor(Math.random() * 99)]
-              ]
-            }
-          });
-
-          j++;
-
-        }, 1000);
-
-      }, 1000);
     </script>
   </body>
 </html>

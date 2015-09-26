@@ -10,7 +10,7 @@ eon.c = {
 
     self.chart = false;
 
-    self.recursive = false;
+    self.render = false;
     self.rTick = setTimeout(function(){}, 1);
 
     self.pubnub = options.pubnub || PUBNUB || false;
@@ -242,7 +242,7 @@ eon.c = {
 
       self.chart = c3.generate(options.generate);
 
-      self.recursive();
+      self.render();
 
     };
 
@@ -276,7 +276,7 @@ eon.c = {
 
       });
 
-      self.recursive = function(){
+      self.render = function(disable_recursive){
 
         var newx = false;
         var i = 0;
@@ -360,9 +360,13 @@ eon.c = {
 
         }
 
-        self.rTick = setTimeout(function(){
-          self.recursive();
-        }, options.rate);
+        if(!disable_recursive) {
+
+          self.rTick = setTimeout(function(){
+            self.render();
+          }, options.rate);
+           
+        }
 
       };
 
