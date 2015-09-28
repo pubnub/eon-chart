@@ -41,26 +41,20 @@ eon.c = {
     options.message = options.message || function(){};
     options.connect = options.connect || function(){};
 
-    options.xcolumn = options.xcolumn || false;
+    if(!options.generate.axis) {
+      options.generate.axis = {}
+    }
 
-    if(options.xcolumn) {
+    // assume js date
+    if(!options.generate.axis.x) {
 
-      if(!options.generate.axis) {
-        options.generate.axis = {}
-      }
-
-      // assume js date
-      if(!options.generate.axis.x) {
-
-        options.generate.axis.x = {
-          type: 'timeseries',
-          tick: {
-              format: '%Y-%m-%d %H:%M:%S'
-          }
+      options.generate.axis.x = {
+        type: 'timeseries',
+        tick: {
+            format: '%Y-%m-%d %H:%M:%S'
         }
-
       }
-       
+
     }
 
     if(!options.channel) {
@@ -188,10 +182,6 @@ eon.c = {
       console.log('boot')
       
       self.is_dead = false;
-
-      if(options.xcolumn) {
-        options.generate.data.x = options.xcolumn; 
-      }
 
       options.generate.data.columns = dataStore;
 
