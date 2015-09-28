@@ -7,6 +7,7 @@ eon.c = {
 
     var self = this;
     var error = false;
+    var dateID = "_eon_datetime";
 
     self.chart = false;
 
@@ -39,9 +40,24 @@ eon.c = {
     options.message = options.message || function(){};
     options.connect = options.connect || function(){};
 
-    options.xcolumn = options.xcolumn || false;
+    // x axis definition
+    options.x_type = options.x_type || "datetime";
+    options.x_id = options.x_type_id || "";
 
-    if(options.xcolumn) {
+    if(options.x_type == "custom") {
+
+      options.generate.data.x = options.x_id; 
+       
+    } else if(options.x_type == "datetime") {
+
+      options.x_id = dateID;
+      options.generate.data.x = options.x_id; 
+
+    } else {
+      options.x_type = false;
+    }
+
+    if(options.x_type) {
 
       if(!options.generate.axis) {
         options.generate.axis = {}
@@ -58,8 +74,9 @@ eon.c = {
         }
 
       }
-       
+
     }
+
 
     if(!options.channel) {
       error = "No channel supplied.";
@@ -187,10 +204,6 @@ eon.c = {
       
       self.is_dead = false;
 
-      if(options.xcolumn) {
-        options.generate.data.x = options.xcolumn; 
-      }
-
       options.generate.data.columns = dataStore;
 
       if(dataStore.length && dataStore[0].length - 1 > options.limit) {
@@ -261,6 +274,13 @@ eon.c = {
         var message = options.transform(message);
 
         options.message(message, env, channel);
+
+        console.log(options.x_type)
+        if(options.x_type == "datetime") {
+          message.columns.push([dateID, new Date().getTime()]);
+        }
+
+        console.log(message.columns)
 
         render(message.columns);
 
