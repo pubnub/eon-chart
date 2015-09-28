@@ -10,7 +10,7 @@ eon.c = {
 
     self.chart = false;
 
-    self.render = false;
+    self.tick = false;
     self.rTick = setTimeout(function(){}, 1);
 
     self.pubnub = options.pubnub || PUBNUB || false;
@@ -75,6 +75,9 @@ eon.c = {
       var i = 0;
 
       var getAllMessages = function(timetoken) {
+
+        console.log(timetoken)
+
          self.pubnub.history({
           count: options.limit,
           channel: options.channel,
@@ -87,8 +90,6 @@ eon.c = {
 
              if (msgs !== undefined && msgs.length) {
 
-               msgs.reverse();
-
               i = 0;
                while(i < msgs.length) {
                  all_messages.push(msgs[[i]]);
@@ -97,35 +98,23 @@ eon.c = {
 
              }
 
+             console.log(options.limit)
+             console.log(all_messages.length)
+
              if (msgs.length && all_messages.length < options.limit) {
                getAllMessages(start);
              } else {
 
-              var data = [];
+                console.log('done')
 
-               i = 0;
-               while(i < all_messages.length) {
+                i = 0;
+                while(i < all_messages.length) {
 
-                var columns = all_messages[i].columns;
+                  addNextData(all_messages[i]);    
+                  self.tick(true);
+                  i++;
 
-                 for(var j in columns) {
-
-                    if(i === 0) {
-                      data[j] = [];
-                      data[j].push(columns[j][0]);
-                    }
-
-                    data[j].push(columns[j][1]);
-
-                 }
-
-                 i++;
-
-               }
-
-               // ready to go
-               data.reverse();
-               self.chart.load({columns: data});
+                }
 
              }
 
@@ -158,12 +147,38 @@ eon.c = {
 
     };
 
-
     var nextData = [];
     var lastX = null;
     var dataStore = [];
 
-    var mapMessage = function(message) {
+    var storeData = function() {
+
+      var i = 0;
+      if(!dataStore.length) {
+        dataStore = JSON.parse(JSON.stringify(nextData));
+      } else {
+
+        while(i < nextData.length) {
+
+          // if this is a new key, add the id
+          if(typeof dataStore[i] == "undefined") {
+            dataStore[i] = [nextData[i][0]];
+          }
+
+          dataStore[i].push(nextData[i][1]);
+
+          if(dataStore[i].length > options.limit) {
+            dataStore[i].splice(1,1);
+          }
+
+          i++;
+        }
+
+      }
+
+    }
+
+    var addNextData = function(message) {
 
       var i = 0;
 
@@ -242,7 +257,7 @@ eon.c = {
 
       self.chart = c3.generate(options.generate);
 
-      self.render();
+      self.tick();
 
     };
 
@@ -261,6 +276,35 @@ eon.c = {
 
     });
 
+    var render = function() {
+
+      if(options.flow) {
+
+        var trimLength = needsTrim();
+
+        if((buffer.length && !buffer[0].values.length) || trimLength > 1) {
+          reboot();
+        } else {
+
+          if(trimLength)  {
+            options.flow.length = 1;
+          }
+
+          options.flow.columns = nextData;
+          self.chart.flow(options.flow);
+
+        }
+
+      } else {
+
+        self.chart.load({
+          columns: nextData
+        });
+
+      }
+
+    }
+
     var init = function() {
 
       if(options.history) {
@@ -272,11 +316,11 @@ eon.c = {
         var message = options.transform(message);
 
         options.message(message, env, channel);
-        mapMessage(message);
+        addNextData(message);
 
       });
 
-      self.render = function(disable_recursive){
+      self.tick = function(disable_recursive){
 
         var newx = false;
         var i = 0;
@@ -310,60 +354,15 @@ eon.c = {
 
         if(newx && nextData.length) {
 
-          if(options.flow) {
-
-            var trimLength = needsTrim();
-
-            if((buffer.length && !buffer[0].values.length) || trimLength > 1) {
-              reboot();
-            } else {
-
-              if(trimLength)  {
-                options.flow.length = 1;
-              }
-
-              options.flow.columns = nextData;
-              self.chart.flow(options.flow);
-
-            }
-
-          } else {
-
-            self.chart.load({
-              columns: nextData
-            });
-
-          }
-
-          var i = 0;
-          if(!dataStore.length) {
-            dataStore = JSON.parse(JSON.stringify(nextData));
-          } else {
-
-            while(i < nextData.length) {
-
-              // if this is a new key, add the id
-              if(typeof dataStore[i] == "undefined") {
-                dataStore[i] = [nextData[i][0]];
-              }
-
-              dataStore[i].push(nextData[i][1]);
-
-              if(dataStore[i].length > options.limit) {
-                dataStore[i].splice(1,1);
-              }
-
-              i++;
-            }
-
-          }
+          render();
+          storeData();
 
         }
 
         if(!disable_recursive) {
 
           self.rTick = setTimeout(function(){
-            self.render();
+            self.tick();
           }, options.rate);
            
         }
