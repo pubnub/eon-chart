@@ -10,8 +10,7 @@ eon.c = {
 
     self.chart = false;
 
-    self.tick = false;
-    self.rTick = setTimeout(function(){}, 1);
+    self.is_dead = false;
 
     self.pubnub = options.pubnub || PUBNUB || false;
 
@@ -21,7 +20,7 @@ eon.c = {
 
     options.transform = options.transform || function(m){return m};
     options.channel = options.channel || false;
-    options.generate = options.generate || {};
+    options.generatge = options.generate || {};
     if(!options.generate.data) {
       options.generate.data = {
         columns: null
@@ -76,8 +75,6 @@ eon.c = {
 
       var getAllMessages = function(timetoken) {
 
-        console.log(timetoken)
-
          self.pubnub.history({
           count: options.limit,
           channel: options.channel,
@@ -98,20 +95,14 @@ eon.c = {
 
              }
 
-             console.log(options.limit)
-             console.log(all_messages.length)
-
              if (msgs.length && all_messages.length < options.limit) {
                getAllMessages(start);
              } else {
 
-                console.log('done')
-
                 i = 0;
                 while(i < all_messages.length) {
 
-                  addNextData(all_messages[i]);    
-                  self.tick(true);
+                  render(all_messages[i].columns);
                   i++;
 
                 }
@@ -151,21 +142,21 @@ eon.c = {
     var lastX = null;
     var dataStore = [];
 
-    var storeData = function() {
+    var storeData = function(data) {
 
       var i = 0;
       if(!dataStore.length) {
-        dataStore = JSON.parse(JSON.stringify(nextData));
+        dataStore = JSON.parse(JSON.stringify(data));
       } else {
 
-        while(i < nextData.length) {
+        while(i < data.length) {
 
           // if this is a new key, add the id
           if(typeof dataStore[i] == "undefined") {
-            dataStore[i] = [nextData[i][0]];
+            dataStore[i] = [data[i][0]];
           }
 
-          dataStore[i].push(nextData[i][1]);
+          dataStore[i].push(data[i][1]);
 
           if(dataStore[i].length > options.limit) {
             dataStore[i].splice(1,1);
@@ -178,62 +169,11 @@ eon.c = {
 
     }
 
-    var addNextData = function(message) {
-
-      var i = 0;
-
-      // if we have data already
-      if(nextData.length) {
-
-        // loop through the new message
-        while(i < message.columns.length) {
-
-          var j = 0;
-          var found = false;
-
-          // and compare it against the old message
-          while(j < nextData.length) {
-
-            // if it's x, then see if the new one is larger
-            if(
-              message.columns[i][0] == options.xcolumn &&
-              nextData[j][0] == options.xcolumn
-            ) {
-
-              if(message.columns[i][1] > nextData[j][1]) {
-                nextData[j][1] = message.columns[i][1];
-              }
-
-              
-            }
-            
-            // if they have the same key, overwrite the buffer
-            if(nextData[j][0] == message.columns[i][0]) {
-              nextData[j][1] = message.columns[i][1];
-              found = true;
-            }
-
-            j++;
-
-          }
-
-          if(!found) {
-            nextData[j] = message.columns[i];
-          }
-
-          i++;
-
-        }
-
-      } else {
-        nextData = message.columns;
-      }
-
-    };
-
     var kill = function() {
-      
-      clearTimeout(self.rTick)
+
+      console.log('kill')
+
+      self.is_dead = true;
 
       if(['donut', 'pie', 'gauge'].indexOf(options.generate.data.type) == -1) {
         self.chart.destroy();
@@ -244,6 +184,10 @@ eon.c = {
     };
 
     var boot = function() {
+
+      console.log('boot')
+      
+      self.is_dead = false;
 
       if(options.xcolumn) {
         options.generate.data.x = options.xcolumn; 
@@ -256,8 +200,6 @@ eon.c = {
       }
 
       self.chart = c3.generate(options.generate);
-
-      self.tick();
 
     };
 
@@ -276,31 +218,36 @@ eon.c = {
 
     });
 
-    var render = function() {
+    var render = function(data) {
 
-      if(options.flow) {
+      storeData(data);
 
-        var trimLength = needsTrim();
+      if(self.is_dead) {
 
-        if((buffer.length && !buffer[0].values.length) || trimLength > 1) {
-          reboot();
-        } else {
+        console.log('got data while unfocused')
+        console.log(data)
+
+      } else {
+
+        if(options.flow) {
+
+          var trimLength = needsTrim();
 
           if(trimLength)  {
             options.flow.length = 1;
           }
 
-          options.flow.columns = nextData;
+          options.flow.columns = data;
           self.chart.flow(options.flow);
 
+        } else {
+
+          self.chart.load({
+            columns: data
+          });
+
         }
-
-      } else {
-
-        self.chart.load({
-          columns: nextData
-        });
-
+         
       }
 
     }
@@ -316,60 +263,10 @@ eon.c = {
         var message = options.transform(message);
 
         options.message(message, env, channel);
-        addNextData(message);
+
+        render(message.columns);
 
       });
-
-      self.tick = function(disable_recursive){
-
-        var newx = false;
-        var i = 0;
-
-        if(!dataStore.length || !options.xcolumn) {
-          newx = true;
-        }
-
-        // find out if this x value is different from the last plotted
-        while(i < nextData.length) {
-
-          if(nextData[i][0] == options.xcolumn) {
-
-            var j = 0;
-
-            while(j < dataStore.length) {
-
-              if(dataStore[j][0] == options.xcolumn &&
-                dataStore[j][dataStore[j].length - 1] !== nextData[i][1]) {
-                newx = true;
-              }
-
-              j++;
-            }
-
-
-          }
-
-          i++;
-        }
-
-        if(newx && nextData.length) {
-
-          render();
-          storeData();
-
-        }
-
-        if(!disable_recursive) {
-
-          self.rTick = setTimeout(function(){
-            self.tick();
-          }, options.rate);
-           
-        }
-
-      };
-
-      return self;
 
     };
 

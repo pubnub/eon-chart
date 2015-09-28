@@ -26,10 +26,15 @@
         history: true,
         channel: 'process-memory-demo',
         flow: true,
+        rate: 500,
         xcolumn: 'x',
         generate: {
           bindto: '#chart',
+          transition: {
+            duration: 100
+          },
           data: {
+            type: 'scatter',
             labels: true
           }
         }
