@@ -146,21 +146,18 @@ eon.c = {
 
              }
 
-             if (msgs.length && all_messages.length < options.limit) {
+             if (msgs.length && all_messages[0].length < options.limit) {
               getAllMessages(start);
              } else {
 
                 clog('History:', 'Complete... Rendering');
-                var loadArray = [];
 
                 i = 0;
                 while(i < all_messages.length) {
 
                   var inArray = false;
-                  for(var j in loadArray) {
-
-                  }
                   var a = all_messages[i];
+
                   a = appendDate(a.message.columns, a.timetoken)
                   bigload = storeData(a, bigload)
 
@@ -216,15 +213,25 @@ eon.c = {
 
         while(i < data.length) {
 
-          // if this is a new key, add the id
-          if(typeof target[i] == "undefined") {
-            target[i] = [data[i][0]];
+          var found = false;
+          for(var j in target) {
+            
+            if(target[j][0] == data[i][0]) {
+
+              target[j].push(data[i][1]);
+
+              if(target[i].length > options.limit) {
+                target[i].splice(1,1);
+              }
+
+              found = true;
+
+            }
+
           }
 
-          target[i].push(data[i][1]);
-
-          if(target[i].length > options.limit) {
-            target[i].splice(1,1);
+          if(!found) {
+            target.push(data[i]);
           }
 
           i++;
