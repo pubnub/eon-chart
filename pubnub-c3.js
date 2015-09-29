@@ -121,8 +121,8 @@ eon.c = {
 
       if(options.x_type == "datetime") {
         clog('PubNub:', 'Appending PubNub datetime to columns.');
-        var date = String(pubnub_date).slice(0,-7) * f0;
-        data.push([dateID, new Date(date)]);
+        var date = Math.floor(pubnub_date / 10000);
+        data.push([dateID, new Date(date).getTime()]);
       }
 
       return data;
@@ -130,7 +130,6 @@ eon.c = {
     }
 
     var all_messages = [];
-    var bigload = [];
     var page = function() {
 
       clog('Status:', 'Restoring from history');
@@ -164,17 +163,17 @@ eon.c = {
                 var a = msgs[i];
 
                 a = appendDate(a.message.columns, a.timetoken)
-                bigload = storeData(a, bigload);
+                dataStore = storeData(a, dataStore);
 
                 i++;
 
               }
 
-              if(longest(bigload).length < options.limit + 1) {
+              if(longest(dataStore).length < options.limit + 1) {
                 getAllMessages(end);
               } else {
                 self.chart.load({
-                  columns: bigload
+                  columns: dataStore
                 }); 
               }
 
@@ -186,6 +185,11 @@ eon.c = {
 
     };
 
+    var reboot = function() {
+      kill();
+      boot();
+    }
+
     var needsTrim = function() {
 
       var buffer = self.chart.data();
@@ -195,8 +199,8 @@ eon.c = {
       while(i < buffer.length) {
 
         if(buffer[i].values.length > options.limit) {
-          var trimLength = buffer[i].values.length - 1 - options.limit;
-          return trimLength;
+          console.log('bigger', buffer[i], options.limit)
+          return true;
         }
         i++;
 
@@ -225,7 +229,6 @@ eon.c = {
             if(target[j][0] == data[i][0]) {
 
               target[j].push(data[i][1]);
-
               found = true;
 
             }
@@ -240,6 +243,10 @@ eon.c = {
         }
 
       }
+
+      var longe = longest(target);
+
+      console.log(target)
 
       return target;
 
@@ -261,15 +268,12 @@ eon.c = {
 
     var boot = function() {
 
+      console.log('boot')
       clog('Status:', 'Chart Animation Enabled');
       
       self.is_dead = false;
 
       options.generate.data.columns = dataStore;
-
-      if(dataStore.length && dataStore[0].length - 1 > options.limit) {
-        dataStore = [];
-      }
 
       self.chart = c3.generate(options.generate);
 
@@ -280,6 +284,7 @@ eon.c = {
       if (Visibility.hidden()) {
         kill();
       } else {
+        console.log('focus')
         boot();
       }
 
@@ -290,6 +295,7 @@ eon.c = {
       clog('Status:', 'Rendering');
 
       dataStore = storeData(data, dataStore);
+      console.log(longest(dataStore))
 
       if(self.is_dead) {
 

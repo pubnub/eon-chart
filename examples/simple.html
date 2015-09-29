@@ -32,13 +32,17 @@
         pubnub: pubnub,
         channel: channel,
         flow: true,
-        history: true,
-        limit: 100,
+        history: false,
+        limit: 10,
+        debug: false,
         generate: {
           bindto: '#chart',
           data: {
             labels: true,
             type: 'line'
+          },
+          transition: {
+            duration: 0
           },
           bar: {
             width: {
@@ -63,7 +67,7 @@
           }
         });
 
-      }, 2000);
+      }, 500);
     </script>
   </body>
 </html>
