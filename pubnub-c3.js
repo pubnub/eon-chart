@@ -97,12 +97,31 @@ eon.c = {
     if(!options.channel) {
       error = "No channel supplied.";
     }
+    
+    var longest = function(array) {
+
+      var longest = 0;
+      var j = 0;
+      for(var i in array) {
+        if(array[i].length > longest && array[i][0] !== options.x_id) {
+          longest = array[i].length;
+          j = i;
+        }
+      }
+
+      return {
+        length: longest,
+        i: j,
+        key: array[j][0]
+      }
+
+    }
 
     var appendDate = function(data, pubnub_date) {
 
       if(options.x_type == "datetime") {
         clog('PubNub:', 'Appending PubNub datetime to columns.');
-        var date = String(pubnub_date).slice(0,-7) * 1000;
+        var date = String(pubnub_date).slice(0,-7) * f0;
         data.push([dateID, new Date(date)]);
       }
 
@@ -136,40 +155,28 @@ eon.c = {
 
              clog('History:', msgs.length + ' messages found');
 
-             if (msgs !== undefined && msgs.length) {
+              clog('History:', 'Complete... Rendering');
 
               i = 0;
-               while(i < msgs.length) {
-                 all_messages.push(msgs[[i]]);
-                 i++;
-               }
+              while(i < msgs.length) {
 
-             }
+                var inArray = false;
+                var a = msgs[i];
 
-             if (msgs.length && all_messages[0].length < options.limit) {
-              getAllMessages(start);
-             } else {
+                a = appendDate(a.message.columns, a.timetoken)
+                bigload = storeData(a, bigload);
 
-                clog('History:', 'Complete... Rendering');
+                i++;
 
-                i = 0;
-                while(i < all_messages.length) {
+              }
 
-                  var inArray = false;
-                  var a = all_messages[i];
-
-                  a = appendDate(a.message.columns, a.timetoken)
-                  bigload = storeData(a, bigload)
-
-                  i++;
-
-                }
-
+              if(longest(bigload).length < options.limit + 1) {
+                getAllMessages(end);
+              } else {
                 self.chart.load({
                   columns: bigload
-                });
-
-             }
+                }); 
+              }
 
            }
          });
@@ -179,10 +186,9 @@ eon.c = {
 
     };
 
-    var buffer = [];
     var needsTrim = function() {
 
-      buffer = self.chart.data();
+      var buffer = self.chart.data();
 
       var i = 0;
 
@@ -219,10 +225,6 @@ eon.c = {
             if(target[j][0] == data[i][0]) {
 
               target[j].push(data[i][1]);
-
-              if(target[i].length > options.limit) {
-                target[i].splice(1,1);
-              }
 
               found = true;
 
