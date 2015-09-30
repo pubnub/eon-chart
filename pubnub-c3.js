@@ -96,17 +96,19 @@ eon.c = {
 
     if(!options.channel) {
       error = "No channel supplied.";
-    }
+    };
 
     var object = {
       json: [],
       keys: {
-        x: dateID,
-        value: []
+        value: [],
+        x: dateID
       }
     };
     
     var longest = function(array) {
+
+      // this should just check xvalues instead of caring about points
 
       var longest = 0;
       var j = 0;
@@ -135,7 +137,7 @@ eon.c = {
 
       return data;
        
-    }
+    };
 
     var all_messages = [];
     var page = function() {
@@ -196,7 +198,7 @@ eon.c = {
     var reboot = function() {
       kill();
       boot();
-    }
+    };
 
     var needsTrim = function() {
 
@@ -219,40 +221,6 @@ eon.c = {
 
     var nextData = [];
     var dataStore = [];
-
-    var storeData = function(data, target) {
-
-      var i = 0;
-      if(!target.length) {
-        target = JSON.parse(JSON.stringify(data));
-      } else {
-
-        while(i < data.length) {
-
-          var found = false;
-          for(var j in target) {
-            
-            if(target[j][0] == data[i][0]) {
-
-              target[j].push(data[i][1]);
-              found = true;
-
-            }
-
-          }
-
-          if(!found) {
-            target.push(data[i]);
-          }
-
-          i++;
-        }
-
-      }
-
-      return target;
-
-    }
 
     var kill = function() {
 
@@ -285,6 +253,7 @@ eon.c = {
         kill();
       } else {
         boot();
+        console.log(object)
         self.chart.load(object)
       }
 
@@ -308,29 +277,35 @@ eon.c = {
 
     };
 
-    var storeC3 = function() {
+    var storeC3 = function(data) {
 
-      // overwrite
-      object = {
-        json: [],
-        keys: {
-          x: dateID,
-          value: []
+      console.log('-----')
+
+      console.log(data)
+
+      object.json.push(data);
+
+      if(object.json.length > options.limit) {
+        object.json.shift();
+      }
+
+      for(var i in object.json) {
+        console.log(object.json[i])
+        for(var key in object.json[i]) {
+          object.keys.value = uniqueAppend(object.keys.value, key);
         }
-      };
-
-      var d = self.chart.data();
-      for(var i in d) {
+      }
+      /*
+      for(var key in data) {
         
-        for(var j in d[i].values) {
+        for(var j in data[key].values) {
           
-          var value = d[i].values[j];
-
-          object.keys.value = uniqueAppend(object.keys.value, value.id);
+          var value = data[key].values[j];
 
           var thisDate = new Date(value.x).getTime();
           var exists = false;
 
+          // see if you can find an object with the same date
           for(var l in object.json) {
             if(object.json[l][dateID] == thisDate) {
               object.json[l][value.id] = value.value;
@@ -338,33 +313,38 @@ eon.c = {
             }
           }
 
+          // otherwise create that object
           if(!exists) {
 
             var tmpobj = {};
             tmpobj[dateID] = thisDate;
             tmpobj[value.id] = value.value;
             object.json.push(tmpobj);
+
+            object.json.slice(1,1);
              
           }
 
         }
 
       }
+      */
+
+      console.log(object);
 
     }
+
     var render = function(data) {
 
       clog('Status:', 'Rendering');
+
+      storeC3(data);
 
       if(self.is_dead) {
 
         clog('Render:', 'Tab out of focus.');
 
       } else {
-      
-        storeC3();
-
-        var d = self.chart.data();
 
         if(options.flow) {
           

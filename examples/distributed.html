@@ -23,20 +23,19 @@
     <script>
 
       eon.chart({
-        history: true,
+        history: false,
         channel: 'process-memory-demo',
         flow: true,
         limit: 100,
         debug: false,
-        x_id: 'x',
-        x_type: 'custom',
+        x_type: 'auto',
         generate: {
           bindto: '#chart',
           transition: {
             duration: 1
           },
           data: {
-            type: 'spline',
+            type: 'scatter',
             labels: true
           }
         }
