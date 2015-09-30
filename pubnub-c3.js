@@ -293,18 +293,84 @@ eon.c = {
         value: []
       }
     };
+
+    var uniqueAppend = function(array, append) {
+
+      // see if value is in array of keys
+      var exists = false;
+      for(var l in array) {
+        if(array[l] == append) {
+          exists = true;
+        }
+      }
+
+      if(!exists) {
+        array.push(append);
+      }
+
+      return array;
+
+    };
+
+    var storeC3 = function() {
+
+      // overwrite
+      object = {
+        json: [],
+        keys: {
+          x: dateID,
+          value: []
+        }
+      };
+
+      var d = self.chart.data();
+      for(var i in d) {
+
+        console.log(d[i])
+        console.log(d[i].x);
+        
+        for(var j in d[i].values) {
+          
+          var value = d[i].values[j];
+
+          console.log(object.keys.value)
+          object.keys.value = uniqueAppend(object.keys.value, value.id);
+
+          var thisDate = new Date(value.x).getTime();
+          var exists = false;
+
+          for(var l in object.json) {
+            if(object.json[l][dateID] == thisDate) {
+              object.json[l][value.id] = value.value;
+              exists = true;
+            }
+          }
+
+          if(!exists) {
+
+            var tmpobj = {};
+            tmpobj[dateID] = thisDate;
+            tmpobj[value.id] = value.value;
+            object.json.push(tmpobj);
+             
+          }
+
+        }
+
+      }
+
+    }
     var render = function(data) {
 
       clog('Status:', 'Rendering');
-
-      dataStore = storeData(data, dataStore);
-
 
       if(self.is_dead) {
 
         clog('Render:', 'Tab out of focus.');
 
       } else {
+      
+        storeC3();
 
         console.log(self.chart.data())
         var d = self.chart.data();
@@ -325,58 +391,6 @@ eon.c = {
             }
         }
         */
-
-        object = {
-          json: [],
-          keys: {
-            x: dateID,
-            value: []
-          }
-        };
-
-        for(var i in d) {
-
-          console.log(d[i])
-          console.log(d[i].x);
-          
-          for(var j in d[i].values) {
-            
-            var value = d[i].values[j];
-
-            // see if value is in array of keys
-            var exists = false;
-            for(var l in object.keys.value) {
-              if(object.keys.value[l] == value.id) {
-                exists = true;
-              }
-            }
-
-            if(!exists) {
-              object.keys.value.push(value.id);
-            }
-
-            var thisDate = new Date(value.x).getTime();
-            var exists = false;
-
-            for(var l in object.json) {
-              if(object.json[l][dateID] == thisDate) {
-                object.json[l][value.id] = value.value;
-                exists = true;
-              }
-            }
-
-            if(!exists) {
-
-              var tmpobj = {};
-              tmpobj[dateID] = thisDate;
-              tmpobj[value.id] = value.value;
-              object.json.push(tmpobj);
-               
-            }
-
-          }
-
-        }
         
         console.log(object)
 
