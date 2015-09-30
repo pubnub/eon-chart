@@ -169,7 +169,7 @@ eon.c = {
 
               }
 
-              if(longest(dataStore).length < options.limit + 1) {
+              if(longest(dataStore).length < options.limit - 1) {
                 getAllMessages(end);
               } else {
                 self.chart.load({
@@ -198,8 +198,7 @@ eon.c = {
 
       while(i < buffer.length) {
 
-        if(buffer[i].values.length > options.limit) {
-          console.log('bigger', buffer[i], options.limit)
+        if(buffer[i].values.length > options.limit - 1) {
           return true;
         }
         i++;
@@ -211,7 +210,6 @@ eon.c = {
     };
 
     var nextData = [];
-    var lastX = null;
     var dataStore = [];
 
     var storeData = function(data, target) {
@@ -244,10 +242,6 @@ eon.c = {
 
       }
 
-      var longe = longest(target);
-
-      console.log(target)
-
       return target;
 
     }
@@ -273,8 +267,7 @@ eon.c = {
       
       self.is_dead = false;
 
-      options.generate.data.columns = dataStore;
-
+      options.generate.data.columns = [];
       self.chart = c3.generate(options.generate);
 
     };
@@ -286,22 +279,106 @@ eon.c = {
       } else {
         console.log('focus')
         boot();
+        console.log(object)
+        self.chart.load(object)
       }
 
     });
 
+
+    var object = {
+      json: [],
+      keys: {
+        x: dateID,
+        value: []
+      }
+    };
     var render = function(data) {
 
       clog('Status:', 'Rendering');
 
       dataStore = storeData(data, dataStore);
-      console.log(longest(dataStore))
+
 
       if(self.is_dead) {
 
         clog('Render:', 'Tab out of focus.');
 
       } else {
+
+        console.log(self.chart.data())
+        var d = self.chart.data();
+
+        console.log('-----')
+
+        /*
+        {
+            json: [
+                {name: 'www.site1.com', upload: 200, download: 200, total: 400},
+                {name: 'www.site2.com', upload: 100, download: 300, total: 400},
+                {name: 'www.site3.com', upload: 300, download: 200, total: 500},
+                {name: 'www.site4.com', upload: 400, download: 100, total: 500},
+            ],
+            keys: {
+              //  x: 'name', // it's possible to specify 'x' when category axis
+                value: ['upload', 'download'],
+            }
+        }
+        */
+
+        object = {
+          json: [],
+          keys: {
+            x: dateID,
+            value: []
+          }
+        };
+
+        for(var i in d) {
+
+          console.log(d[i])
+          console.log(d[i].x);
+          
+          for(var j in d[i].values) {
+            
+            var value = d[i].values[j];
+
+            // see if value is in array of keys
+            var exists = false;
+            for(var l in object.keys.value) {
+              if(object.keys.value[l] == value.id) {
+                exists = true;
+              }
+            }
+
+            if(!exists) {
+              object.keys.value.push(value.id);
+            }
+
+            var thisDate = new Date(value.x).getTime();
+            var exists = false;
+
+            for(var l in object.json) {
+              if(object.json[l][dateID] == thisDate) {
+                object.json[l][value.id] = value.value;
+                exists = true;
+              }
+            }
+
+            if(!exists) {
+
+              var tmpobj = {};
+              tmpobj[dateID] = thisDate;
+              tmpobj[value.id] = value.value;
+              object.json.push(tmpobj);
+               
+            }
+
+          }
+
+        }
+        
+        console.log(object)
 
         if(options.flow) {
           

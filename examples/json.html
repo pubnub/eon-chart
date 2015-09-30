@@ -1,0 +1,48 @@
+<html>
+  <head>
+
+    <link rel="stylesheet" type="text/css" href="../bower_components/c3/c3.min.css">
+    <script src="../bower_components/pubnub/web/pubnub.min.js"></script>
+    <script src="../bower_components/d3/d3.min.js"></script>
+    <script src="../bower_components/c3/c3.min.js"></script>
+    <script src="../bower_components/subsub/subsub.js"></script>
+    <script src="../bower_components/visibilityjs/lib/visibility.core.js"></script>
+
+    <script src="../pubnub-c3.js"></script>
+
+    <style>
+      .c3-region-1 {
+        fill: #dd3333;
+        fill-opacity: 0.8
+      }
+    </style>
+
+  </head>
+  <body>
+    <div id="chart"></div>
+    <script>
+          chart = c3.generate({
+              data: {
+                  json: [
+                      {x: 1, upload: 200, download: 200, total: 400},
+                      {x: 2, upload: 100, download: 300, total: 400},
+                      {x: 4, upload: 400, download: 100, total: 500},
+                      {x: 3, upload: 300, download: 200, total: 500},
+                  ],
+                  keys: {
+                    x: 'x',
+                    value: ['upload', 'download'],
+                  }
+              },
+          axis: {
+              x: {
+                  type: 'timeseries',
+                tick: {
+                    format: '%Y-%m-%d'
+                }
+              }
+          }
+          });
+    </script>
+  </body>
+</html>
