@@ -56,14 +56,14 @@ eon.c = {
     options.connect = options.connect || function(){};
 
     // x axis definition
-    options.x_type = options.x_type || "datetime";
+    options.x_type = options.x_type || "auto";
     options.x_id = options.x_id || "";
 
     if(options.x_type == "custom") {
 
       options.generate.data.x = options.x_id; 
        
-    } else if(options.x_type == "datetime") {
+    } else if(options.x_type == "auto") {
 
       options.x_id = dateID;
       options.generate.data.x = options.x_id; 
@@ -127,12 +127,11 @@ eon.c = {
 
     var appendDate = function(data, pubnub_date) {
 
-      if(options.x_type == "datetime") {
+      if(options.x_type == "auto") {
         clog('PubNub:', 'Appending PubNub datetime to columns.');
         var date = Math.floor(pubnub_date / 10000);
         data[dateID] = new Date(date).getTime();
       }
-      console.log(data);
 
       return data;
        
@@ -171,7 +170,6 @@ eon.c = {
                 var inArray = false;
                 var a = msgs[i];
 
-                console.log(a.message)
                 a = appendDate(a.message.json, a.timetoken)
                 dataStore = storeData(a, dataStore);
 
@@ -272,7 +270,6 @@ eon.c = {
 
     var boot = function() {
 
-      console.log('boot')
       clog('Status:', 'Chart Animation Enabled');
       
       self.is_dead = false;
@@ -287,9 +284,7 @@ eon.c = {
       if (Visibility.hidden()) {
         kill();
       } else {
-        console.log('focus')
         boot();
-        console.log(object)
         self.chart.load(object)
       }
 
@@ -326,9 +321,6 @@ eon.c = {
 
       var d = self.chart.data();
       for(var i in d) {
-
-        console.log(d[i])
-        console.log(d[i].x);
         
         for(var j in d[i].values) {
           
@@ -372,7 +364,6 @@ eon.c = {
       
         storeC3();
 
-        console.log(self.chart.data())
         var d = self.chart.data();
 
         if(options.flow) {
@@ -416,9 +407,9 @@ eon.c = {
         clog('PubNub:', '-------------------');
         clog('PubNub:', 'Received Message', message);
 
+        clog('PubNub:', 'Transforming Message using options.transform');
         var message = options.transform(message);
 
-        clog('PubNub:', 'Transforming Message using options.transform');
         message.json = appendDate(message.json, env[1]);
 
         clog('PubNub:', 'Message Result', message);
