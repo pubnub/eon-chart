@@ -105,27 +105,6 @@ eon.c = {
         x: dateID
       }
     };
-    
-    var longest = function(array) {
-
-      // this should just check xvalues instead of caring about points
-
-      var longest = 0;
-      var j = 0;
-      for(var i in array) {
-        if(array[i].length > longest && array[i][0] !== options.x_id) {
-          longest = array[i].length;
-          j = i;
-        }
-      }
-
-      return {
-        length: longest,
-        i: j,
-        key: array[j][0]
-      }
-
-    }
 
     var appendDate = function(data, pubnub_date) {
 
@@ -169,22 +148,19 @@ eon.c = {
               i = 0;
               while(i < msgs.length) {
 
-                var inArray = false;
                 var a = msgs[i];
 
                 a = appendDate(a.message.json, a.timetoken)
-                dataStore = storeData(a, dataStore);
+                storeData(a);
 
                 i++;
 
               }
 
-              if(longest(dataStore).length < options.limit - 1) {
+              if(object.json.length < options.limit - 1) {
                 getAllMessages(end);
               } else {
-                self.chart.load({
-                  json: dataStore
-                }); 
+                self.chart.load(object); 
               }
 
            }
@@ -277,11 +253,7 @@ eon.c = {
 
     };
 
-    var storeC3 = function(data) {
-
-      console.log('-----')
-
-      console.log(data)
+    var storeData = function(data) {
 
       object.json.push(data);
 
@@ -290,47 +262,10 @@ eon.c = {
       }
 
       for(var i in object.json) {
-        console.log(object.json[i])
         for(var key in object.json[i]) {
           object.keys.value = uniqueAppend(object.keys.value, key);
         }
       }
-      /*
-      for(var key in data) {
-        
-        for(var j in data[key].values) {
-          
-          var value = data[key].values[j];
-
-          var thisDate = new Date(value.x).getTime();
-          var exists = false;
-
-          // see if you can find an object with the same date
-          for(var l in object.json) {
-            if(object.json[l][dateID] == thisDate) {
-              object.json[l][value.id] = value.value;
-              exists = true;
-            }
-          }
-
-          // otherwise create that object
-          if(!exists) {
-
-            var tmpobj = {};
-            tmpobj[dateID] = thisDate;
-            tmpobj[value.id] = value.value;
-            object.json.push(tmpobj);
-
-            object.json.slice(1,1);
-             
-          }
-
-        }
-
-      }
-      */
-
-      console.log(object);
 
     }
 
@@ -338,7 +273,7 @@ eon.c = {
 
       clog('Status:', 'Rendering');
 
-      storeC3(data);
+      storeData(data);
 
       if(self.is_dead) {
 
@@ -375,10 +310,6 @@ eon.c = {
     }
 
     var init = function() {
-
-      if(options.history) {
-        page();
-      }
       
       clog('PubNub:', 'Subscribed to ' + options.channel);
 
@@ -400,6 +331,10 @@ eon.c = {
         options.message(message, env, channel);
 
       });
+
+      if(options.history) {
+        page();
+      }
 
     };
 
