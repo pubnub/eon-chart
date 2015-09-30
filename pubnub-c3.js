@@ -38,7 +38,7 @@ eon.c = {
     options.generate = options.generate || {};
     if(!options.generate.data) {
       options.generate.data = {
-        columns: null
+        json: null
       };
     }
 
@@ -97,6 +97,14 @@ eon.c = {
     if(!options.channel) {
       error = "No channel supplied.";
     }
+
+    var object = {
+      json: [],
+      keys: {
+        x: dateID,
+        value: []
+      }
+    };
     
     var longest = function(array) {
 
@@ -122,8 +130,9 @@ eon.c = {
       if(options.x_type == "datetime") {
         clog('PubNub:', 'Appending PubNub datetime to columns.');
         var date = Math.floor(pubnub_date / 10000);
-        data.push([dateID, new Date(date).getTime()]);
+        data[dateID] = new Date(date).getTime();
       }
+      console.log(data);
 
       return data;
        
@@ -162,7 +171,8 @@ eon.c = {
                 var inArray = false;
                 var a = msgs[i];
 
-                a = appendDate(a.message.columns, a.timetoken)
+                console.log(a.message)
+                a = appendDate(a.message.json, a.timetoken)
                 dataStore = storeData(a, dataStore);
 
                 i++;
@@ -173,7 +183,7 @@ eon.c = {
                 getAllMessages(end);
               } else {
                 self.chart.load({
-                  columns: dataStore
+                  json: dataStore
                 }); 
               }
 
@@ -285,15 +295,6 @@ eon.c = {
 
     });
 
-
-    var object = {
-      json: [],
-      keys: {
-        x: dateID,
-        value: []
-      }
-    };
-
     var uniqueAppend = function(array, append) {
 
       // see if value is in array of keys
@@ -333,7 +334,6 @@ eon.c = {
           
           var value = d[i].values[j];
 
-          console.log(object.keys.value)
           object.keys.value = uniqueAppend(object.keys.value, value.id);
 
           var thisDate = new Date(value.x).getTime();
@@ -375,25 +375,6 @@ eon.c = {
         console.log(self.chart.data())
         var d = self.chart.data();
 
-        console.log('-----')
-
-        /*
-        {
-            json: [
-                {name: 'www.site1.com', upload: 200, download: 200, total: 400},
-                {name: 'www.site2.com', upload: 100, download: 300, total: 400},
-                {name: 'www.site3.com', upload: 300, download: 200, total: 500},
-                {name: 'www.site4.com', upload: 400, download: 100, total: 500},
-            ],
-            keys: {
-              //  x: 'name', // it's possible to specify 'x' when category axis
-                value: ['upload', 'download'],
-            }
-        }
-        */
-        
-        console.log(object)
-
         if(options.flow) {
           
           clog('Render:', 'Flow enabled, appending to chart.');
@@ -405,7 +386,7 @@ eon.c = {
             clog('Render:', 'Data exceeds options.limit, trimming buffer.');
           }
 
-          options.flow.columns = data;
+          options.flow.json = data;
           self.chart.flow(options.flow);
 
         } else {
@@ -413,7 +394,7 @@ eon.c = {
           clog('Render:', 'Updating chart.');
 
           self.chart.load({
-            columns: data
+            json: data
           });
 
         }
@@ -438,11 +419,11 @@ eon.c = {
         var message = options.transform(message);
 
         clog('PubNub:', 'Transforming Message using options.transform');
-        message.columns = appendDate(message.columns, env[1]);
+        message.json = appendDate(message.json, env[1]);
 
         clog('PubNub:', 'Message Result', message);
       
-        render(message.columns);
+        render(message.json);
 
         clog('PubNub:', 'Calling options.message');
         options.message(message, env, channel);

@@ -27,7 +27,7 @@
         subscribe_key: 'sub-c-2a73818c-d2d3-11e3-9244-02ee2ddab7fe'
       });
 
-      var channel = 'c3-spline-tester';
+      var channel = 'c3-spline-tester-2';
       eon.chart({
         pubnub: pubnub,
         channel: channel,
@@ -58,12 +58,12 @@
         pubnub.publish({
           channel: channel,
           message: {
-            columns: [
-              ['Austin', Math.floor(Math.random() * 99)],
-              ['New York', Math.floor(Math.random() * 99)],
-              ['San Francisco', Math.floor(Math.random() * 99)],
-              ['Portland', Math.floor(Math.random() * 99)]
-            ]
+            json: {
+              'Austin': Math.floor(Math.random() * 99),
+              'New York': Math.floor(Math.random() * 99),
+              'San Francisco': Math.floor(Math.random() * 99),
+              'Portland': Math.floor(Math.random() * 99)
+            }
           }
         });
 
