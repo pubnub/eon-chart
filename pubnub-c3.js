@@ -60,6 +60,14 @@ eon.c = {
     options.x_type = options.x_type || "auto";
     options.x_id = options.x_id || "x";
 
+    options.rate = options.rate || 1000;
+
+    /*
+    if(options.rate < options.generate.transition.duration) {
+      console.error('EON: You\'re transition animations are too fast, make them slower (options.generate.transition.duration) or increase options.rate)');
+    };
+    */
+
     if (options.x_type == "custom") {
 
       options.generate.data.x = options.x_id;
@@ -100,9 +108,9 @@ eon.c = {
     };
 
     if (['spline', 'area', 'area-spline', 'step', 'area-step', 'scatter'].indexOf(options.generate.data.type) == -1 || typeof(options.generate.data.type) == "undefined") {
-      options.limit = options.limit || 10;
-    } else {
       options.limit = options.limit || 1;
+    } else {
+      options.limit = options.limit || 10;
     }
 
     var object = {
@@ -179,25 +187,6 @@ eon.c = {
 
     };
 
-    var needsTrim = function() {
-
-      var buffer = self.chart.data();
-
-      var i = 0;
-
-      while (i < buffer.length) {
-
-        if (buffer[i].values.length > options.limit - 1) {
-          return true;
-        }
-        i++;
-
-      }
-
-      return false;
-
-    };
-
     var nextData = [];
     var dataStore = [];
 
@@ -271,48 +260,18 @@ eon.c = {
 
     }
 
-    var render = function(data) {
+    setInterval(function(){
 
       clog('Status:', 'Rendering');
 
-      storeData(data);
-
       if (self.is_dead) {
-
         clog('Render:', 'Tab out of focus.');
-
       } else {
-
-        if (options.flow) {
-
-          clog('Render:', 'Flow enabled, appending to chart.');
-
-          var trimLength = needsTrim();
-
-          if (trimLength) {
-            options.flow.length = 1;
-            clog('Render:', 'Data exceeds options.limit, trimming buffer.');
-          }
-
-          options.flow.json = data;
-
-          console.log('flow', options.flow)
-
-          self.chart.flow(options.flow);
-
-        } else {
-
-          clog('Render:', 'Updating chart.');
-
-          self.chart.load({
-            json: data
-          });
-
-        }
-
+        self.chart.load(object);
+        clog('Render:', 'Complete');
       }
 
-    };
+    }, options.rate);
 
     var elog = function(text) {
       console.error("EON:" + text);
@@ -339,7 +298,8 @@ eon.c = {
 
           clog('PubNub:', 'Message Result', message);
 
-          render(message.eon);
+
+          storeData(message.eon);
 
           clog('PubNub:', 'Calling options.message');
           options.message(message, env, channel);
