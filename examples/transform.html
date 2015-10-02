@@ -7,15 +7,7 @@
     <script src="../bower_components/c3/c3.min.js"></script>
     <script src="../bower_components/subsub/subsub.js"></script>
     <script src="../bower_components/visibilityjs/lib/visibility.core.js"></script>
-
     <script src="../pubnub-c3.js"></script>
-
-    <style>
-      .c3-region-1 {
-        fill: #dd3333;
-        fill-opacity: 0.8
-      }
-    </style>
 
   </head>
   <body>
@@ -24,7 +16,8 @@
     // using the example stream from 
     // http://www.pubnub.com/developers/data-streams/sensor-network
     var pubnub = PUBNUB({
-	    subscribe_key: 'sub-c-5f1b7c8e-fbee-11e3-aa40-02ee2ddab7fe'
+        publish_key: 'pub-c-6dbe7bfd-6408-430a-add4-85cdfe856b47',
+        subscribe_key: 'sub-c-2a73818c-d2d3-11e3-9244-02ee2ddab7fe'
 	});
     eon.chart({
     	pubnub: pubnub,

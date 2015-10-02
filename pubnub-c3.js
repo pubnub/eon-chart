@@ -51,7 +51,6 @@ eon.c = {
       }
       options.flow.length = options.flow.length || 0;
     }
-    options.limit = options.limit || 10;
     options.history = options.history || false;
 
     options.message = options.message || function() {};
@@ -100,6 +99,12 @@ eon.c = {
       error = "No channel supplied.";
     };
 
+    if (['spline', 'area', 'area-spline', 'step', 'area-step', 'scatter', 'line'].indexOf(options.generate.data.type) > 0) {
+      options.limit = options.limit || 10;
+    } else {
+      options.limit = options.limit || 1;
+    }
+
     var object = {
       json: [],
       keys: {
@@ -139,11 +144,15 @@ eon.c = {
           include_token: true,
           callback: function(payload) {
 
-            console.log(payload)
             var msgs = payload[0];
+            var start = payload[1];
+            var end = payload[2];
+
             clog('History:', msgs.length + ' messages found');
 
             clog('History:', 'Complete... Rendering');
+
+            console.log(payload)
 
             i = 0;
             while (i < msgs.length) {
@@ -157,7 +166,7 @@ eon.c = {
 
             }
 
-            if (object.json.length < options.limit - 1) {
+            if (msgs.length && object.json.length < options.limit - 1) {
               getAllMessages(end);
             } else {
               self.chart.load(object);
@@ -169,11 +178,6 @@ eon.c = {
 
       getAllMessages();
 
-    };
-
-    var reboot = function() {
-      kill();
-      boot();
     };
 
     var needsTrim = function() {
@@ -229,6 +233,8 @@ eon.c = {
         kill();
       } else {
         boot();
+        console.log('BOOT')
+        console.log(object)
         self.chart.load(object)
       }
 
@@ -255,6 +261,8 @@ eon.c = {
     var storeData = function(data) {
 
       object.json.push(data);
+
+      console.log(object.json.length, options.limit)
 
       if (object.json.length > options.limit) {
         object.json.shift();
@@ -307,8 +315,6 @@ eon.c = {
       }
 
     };
-
-    // if x is the same, overwrite
 
     var init = function() {
 

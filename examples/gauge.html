@@ -7,21 +7,13 @@
     <script src="../bower_components/c3/c3.min.js"></script>
     <script src="../bower_components/subsub/subsub.js"></script>
     <script src="../bower_components/visibilityjs/lib/visibility.core.js"></script>
-
     <script src="../pubnub-c3.js"></script>
-
-    <style>
-      .c3-region-1 {
-        fill: #dd3333;
-        fill-opacity: 0.8
-      }
-    </style>
 
   </head>
   <body>
     <div id="chart"></div>
     <script>
-      var channel = 'c3-spline'  + Math.random();
+      var channel = 'c3-gauge'  + Math.random();
       eon.chart({
         channel: channel,
         generate: {
@@ -34,8 +26,8 @@
     </script>
     <script>
       PUBNUB.init({
-        publish_key: 'demo',
-        subscribe_key: 'demo'
+        publish_key: 'pub-c-6dbe7bfd-6408-430a-add4-85cdfe856b47',
+        subscribe_key: 'sub-c-2a73818c-d2d3-11e3-9244-02ee2ddab7fe'
       });
       setInterval(function(){
 

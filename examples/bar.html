@@ -24,18 +24,13 @@
       eon.chart({
         pubnub: pubnub,
         channel: channel,
-        flow: true,
         history: true,
-        limit: 10,
         debug: true,
         generate: {
           bindto: '#chart',
           data: {
             labels: true,
-            type: 'spline'
-          },
-          transition: {
-            duration: 50
+            type: 'bar'
           },
           bar: {
             width: {
@@ -60,7 +55,7 @@
           }
         });
 
-      }, 500);
+      }, 700);
     </script>
   </body>
 </html>
