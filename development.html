@@ -1,8 +1,13 @@
 <html>
   <head>
 
-    <script type="text/javascript" src="http://pubnub.github.io/eon/v/eon/0.0.8/eon.js"></script>
-    <link type="text/css" rel="stylesheet" href="http://pubnub.github.io/eon/v/eon/0.0.8/eon.css" />
+    <link rel="stylesheet" type="text/css" href="../bower_components/c3/c3.min.css">
+    <script src="../bower_components/pubnub/web/pubnub.min.js"></script>
+    <script src="../bower_components/d3/d3.min.js"></script>
+    <script src="../bower_components/c3/c3.min.js"></script>
+    <script src="../bower_components/subsub/subsub.js"></script>
+    <script src="../bower_components/visibilityjs/lib/visibility.core.js"></script>
+    <script src="../pubnub-c3.js"></script>
 
   </head>
   <body>
@@ -18,15 +23,24 @@
 
       eon.chart({
         pubnub: pubnub,
-        history: true,
         channel: channel,
-        flow: {
-          duration: 100
-        },
+        flow: true,
+        history: true,
+        limit: 10,
+        debug: true,
         generate: {
           bindto: '#chart',
           data: {
-            labels: false
+            labels: true,
+            type: 'spline'
+          },
+          transition: {
+            duration: 50
+          },
+          bar: {
+            width: {
+              ratio: 0.5
+            }
           }
         }
       });
@@ -46,7 +60,7 @@
           }
         });
 
-      }, 1000);
+      }, 500);
     </script>
   </body>
 </html>
