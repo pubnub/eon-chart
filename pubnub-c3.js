@@ -58,7 +58,7 @@ eon.c = {
 
     // x axis definition
     options.x_type = options.x_type || "auto";
-    options.x_id = options.x_id || "";
+    options.x_id = options.x_id || "x";
 
     if (options.x_type == "custom") {
 
@@ -157,7 +157,7 @@ eon.c = {
 
               var a = msgs[i];
 
-              a = appendDate(a.message.json, a.timetoken)
+              a = appendDate(a.message.eon, a.timetoken)
               storeData(a);
 
               i++;
@@ -333,11 +333,11 @@ eon.c = {
 
           var message = options.transform(message);
 
-          message.json = appendDate(message.json, env[1]);
+          message.eon = appendDate(message.eon, env[1]);
 
           clog('PubNub:', 'Message Result', message);
 
-          render(message.json);
+          render(message.eon);
 
           clog('PubNub:', 'Calling options.message');
           options.message(message, env, channel);
