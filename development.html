@@ -1,66 +1,43 @@
 <html>
   <head>
 
-    <link rel="stylesheet" type="text/css" href="../bower_components/c3/c3.min.css">
-    <script src="../bower_components/pubnub/web/pubnub.min.js"></script>
-    <script src="../bower_components/d3/d3.min.js"></script>
-    <script src="../bower_components/c3/c3.min.js"></script>
-    <script src="../bower_components/subsub/subsub.js"></script>
-    <script src="../bower_components/visibilityjs/lib/visibility.core.js"></script>
-    <script src="../pubnub-c3.js"></script>
+    <link rel="stylesheet" type="text/css" href="./bower_components/c3/c3.min.css">
+    <script src="./bower_components/pubnub/web/pubnub.min.js"></script>
+    <script src="./bower_components/d3/d3.min.js"></script>
+    <script src="./bower_components/c3/c3.min.js"></script>
+    <script src="./bower_components/subsub/subsub.js"></script>
+    <script src="./bower_components/visibilityjs/lib/visibility.core.js"></script>
+    <script src="./pubnub-c3.js"></script>
 
   </head>
   <body>
     <div id="chart"></div>
     <script>
 
-      var pubnub = PUBNUB.init({
+    var pubnub = PUBNUB.init({
         publish_key: 'pub-c-6dbe7bfd-6408-430a-add4-85cdfe856b47',
         subscribe_key: 'sub-c-2a73818c-d2d3-11e3-9244-02ee2ddab7fe'
-      });
-
-      var channel = "c3-spline" + Math.random();
+    });
 
       eon.chart({
-        pubnub: pubnub,
-        channel: channel,
-        flow: true,
         history: true,
-        limit: 10,
+        channel: 'process-memory-demo',
+        flow: true,
+        limit: 500,
         debug: true,
+        x_type: 'auto',
+        pubnub: pubnub,
         generate: {
           bindto: '#chart',
-          data: {
-            labels: true,
-            type: 'spline'
-          },
           transition: {
-            duration: 50
+            duration: 1
           },
-          bar: {
-            width: {
-              ratio: 0.5
-            }
+          data: {
+            type: 'scatter',
+            labels: true
           }
         }
       });
-    </script>
-    <script>
-      setInterval(function(){
-
-        pubnub.publish({
-          channel: channel,
-          message: {
-            eon: {
-              'Austin': Math.floor(Math.random() * 99),
-              'New York': Math.floor(Math.random() * 99),
-              'San Francisco': Math.floor(Math.random() * 99),
-              'Portland': Math.floor(Math.random() * 99)
-            }
-          }
-        });
-
-      }, 500);
     </script>
   </body>
 </html>

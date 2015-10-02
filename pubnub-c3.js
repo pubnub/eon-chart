@@ -126,7 +126,7 @@ eon.c = {
     };
 
     var all_messages = [];
-    var getAllMessages = function() {
+    var getAllMessages = function(done) {
 
       clog('Status:', 'Restoring from history');
 
@@ -140,7 +140,7 @@ eon.c = {
         self.pubnub.history({
           count: options.limit,
           channel: options.channel,
-          start: timetoken,
+          end: timetoken,
           include_token: true,
           callback: function(payload) {
 
@@ -164,10 +164,11 @@ eon.c = {
 
             }
 
-            if (msgs.length && object.json.length < options.limit - 1) {
+            if (msgs.length > 1 && object.json.length < options.limit - 1) {
               page(end);
             } else {
               self.chart.load(object);
+              done();
             }
 
           }
@@ -294,6 +295,9 @@ eon.c = {
           }
 
           options.flow.json = data;
+
+          console.log('flow', options.flow)
+
           self.chart.flow(options.flow);
 
         } else {
@@ -315,9 +319,7 @@ eon.c = {
       kill();
     };
 
-    var init = function() {
-
-      clog('PubNub:', 'Subscribed to ' + options.channel);
+    var subscribe = function() {
 
       subsub.subscribe(self.pubnub, options.channel, options.connect, function(message, env, channel) {
 
@@ -346,8 +348,18 @@ eon.c = {
 
       });
 
+    };
+
+    var init = function() {
+
+      clog('PubNub:', 'Subscribed to ' + options.channel);
+
       if (options.history) {
-        getAllMessages();
+        getAllMessages(function(){
+          subscribe();
+        });
+      } else {
+        subscribe();
       }
 
     };
