@@ -51,24 +51,11 @@ Plug your normal C3 config into the ```generate``` param. Supply a PubNub channe
 <div id="chart"></div>
 <script>
   eon.chart({
-    history: false,
     channel: "c3-spline",
-    flow: {
-      duration: 100
-    },
     generate: {
       bindto: '#chart',
       data: {
-        x: 'x',
         labels: true
-      },
-      axis : {
-        x : {
-          type : 'timeseries',
-          tick: {
-            format: '%H:%M:%S'
-          }
-        }
       }
     }
   });
@@ -76,8 +63,6 @@ Plug your normal C3 config into the ```generate``` param. Supply a PubNub channe
 ```
 
 That's it! Now you can publish messages to the same ```channel``` and they'll render in the graph.
-
-Make sure your messages are in the format that C3 expects! For example:
 
 ```js
 var pubnub = PUBNUB.init({
@@ -100,8 +85,7 @@ setInterval(function(){
 
 }, 1000);
 ```
-
-Notice how the ```channel```  matches.
+All chart data must exist within an object called ```eon```. Also notice how the ```channel```  matches in both examples.
 
 ## More on Publishing Messages
 
