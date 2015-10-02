@@ -163,5 +163,4 @@ You can disable eon-chart modifications by setting ```x_type``` to ```false```. 
 
 You can publish from multiple sources into one chart. For example, you can graph the individual memory usage from 3 servers by supplying the same channel to your PubNub publish requests.
 
-Check out our distributed chart example:
-https://github.com/pubnub/EON-distributed-chart
+Check out our [distributed chart example](https://github.com/pubnub/EON-distributed-chart).
