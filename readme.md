@@ -45,7 +45,7 @@ Parameter | Value | Default
 
 ## Simple Example
 
-Plug your normal C3 config into the ```generate``` param. Supply a PubNub channel in `channel`` param. ```eon.chart``` returns the normal c3 chart object.
+Plug your normal C3 config into the ```generate``` param. Supply a PubNub channel in ```channel``` param. ```eon.chart``` returns the normal c3 chart object.
 
 ```html
 <div id="chart"></div>
