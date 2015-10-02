@@ -9,13 +9,13 @@ eon.c = {
 
     var clog = function(s, o, e) {
 
-      if(options.debug) {
-        if(e) {
-          console.log('EON-CHART:', s, o, e); 
+      if (options.debug) {
+        if (e) {
+          console.log('EON-CHART:', s, o, e);
         } else {
           console.log('EON-CHART:', s, o);
         }
-      }  
+      }
     };
 
     clog('Status:', 'Initialized');
@@ -29,22 +29,24 @@ eon.c = {
 
     self.pubnub = options.pubnub || PUBNUB || false;
 
-    if(!self.pubnub) {
+    if (!self.pubnub) {
       error = "PubNub not found. See http://www.pubnub.com/docs/javascript/javascript-sdk.html#_where_do_i_get_the_code";
     }
 
-    options.transform = options.transform || function(m){return m};
+    options.transform = options.transform || function(m) {
+      return m
+    };
     options.channel = options.channel || false;
     options.generate = options.generate || {};
-    if(!options.generate.data) {
+    if (!options.generate.data) {
       options.generate.data = {
         json: null
       };
     }
 
     options.flow = options.flow || false;
-    if(options.flow) { 
-      if(typeof(options.flow) == "boolean") {
+    if (options.flow) {
+      if (typeof(options.flow) == "boolean") {
         options.flow = {};
       }
       options.flow.length = options.flow.length || 0;
@@ -52,39 +54,39 @@ eon.c = {
     options.limit = options.limit || 10;
     options.history = options.history || false;
 
-    options.message = options.message || function(){};
-    options.connect = options.connect || function(){};
+    options.message = options.message || function() {};
+    options.connect = options.connect || function() {};
 
     // x axis definition
     options.x_type = options.x_type || "auto";
     options.x_id = options.x_id || "";
 
-    if(options.x_type == "custom") {
+    if (options.x_type == "custom") {
 
-      options.generate.data.x = options.x_id; 
-       
-    } else if(options.x_type == "auto") {
+      options.generate.data.x = options.x_id;
+
+    } else if (options.x_type == "auto") {
 
       options.x_id = dateID;
-      options.generate.data.x = options.x_id; 
+      options.generate.data.x = options.x_id;
 
     } else {
       options.x_type = false;
     }
 
-    if(options.x_type) {
+    if (options.x_type) {
 
-      if(!options.generate.axis) {
+      if (!options.generate.axis) {
         options.generate.axis = {}
       }
 
       // assume js date
-      if(!options.generate.axis.x) {
+      if (!options.generate.axis.x) {
 
         options.generate.axis.x = {
           type: 'timeseries',
           tick: {
-              format: '%Y-%m-%d %H:%M:%S'
+            format: '%Y-%m-%d %H:%M:%S'
           }
         }
 
@@ -94,7 +96,7 @@ eon.c = {
 
     clog('Options:', options);
 
-    if(!options.channel) {
+    if (!options.channel) {
       error = "No channel supplied.";
     };
 
@@ -108,14 +110,14 @@ eon.c = {
 
     var appendDate = function(data, pubnub_date) {
 
-      if(options.x_type == "auto") {
+      if (options.x_type == "auto") {
         clog('PubNub:', 'Appending PubNub datetime to columns.');
         var date = Math.floor(pubnub_date / 10000);
         data[dateID] = new Date(date).getTime();
       }
 
       return data;
-       
+
     };
 
     var all_messages = [];
@@ -127,10 +129,10 @@ eon.c = {
       var i = 0;
 
       var getAllMessages = function(timetoken) {
-      
+
         clog('History:', 'Retrieving messages from ' + timetoken);
 
-         self.pubnub.history({
+        self.pubnub.history({
           count: options.limit,
           channel: options.channel,
           start: timetoken,
@@ -138,34 +140,34 @@ eon.c = {
           callback: function(payload) {
 
             console.log(payload)
-              var msgs = payload[0];
-              clog('History:', msgs.length + ' messages found');
+            var msgs = payload[0];
+            clog('History:', msgs.length + ' messages found');
 
-              clog('History:', 'Complete... Rendering');
+            clog('History:', 'Complete... Rendering');
 
-              i = 0;
-              while(i < msgs.length) {
+            i = 0;
+            while (i < msgs.length) {
 
-                var a = msgs[i];
+              var a = msgs[i];
 
-                a = appendDate(a.message.json, a.timetoken)
-                storeData(a);
+              a = appendDate(a.message.json, a.timetoken)
+              storeData(a);
 
-                i++;
+              i++;
 
-              }
+            }
 
-              if(object.json.length < options.limit - 1) {
-                getAllMessages(end);
-              } else {
-                self.chart.load(object); 
-              }
+            if (object.json.length < options.limit - 1) {
+              getAllMessages(end);
+            } else {
+              self.chart.load(object);
+            }
 
-           }
-         });
-       };
+          }
+        });
+      };
 
-       getAllMessages();
+      getAllMessages();
 
     };
 
@@ -180,9 +182,9 @@ eon.c = {
 
       var i = 0;
 
-      while(i < buffer.length) {
+      while (i < buffer.length) {
 
-        if(buffer[i].values.length > options.limit - 1) {
+        if (buffer[i].values.length > options.limit - 1) {
           return true;
         }
         i++;
@@ -202,7 +204,7 @@ eon.c = {
 
       self.is_dead = true;
 
-      if(['donut', 'pie', 'gauge'].indexOf(options.generate.data.type) == -1) {
+      if (['donut', 'pie', 'gauge'].indexOf(options.generate.data.type) == -1) {
         self.chart.destroy();
       }
 
@@ -213,7 +215,7 @@ eon.c = {
     var boot = function() {
 
       clog('Status:', 'Chart Animation Enabled');
-      
+
       self.is_dead = false;
 
       options.generate.data.columns = [];
@@ -221,7 +223,7 @@ eon.c = {
 
     };
 
-    Visibility.change(function (e, state) {
+    Visibility.change(function(e, state) {
 
       if (Visibility.hidden()) {
         kill();
@@ -236,13 +238,13 @@ eon.c = {
 
       // see if value is in array of keys
       var exists = false;
-      for(var l in array) {
-        if(array[l] == append) {
+      for (var l in array) {
+        if (array[l] == append) {
           exists = true;
         }
       }
 
-      if(!exists) {
+      if (!exists) {
         array.push(append);
       }
 
@@ -254,12 +256,12 @@ eon.c = {
 
       object.json.push(data);
 
-      if(object.json.length > options.limit) {
+      if (object.json.length > options.limit) {
         object.json.shift();
       }
 
-      for(var i in object.json) {
-        for(var key in object.json[i]) {
+      for (var i in object.json) {
+        for (var key in object.json[i]) {
           object.keys.value = uniqueAppend(object.keys.value, key);
         }
       }
@@ -272,19 +274,19 @@ eon.c = {
 
       storeData(data);
 
-      if(self.is_dead) {
+      if (self.is_dead) {
 
         clog('Render:', 'Tab out of focus.');
 
       } else {
 
-        if(options.flow) {
-          
+        if (options.flow) {
+
           clog('Render:', 'Flow enabled, appending to chart.');
 
           var trimLength = needsTrim();
 
-          if(trimLength)  {
+          if (trimLength) {
             options.flow.length = 1;
             clog('Render:', 'Data exceeds options.limit, trimming buffer.');
           }
@@ -301,7 +303,7 @@ eon.c = {
           });
 
         }
-         
+
       }
 
     };
@@ -309,7 +311,7 @@ eon.c = {
     // if x is the same, overwrite
 
     var init = function() {
-      
+
       clog('PubNub:', 'Subscribed to ' + options.channel);
 
       subsub.subscribe(self.pubnub, options.channel, options.connect, function(message, env, channel) {
@@ -323,7 +325,7 @@ eon.c = {
         message.json = appendDate(message.json, env[1]);
 
         clog('PubNub:', 'Message Result', message);
-      
+
         render(message.json);
 
         clog('PubNub:', 'Calling options.message');
@@ -331,13 +333,13 @@ eon.c = {
 
       });
 
-      if(options.history) {
+      if (options.history) {
         page();
       }
 
     };
 
-    if(error) {
+    if (error) {
       console.error("EON: " + error);
     } else {
       init();
@@ -351,22 +353,22 @@ eon.c = {
   flatten: function(ob) {
 
     var toReturn = {};
-    
+
     for (var i in ob) {
       if (!ob.hasOwnProperty(i)) continue;
-      
+
       if ((typeof ob[i]) == 'object') {
         var flatObject = eon.c.flatten(ob[i]);
         for (var x in flatObject) {
           if (!flatObject.hasOwnProperty(x)) continue;
-          
+
           toReturn[i + '.' + x] = flatObject[x];
         }
       } else {
         toReturn[i] = ob[i];
       }
     }
-    
+
     return toReturn;
 
   }
