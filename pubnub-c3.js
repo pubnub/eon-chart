@@ -99,7 +99,7 @@ eon.c = {
       error = "No channel supplied.";
     };
 
-    if (['spline', 'area', 'area-spline', 'step', 'area-step', 'scatter', 'line'].indexOf(options.generate.data.type) > 0) {
+    if (['spline', 'area', 'area-spline', 'step', 'area-step', 'scatter'].indexOf(options.generate.data.type) == -1 || typeof(options.generate.data.type) == "undefined") {
       options.limit = options.limit || 10;
     } else {
       options.limit = options.limit || 1;
@@ -126,14 +126,14 @@ eon.c = {
     };
 
     var all_messages = [];
-    var page = function() {
+    var getAllMessages = function() {
 
       clog('Status:', 'Restoring from history');
 
       all_messages = [];
       var i = 0;
 
-      var getAllMessages = function(timetoken) {
+      var page = function(timetoken) {
 
         clog('History:', 'Retrieving messages from ' + timetoken);
 
@@ -152,8 +152,6 @@ eon.c = {
 
             clog('History:', 'Complete... Rendering');
 
-            console.log(payload)
-
             i = 0;
             while (i < msgs.length) {
 
@@ -167,7 +165,7 @@ eon.c = {
             }
 
             if (msgs.length && object.json.length < options.limit - 1) {
-              getAllMessages(end);
+              page(end);
             } else {
               self.chart.load(object);
             }
@@ -176,7 +174,7 @@ eon.c = {
         });
       };
 
-      getAllMessages();
+      page();
 
     };
 
@@ -233,8 +231,6 @@ eon.c = {
         kill();
       } else {
         boot();
-        console.log('BOOT')
-        console.log(object)
         self.chart.load(object)
       }
 
@@ -261,8 +257,6 @@ eon.c = {
     var storeData = function(data) {
 
       object.json.push(data);
-
-      console.log(object.json.length, options.limit)
 
       if (object.json.length > options.limit) {
         object.json.shift();
@@ -316,6 +310,11 @@ eon.c = {
 
     };
 
+    var elog = function(text) {
+      console.error("EON:" + text);
+      kill();
+    };
+
     var init = function() {
 
       clog('PubNub:', 'Subscribed to ' + options.channel);
@@ -326,27 +325,35 @@ eon.c = {
         clog('PubNub:', 'Received Message', message);
 
         clog('PubNub:', 'Transforming Message using options.transform');
-        var message = options.transform(message);
 
-        message.json = appendDate(message.json, env[1]);
+        // v0.4 migration notice to be deprecated
+        if(message.columns) {
+          elog('Error! The data schema has been updated. Please publish data using our new JSON schema. See: https://github.com/pubnub/eon-chart');
+        } else {
 
-        clog('PubNub:', 'Message Result', message);
+          var message = options.transform(message);
 
-        render(message.json);
+          message.json = appendDate(message.json, env[1]);
 
-        clog('PubNub:', 'Calling options.message');
-        options.message(message, env, channel);
+          clog('PubNub:', 'Message Result', message);
+
+          render(message.json);
+
+          clog('PubNub:', 'Calling options.message');
+          options.message(message, env, channel);
+           
+        }
 
       });
 
       if (options.history) {
-        page();
+        getAllMessages();
       }
 
     };
 
     if (error) {
-      console.error("EON: " + error);
+      elog(error);
     } else {
       init();
       boot();

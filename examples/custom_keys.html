@@ -31,16 +31,7 @@
         generate: {
           bindto: '#chart',
           data: {
-            x: 'x',
             labels: false
-          },
-          axis : {
-            x : {
-              type : 'timeseries',
-              tick: {
-                format: '%H:%M:%S'
-              }
-            }
           }
         }
       });
@@ -51,13 +42,12 @@
         pubnub.publish({
           channel: channel,
           message: {
-            columns: [
-              ['x', new Date().getTime()],
-              ['Austin', Math.floor(Math.random() * 99)],
-              ['New York', Math.floor(Math.random() * 99)],
-              ['San Francisco', Math.floor(Math.random() * 99)],
-              ['Portland', Math.floor(Math.random() * 99)]
-            ]
+            json: {
+              'Austin': Math.floor(Math.random() * 99),
+              'New York': Math.floor(Math.random() * 99),
+              'San Francisco': Math.floor(Math.random() * 99),
+              'Portland': Math.floor(Math.random() * 99)
+            }
           }
         });
 
