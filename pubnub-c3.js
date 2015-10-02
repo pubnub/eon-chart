@@ -137,11 +137,9 @@ eon.c = {
           include_token: true,
           callback: function(payload) {
 
-             var msgs = payload[0];
-             var start = payload[1];
-             var end = payload[2];
-
-             clog('History:', msgs.length + ' messages found');
+            console.log(payload)
+              var msgs = payload[0];
+              clog('History:', msgs.length + ' messages found');
 
               clog('History:', 'Complete... Rendering');
 
@@ -229,7 +227,6 @@ eon.c = {
         kill();
       } else {
         boot();
-        console.log(object)
         self.chart.load(object)
       }
 
@@ -307,7 +304,9 @@ eon.c = {
          
       }
 
-    }
+    };
+
+    // if x is the same, overwrite
 
     var init = function() {
       

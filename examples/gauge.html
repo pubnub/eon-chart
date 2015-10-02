@@ -42,9 +42,9 @@
         PUBNUB.publish({
           channel: channel,
           message: {
-            columns: [
-              ['Austin', Math.floor(Math.random() * 99)]
-            ]
+            json: {
+              'Austin': Math.floor(Math.random() * 99)
+            }
           }
         });
 

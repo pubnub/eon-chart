@@ -6,6 +6,7 @@
     <script src="../bower_components/d3/d3.min.js"></script>
     <script src="../bower_components/c3/c3.min.js"></script>
     <script src="../bower_components/subsub/subsub.js"></script>
+    <script src="../bower_components/visibilityjs/lib/visibility.core.js"></script>
 
     <script src="../pubnub-c3.js"></script>
 
@@ -30,7 +31,14 @@
     	history: false,
 	    channel: 'pubnub-sensor-network',
     	flow: true,
+        limit: 30,
+        x_id: 'timestamp',
+        x_type: 'custom',
+        debug: true,
     	generate: {
+            transition: {
+                duration: 1
+            },
     	    bindto: '#chart',
     	    data: {
 				x: 'x',
@@ -40,18 +48,21 @@
     	      	x: {
     	            type: 'timeseries',
 	    	        tick: {
-	    	            format: '%Y-%m-%d'
+	    	            format: '%H:%m:%S'
 	    	        }
     	      	}
     	    }
     	},
 	    transform: function(m) {
-	    	return {columns: [
-	    		['x', new Date().getTime()],
-	    		['Humidy', m.humidity],
-	    		['Temperature', m.ambient_temperature],
-	    		['Light', m.photosensor]
-	    	]};
+
+	    	return {
+                json: {
+                    'timestamp': new Date().getTime(),
+    	    		'Humidy': m.humidity,
+    	    		'Temperature': m.ambient_temperature,
+    	    		'Light': m.photosensor
+	    	    }
+            }
 	    }
 	});
     </script>
