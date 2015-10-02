@@ -75,7 +75,7 @@ Plug your normal C3 config into the ```generate``` param. Supply a PubNub channe
 </script>
 ```
 
-That's it! Now you can publish messages to the same ```channel`` and they'll render in the graph.
+That's it! Now you can publish messages to the same ```channel``` and they'll render in the graph.
 
 Make sure your messages are in the format that C3 expects! For example:
 
