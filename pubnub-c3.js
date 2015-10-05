@@ -257,8 +257,6 @@ eon.c = {
     var flowLength = 0;
     var storeData = function(data) {
 
-      console.log('!!!!! STOREDATA')
-
       object.json.push(data);
       
       if(object.json.length > options.limit) {
@@ -298,9 +296,6 @@ eon.c = {
       } else {
 
         if(fobject.json.length) {
-
-          console.log('fobject length', fobject.json.length)
-          console.log('flowLength', flowLength)
           
           fobject.length = flowLength;
           
