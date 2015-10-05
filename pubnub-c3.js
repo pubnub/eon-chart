@@ -113,14 +113,6 @@ eon.c = {
       options.limit = options.limit || 10;
     }
 
-    var object = {
-      json: [],
-      keys: {
-        value: [],
-        x: dateID
-      }
-    };
-
     var appendDate = function(data, pubnub_date) {
 
       if (options.x_type == "auto") {
@@ -175,7 +167,7 @@ eon.c = {
             if (msgs.length > 1 && object.json.length < options.limit - 1) {
               page(end);
             } else {
-              self.chart.load(object);
+              loadData(object);
               done();
             }
 
@@ -204,7 +196,25 @@ eon.c = {
 
     };
 
-    var boot = function() {
+    var object = {
+      json: [],
+      keys: {
+        value: [],
+        x: dateID
+      }
+    };
+
+    var fobject = {};
+
+    var boot = function() {  
+
+      fobject = {
+        json: [],
+        keys: {
+          value: [],
+          x: dateID
+        }
+      };
 
       clog('Status:', 'Chart Animation Enabled');
 
@@ -221,7 +231,7 @@ eon.c = {
         kill();
       } else {
         boot();
-        self.chart.load(object)
+        loadData(object)
       }
 
     });
@@ -244,12 +254,16 @@ eon.c = {
 
     };
 
+    var flowLength = 0;
     var storeData = function(data) {
 
-      object.json.push(data);
+      console.log('!!!!! STOREDATA')
 
-      if (object.json.length > options.limit) {
+      object.json.push(data);
+      
+      if(object.json.length > options.limit) {
         object.json.shift();
+        flowLength++;
       }
 
       for (var i in object.json) {
@@ -258,6 +272,21 @@ eon.c = {
         }
       }
 
+      if (options.flow) {
+        fobject.json.push(data);
+        
+        for (var i in fobject.json) {
+          for (var key in fobject.json[i]) {
+            fobject.keys.value = uniqueAppend(fobject.keys.value, key);
+          }
+        }
+      };
+
+    };
+
+    var loadData = function(data) {
+      flowLength = 0;
+      self.chart.load(data);
     }
 
     setInterval(function(){
@@ -267,7 +296,29 @@ eon.c = {
       if (self.is_dead) {
         clog('Render:', 'Tab out of focus.');
       } else {
-        self.chart.load(object);
+
+        if(fobject.json.length) {
+
+          console.log('fobject length', fobject.json.length)
+          console.log('flowLength', flowLength)
+          
+          fobject.length = flowLength;
+          
+          self.chart.flow(fobject);
+
+          fobject = {
+            json: [],
+            keys: {
+              value: [],
+              x: dateID
+            }
+          };
+
+          flowLength = 0;
+
+        } else {
+          loadData(object);
+        }
         clog('Render:', 'Complete');
       }
 
@@ -297,7 +348,6 @@ eon.c = {
           message.eon = appendDate(message.eon, env[1]);
 
           clog('PubNub:', 'Message Result', message);
-
 
           storeData(message.eon);
 

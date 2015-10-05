@@ -1,13 +1,18 @@
 <html>
   <head>
 
-    <script type="text/javascript" src="http://pubnub.github.io/eon/v/eon/0.0.8/eon.js"></script>
-    <link type="text/css" rel="stylesheet" href="http://pubnub.github.io/eon/v/eon/0.0.8/eon.css" />
+    <script type="text/javascript" src="http://pubnub.github.io/eon/v/eon/0.0.9/eon.js"></script>
+    <link type="text/css" rel="stylesheet" href="http://pubnub.github.io/eon/v/eon/0.0.9/eon.css" />
 
   </head>
   <body>
     <div id="chart"></div>
     <script>
+
+      var pubnub = PUBNUB.init({
+        publish_key: 'pub-c-6dbe7bfd-6408-430a-add4-85cdfe856b47',
+        subscribe_key: 'sub-c-2a73818c-d2d3-11e3-9244-02ee2ddab7fe'
+      });
 
       eon.chart({
         history: true,
@@ -15,7 +20,9 @@
         flow: true,
         limit: 100,
         debug: false,
-        x_type: 'auto',
+        pubnub: pubnub,
+        rate: 500,
+        debug: true,
         generate: {
           bindto: '#chart',
           transition: {
