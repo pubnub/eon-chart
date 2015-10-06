@@ -129,12 +129,27 @@ eon.c = {
 
     };
 
-    var all_messages = [];
+
+    var nextData = [];
+    var dataStore = [];
+
+    // persistent data store
+    var object = {
+      json: [],
+      keys: {
+        value: [],
+        x: dateID
+      }
+    };
+
+    // data store for flow animations
+    var fobject = {};
+    var stale = false;
+
     var getAllMessages = function(done) {
 
       clog('Status:', 'Restoring from history');
 
-      all_messages = [];
       var i = 0;
 
       var page = function(timetoken) {
@@ -183,9 +198,6 @@ eon.c = {
 
     };
 
-    var nextData = [];
-    var dataStore = [];
-
     var kill = function() {
 
       clog('Status:', 'Chart Animation Disabled');
@@ -199,16 +211,6 @@ eon.c = {
       delete self.chart;
 
     };
-
-    var object = {
-      json: [],
-      keys: {
-        value: [],
-        x: dateID
-      }
-    };
-
-    var fobject = {};
 
     var boot = function() {  
 
@@ -295,7 +297,9 @@ eon.c = {
 
       clog('Status:', 'Rendering');
 
-      if (self.is_dead) {
+      if (!stale) {
+        clog('Render:', 'No new data');
+      } else if(self.is_dead) {
         clog('Render:', 'Tab out of focus.');
       } else {
 
@@ -318,7 +322,11 @@ eon.c = {
         } else {
           loadData(object);
         }
+
+        stale = false;
+
         clog('Render:', 'Complete');
+
       }
 
     }, options.rate);
@@ -348,6 +356,7 @@ eon.c = {
 
           clog('PubNub:', 'Message Result', message);
 
+          stale = true;
           storeData(message.eon);
 
           clog('PubNub:', 'Calling options.message');
