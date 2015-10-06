@@ -83,20 +83,24 @@ eon.c = {
 
     if (options.x_type) {
 
+      clog('Setup:', 'X_Type Supplied');
+
       if (!options.generate.axis) {
         options.generate.axis = {}
       }
 
       // assume js date
       if (!options.generate.axis.x) {
-
-        options.generate.axis.x = {
-          type: 'timeseries',
-          tick: {
-            format: '%Y-%m-%d %H:%M:%S'
-          }
-        }
-
+        options.generate.axis.x = {};
+      }
+      if (!options.generate.axis.x.type) {
+        options.generate.axis.x.type = 'timeseries';
+      }
+      if (!options.generate.axis.x.tick) {
+        options.generate.axis.x.tick = {};
+      }
+      if (!options.generate.axis.x.tick.format) {
+        options.generate.axis.x.tick.format = '%Y-%m-%d %H:%M:%S';
       }
 
     }
