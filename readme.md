@@ -75,10 +75,10 @@ setInterval(function(){
     channel: 'c3-spline',
     message: {
       eon: {
-        {'Austin': Math.floor(Math.random() * 99)},
-        {'New York': Math.floor(Math.random() * 99)},
-        {'San Francisco': Math.floor(Math.random() * 99)},
-        {'Portland': Math.floor(Math.random() * 99)}
+        'Austin': Math.floor(Math.random() * 99),
+        'New York': Math.floor(Math.random() * 99),
+        'San Francisco': Math.floor(Math.random() * 99),
+        'Portland': Math.floor(Math.random() * 99)
       }
     }
   });
