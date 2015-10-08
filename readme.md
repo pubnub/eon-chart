@@ -132,8 +132,8 @@ pubnub.publish({
   channel: 'c3-spline',
   message: {
     eon: {
-      {'x': new Date().getTime()},
-      {'Austin': Math.floor(Math.random() * 99)}
+      'x': new Date().getTime(),
+      'Austin': Math.floor(Math.random() * 99)
     }
   }
 });
