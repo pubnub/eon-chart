@@ -20,14 +20,5 @@
     "bower_components",
     "test",
     "tests"
-  ],
-  "_release": "0.0.1",
-  "_resolution": {
-    "type": "version",
-    "tag": "0.0.1",
-    "commit": "934f0bd328dd18fa2067d095c62505572c0ddae3"
-  },
-  "_source": "git://github.com/pubnub/subsub.git",
-  "_target": "0.0.1",
-  "_originalSource": "subsub"
+  ]
 }

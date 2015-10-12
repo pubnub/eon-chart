@@ -27,6 +27,5 @@
   },
   "_source": "git://github.com/ai/visibility.js.git",
   "_target": "~1.2.1",
-  "_originalSource": "visibilityjs",
-  "_direct": true
+  "_originalSource": "visibilityjs"
 }
