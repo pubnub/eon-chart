@@ -247,7 +247,7 @@ eon.c = {
 
       // see if value is in array of keys
       var exists = false;
-      for (var l in array) {
+      for (var l = 0; l < array.length; l++) {
         if (array[l] == append) {
           exists = true;
         }
@@ -271,7 +271,7 @@ eon.c = {
         flowLength++;
       }
 
-      for (var i in object.json) {
+      for (var i = 0; i < object.json.length; i++) {
         for (var key in object.json[i]) {
           object.keys.value = uniqueAppend(object.keys.value, key);
         }
@@ -280,7 +280,7 @@ eon.c = {
       if (options.flow) {
         fobject.json.push(data);
         
-        for (var i in fobject.json) {
+        for (var i = 0; i < fobject.json.length; i++) {
           for (var key in fobject.json[i]) {
             fobject.keys.value = uniqueAppend(fobject.keys.value, key);
           }
