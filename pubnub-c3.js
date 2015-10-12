@@ -111,7 +111,8 @@ eon.c = {
       error = "No channel supplied.";
     };
 
-    if (['spline', 'area', 'area-spline', 'step', 'area-step', 'scatter'].indexOf(options.generate.data.type) == -1 || typeof(options.generate.data.type) == "undefined") {
+    if (['spline', 'area', 'area-spline', 'step', 'area-step', 'scatter'].indexOf(options.generate.data.type) == -1 
+      && typeof(options.generate.data.type) != "undefined") {
       options.limit = options.limit || 1;
     } else {
       options.limit = options.limit || 10;
