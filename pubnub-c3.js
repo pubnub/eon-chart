@@ -262,7 +262,22 @@ eon.c = {
     };
 
     var flowLength = 0;
+
+    var mapAppend = function(object) {
+
+      for (var i = 0; i < object.json.length; i++) {
+        for (var key in object.json[i]) {
+          object.keys.value = uniqueAppend(object.keys.value, key);
+        }
+      }
+
+      return object;
+
+    }
+
     var storeData = function(data) {
+
+      console.log(data)
 
       object.json.push(data);
       
@@ -271,20 +286,14 @@ eon.c = {
         flowLength++;
       }
 
-      for (var i = 0; i < object.json.length; i++) {
-        for (var key in object.json[i]) {
-          object.keys.value = uniqueAppend(object.keys.value, key);
-        }
-      }
+      mapAppend(object);
 
       if (options.flow) {
+
         fobject.json.push(data);
         
-        for (var i = 0; i < fobject.json.length; i++) {
-          for (var key in fobject.json[i]) {
-            fobject.keys.value = uniqueAppend(fobject.keys.value, key);
-          }
-        }
+        mapAppend(fobject);
+
       };
 
     };
