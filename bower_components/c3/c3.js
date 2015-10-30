@@ -2905,6 +2905,7 @@
             line = $$.d3.svg.line(),
             getPoints = $$.generateGetLinePoints(lineIndices, isSub),
             yScaleGetter = isSub ? $$.getSubYScale : $$.getYScale,
+
             xValue = function (d) { return (isSub ? $$.subxx : $$.xx).call($$, d); },
             yValue = function (d, i) {
                 return config.data_groups.length > 0 ? getPoints(d, i)[0][1] : yScaleGetter.call($$, d.id)(d.value);

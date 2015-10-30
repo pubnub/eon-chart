@@ -44,6 +44,12 @@ eon.c = {
       };
     }
 
+    options.generate.line = options.generate.line || {};
+    
+    if(!options.generate.line.connectNull) {
+      options.generate.line.connectNull = true;
+    }
+
     options.flow = options.flow || false;
     if (options.flow) {
       if (typeof(options.flow) == "boolean") {
@@ -61,12 +67,6 @@ eon.c = {
     options.x_id = options.x_id || "x";
 
     options.rate = options.rate || 1000;
-
-    /*
-    if(options.rate < options.generate.transition.duration) {
-      console.error('EON: You\'re transition animations are too fast, make them slower (options.generate.transition.duration) or increase options.rate)');
-    };
-    */
 
     if (options.x_type == "custom") {
 
@@ -265,6 +265,7 @@ eon.c = {
 
     var mapAppend = function(object) {
 
+      // this just keeps a list of used keys in the object
       for (var i = 0; i < object.json.length; i++) {
         for (var key in object.json[i]) {
           object.keys.value = uniqueAppend(object.keys.value, key);
@@ -276,8 +277,6 @@ eon.c = {
     }
 
     var storeData = function(data) {
-
-      console.log(data)
 
       object.json.push(data);
       
@@ -291,7 +290,6 @@ eon.c = {
       if (options.flow) {
 
         fobject.json.push(data);
-        
         mapAppend(fobject);
 
       };
