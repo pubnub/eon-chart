@@ -14,8 +14,8 @@ Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.o
 ## Quickstart
 
 ```html
-<script type="text/javascript" src="//pubnub.github.io/eon/v/eon/0.0.9/eon.js"></script>
-<link type="text/css" rel="stylesheet" href="//pubnub.github.io/eon/v/eon/0.0.9/eon.css"/>
+<script type="text/javascript" src="//pubnub.github.io/eon/v/eon/0.0.10/eon.js"></script>
+<link type="text/css" rel="stylesheet" href="//pubnub.github.io/eon/v/eon/0.0.10/eon.css"/>
 <div id="chart"></div>
 <script>
   eon.chart({
