@@ -175,7 +175,7 @@ eon.c = {
             i = 0;
             while (i < msgs.length) {
 
-              var a = msgs[i];
+              var a = options.transform(msgs[i]);
 
               a = appendDate(a.message.eon, a.timetoken)
               storeData(a);
