@@ -120,6 +120,8 @@ eon.c = {
 
     var appendDate = function(data, pubnub_date) {
 
+      console.log(data)
+
       if (options.x_type == "auto") {
         clog('PubNub:', 'Appending PubNub datetime to columns.');
         var date = Math.floor(pubnub_date / 10000);
@@ -176,9 +178,10 @@ eon.c = {
             while (i < msgs.length) {
 
               var a = msgs[i];
+              a.message = options.transform(a.message);
 
-              a = appendDate(a.message.eon, a.timetoken)
-              storeData(a);
+              a = appendDate(a.message.eon, a.timetoken);
+              storeData(a, true);
 
               i++;
 
@@ -276,7 +279,7 @@ eon.c = {
 
     }
 
-    var storeData = function(data) {
+    var storeData = function(data, is_history) {
 
       object.json.push(data);
       
@@ -287,7 +290,7 @@ eon.c = {
 
       mapAppend(object);
 
-      if (options.flow) {
+      if (options.flow && !is_history) {
 
         fobject.json.push(data);
         mapAppend(fobject);
@@ -298,6 +301,7 @@ eon.c = {
 
     var loadData = function(data) {
       flowLength = 0;
+      clog('Load Data')
       self.chart.load(data);
     }
 
@@ -314,7 +318,7 @@ eon.c = {
         if(fobject.json.length) {
           
           fobject.length = flowLength;
-          
+
           self.chart.flow(fobject);
 
           fobject = {
@@ -365,7 +369,7 @@ eon.c = {
           clog('PubNub:', 'Message Result', message);
 
           stale = true;
-          storeData(message.eon);
+          storeData(message.eon, false);
 
           clog('PubNub:', 'Calling options.message');
           options.message(message, env, channel);
