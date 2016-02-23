@@ -356,24 +356,17 @@ eon.c = {
 
         clog('PubNub:', 'Transforming Message using options.transform');
 
-        // v0.4 migration notice to be deprecated
-        if(message.columns) {
-          elog('Error! The data schema has been updated. Please publish data using our new JSON schema. See: https://github.com/pubnub/eon-chart');
-        } else {
+        var message = options.transform(message);
 
-          var message = options.transform(message);
+        message.eon = appendDate(message.eon, env[1]);
 
-          message.eon = appendDate(message.eon, env[1]);
+        clog('PubNub:', 'Message Result', message);
 
-          clog('PubNub:', 'Message Result', message);
+        stale = true;
+        storeData(message.eon, false);
 
-          stale = true;
-          storeData(message.eon, false);
-
-          clog('PubNub:', 'Calling options.message');
-          options.message(message, env, channel);
-           
-        }
+        clog('PubNub:', 'Calling options.message');
+        options.message(message, env, channel);
 
       });
 
