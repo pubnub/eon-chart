@@ -11,27 +11,24 @@
     // using the example stream from 
     // http://www.pubnub.com/developers/data-streams/sensor-network
     var pubnub = PUBNUB.init({
-        subscribe_key: 'sub-c-2a73818c-d2d3-11e3-9244-02ee2ddab7fe',
+        subscribe_key: 'sub-c-5f1b7c8e-fbee-11e3-aa40-02ee2ddab7fe',
         ssl: true
 	});
     eon.chart({
     	pubnub: pubnub,
     	history: false,
 	    channel: 'pubnub-sensor-network',
-    	flow: true,
-        limit: 30,
+        limit: 100,
+        rate: 10,
         ssl: true,
-        x_id: 'timestamp',
-        x_type: 'custom',
         debug: true,
     	generate: {
             transition: {
-                duration: 1
+                duration: 3
             },
     	    bindto: '#chart',
     	    data: {
-				x: 'x',
-				labels: true
+				x: 'x'
     	    },
     	    axis: {
     	      	x: {
@@ -46,7 +43,6 @@
 
 	    	return {
                 eon: {
-                    'timestamp': new Date().getTime(),
     	    		'Humidy': m.humidity,
     	    		'Temperature': m.ambient_temperature,
     	    		'Light': m.photosensor
