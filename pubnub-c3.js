@@ -1,8 +1,9 @@
 "use strict";
 
-var eon = eon || {};
-eon.subsub = eon.subsub || subsub;
-eon.c = {
+window.eon = window.eon || {};
+window.eon.subsub = subsub;
+window.PUBNUB = PUBNUB;
+window.eon.c = {
   create: function(options) {
 
     options.debug = options.debug || false;
@@ -418,6 +419,6 @@ eon.c = {
 
   }
 };
-eon.chart = function(o) {
-  return new eon.c.create(o);
+window.eon.chart = function(o) {
+  return new window.eon.c.create(o);
 };
