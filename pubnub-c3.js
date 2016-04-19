@@ -120,8 +120,6 @@ eon.c = {
 
     var appendDate = function(data, pubnub_date) {
 
-      console.log(data)
-
       if (options.x_type == "auto") {
         clog('PubNub:', 'Appending PubNub datetime to columns.');
         var date = Math.floor(pubnub_date / 10000);
