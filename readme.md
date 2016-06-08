@@ -118,10 +118,10 @@ If you'd like to supply your own Javascript timestamp, set ```x_type``` to ```cu
 eon.chart({
   channel: "c3-spline", // the pubnub channel for real time data
   generate: {           // c3 chart object
-    bindto: '#chart',
-    x_type: 'custom',
-    x_id: 'x'
-  }
+    bindto: '#chart'
+  },
+  x_type: 'custom',
+  x_id: 'x'
 });
 ```
 
