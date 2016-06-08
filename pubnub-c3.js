@@ -317,8 +317,6 @@ window.eon.c = {
           
           fobject.length = flowLength;
 
-          console.log(fobject)
-
           self.chart.flow(fobject);
 
           fobject = {
