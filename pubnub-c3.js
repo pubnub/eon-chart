@@ -140,7 +140,7 @@ window.eon.c = {
       json: [],
       keys: {
         value: [],
-        x: dateID
+        x: options.x_id
       }
     };
 
@@ -220,7 +220,7 @@ window.eon.c = {
         json: [],
         keys: {
           value: [],
-          x: dateID
+          x: options.x_id
         }
       };
 
@@ -317,13 +317,15 @@ window.eon.c = {
           
           fobject.length = flowLength;
 
+          console.log(fobject)
+
           self.chart.flow(fobject);
 
           fobject = {
             json: [],
             keys: {
               value: [],
-              x: dateID
+              x: options.x_id
             }
           };
 

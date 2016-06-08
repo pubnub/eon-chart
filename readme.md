@@ -112,7 +112,7 @@ eon-chart will automatically use the PubNub message timestamp for chart x values
 
 ### Custom
 
-If you'd like to supply your own timestamp (or other x value), set ```x_type``` to ```custom```. Then, set ```x_id``` to the x value that appears within your published messages. 
+If you'd like to supply your own Javascript timestamp, set ```x_type``` to ```custom```. Then, set ```x_id``` to the x value that appears within your published messages. Any custom ```x``` must be a microtime date like ```1465417017340```.
 
 ```js
 eon.chart({
