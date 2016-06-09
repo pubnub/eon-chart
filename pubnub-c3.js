@@ -178,8 +178,13 @@ window.eon.c = {
 
               var a = msgs[i];
               a.message = options.transform(a.message);
-              a = appendDate(a.message.eon, a.timetoken);
-              storeData(a, true);
+
+              if(a.message && a.message.eon) {
+                a = appendDate(a.message.eon, a.timetoken);
+                storeData(a, true); 
+              } else {
+                clog('Rejecting history message as improper format supplied.');
+              }
 
               i++;
 
