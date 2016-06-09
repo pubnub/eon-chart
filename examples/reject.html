@@ -1,0 +1,65 @@
+<html>
+  <head>
+
+    <link rel="stylesheet" type="text/css" href="../bower_components/c3/c3.min.css">
+    <script src="../bower_components/pubnub/web/pubnub.min.js"></script>
+    <script src="../bower_components/d3/d3.min.js"></script>
+    <script src="../bower_components/c3/c3.min.js"></script>
+    <script src="../bower_components/subsub/subsub.js"></script>
+    <script src="../bower_components/visibilityjs/lib/visibility.core.js"></script>
+
+    <script src="../pubnub-c3.js"></script>
+
+  </head>
+  <body>
+    <div id="chart"></div>
+    <script>
+
+      var pubnub = PUBNUB.init({
+        publish_key: 'pub-c-923938f1-a4c1-4253-b15a-9c24087904c9',
+        subscribe_key: 'sub-c-bd9ab0d6-6e02-11e5-8d3b-0619f8945a4f'
+      });
+
+      var channel = "c3-spline" + Math.random();
+
+      eon.chart({
+        channel: channel,
+        history: true,
+        flow: true,
+        pubnub: pubnub,
+        debug: true,
+        generate: {
+          bindto: '#chart',
+          data: {
+            type: 'spline',
+            labels: false
+          }
+        },
+        transform: function(m) {
+            if(Math.random() > .2) {
+                return null;
+            } else {
+                return m;
+            }
+        }
+      });
+    </script>
+    <script>
+      setInterval(function(){
+
+        pubnub.publish({
+          channel: channel,
+          message: {
+            eon: {
+              'Austin': Math.floor(Math.random() * 99),
+              'New York': Math.floor(Math.random() * 99),
+              'San Francisco': Math.floor(Math.random() * 99),
+              'Portland': Math.floor(Math.random() * 99)
+            }
+          }
+        });
+
+      }, 1000);
+    </script>
+  </body>
+</html>

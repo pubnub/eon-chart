@@ -357,15 +357,27 @@ window.eon.c = {
 
         var message = options.transform(message);
 
-        message.eon = appendDate(message.eon, env[1]);
+        if(message && message.eon) {
 
-        clog('PubNub:', 'Message Result', message);
+          message.eon = appendDate(message.eon, env[1]);
 
-        stale = true;
-        storeData(message.eon, false);
+          clog('PubNub:', 'Message Result', message);
 
-        clog('PubNub:', 'Calling options.message');
-        options.message(message, env, channel);
+          stale = true;
+          storeData(message.eon, false);
+
+          clog('PubNub:', 'Calling options.message');
+          options.message(message, env, channel);
+           
+        } else {
+
+            if(message && !message.eon) {
+              console.error('Eon messages must be in format:',  {eon: [1,2,3]})
+            } else {
+              clog('EON:', 'Message rejected');
+            }
+
+        }
 
       });
 
