@@ -372,7 +372,7 @@ window.eon.c = {
         } else {
 
             if(message && !message.eon) {
-              console.error('Eon messages must be in format:',  {eon: [1,2,3]})
+              console.error('Eon messages must be in proper format. For example:',  {eon: [1,2,3]})
             } else {
               clog('EON:', 'Message rejected');
             }
