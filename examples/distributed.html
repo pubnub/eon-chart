@@ -14,26 +14,54 @@
         subscribe_key: 'sub-c-bd9ab0d6-6e02-11e5-8d3b-0619f8945a4f'
       });
 
+      var channel = "c3-spline-history" + Math.random();
+
       eon.chart({
         history: true,
-        channel: 'process-memory-demo',
+        channel: channel,
         flow: true,
         limit: 100,
         debug: false,
         pubnub: pubnub,
         rate: 500,
         debug: true,
+        x_type: 'custom',
+        x_id: 'yesterday',
         generate: {
           bindto: '#chart',
-          transition: {
-            duration: 1
-          },
           data: {
-            type: 'scatter',
             labels: true
           }
         }
       });
+      setInterval(function(){
+
+        pubnub.publish({
+          channel: channel,
+          message: {
+            eon: {
+              'yesterday': new Date().getTime() - 60 * 60 * 24 * 1000,
+              'Austin': Math.floor(Math.random() * 99),
+              'New York': Math.floor(Math.random() * 99)
+            }
+          }
+        });
+
+      }, 1000);
+      setInterval(function(){
+
+        pubnub.publish({
+          channel: channel,
+          message: {
+            eon: {
+              'yesterday': new Date().getTime() - 60 * 60 * 24 * 1000,
+              'San Francisco': Math.floor(Math.random() * 99),
+              'Portland': Math.floor(Math.random() * 99)
+            }
+          }
+        });
+
+      }, 2000);
     </script>
   </body>
 </html>

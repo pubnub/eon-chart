@@ -121,6 +121,8 @@ window.eon.c = {
 
     var appendDate = function(data, pubnub_date) {
 
+      console.log(data)
+
       if (options.x_type == "auto") {
         clog('PubNub:', 'Appending PubNub datetime to columns.');
         var date = Math.floor(pubnub_date / 10000);
@@ -179,9 +181,19 @@ window.eon.c = {
               var a = msgs[i];
               a.message = options.transform(a.message);
 
-              if(a.message && a.message.eon) {
-                a = appendDate(a.message.eon, a.timetoken);
-                storeData(a, true); 
+              if(a.message && (a.message.eon || a.message.eons)) {
+
+                var as = a.message.eons || [];
+
+                if(a.message.eon) {
+                  ms.push(a.message.eon);
+                }
+
+                for(var i in as) {
+                  as[i] = appendDate(as[i], a.timetoken)
+                  storeData(as[i], true); 
+                }
+
               } else {
                 clog('Rejecting history message as improper format supplied.');
               }
@@ -362,14 +374,26 @@ window.eon.c = {
 
         var message = options.transform(message);
 
-        if(message && message.eon) {
+        if(message && (message.eon || message.eons)) {
 
-          message.eon = appendDate(message.eon, env[1]);
+          var ms = message.eons || [];
 
-          clog('PubNub:', 'Message Result', message);
+          if(message.eon) {
+            ms.push(message.eon);
+          }
 
-          stale = true;
-          storeData(message.eon, false);
+          console.log(message)
+
+          for(var i in ms) {
+            
+            console.log(ms[i])
+            ms[i] = appendDate(ms[i], env[1]);
+            clog('PubNub:', 'Message Result', ms[i]);
+
+            stale = true;
+            storeData(ms[i], false);
+
+          }
 
           clog('PubNub:', 'Calling options.message');
           options.message(message, env, channel);
@@ -418,7 +442,7 @@ window.eon.c = {
     var toReturn = {};
 
     for (var i in ob) {
-      if (!ob.hasOwnProperty(i)) continue;
+      if (!ob.hhOwnProperty(i)) continue;
 
       if ((typeof ob[i]) == 'object') {
         var flatObject = eon.c.flatten(ob[i]);
