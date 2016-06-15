@@ -143,7 +143,7 @@ pubnub.publish({
 
 It is possible to publish multiple plot points per payload. Rather than using the object name ```eon``` use the name ```eons``` and supply an ```Array```. Because you use the ```eons``` property name, the library will know to loop through the array and plot each point.
 
-Note that if publishing multiple points per payload, **you must use ```x_type: "custom"``` and supply an ```x_id```***.
+Note that if publishing multiple points per payload, **you must use ```x_type: "custom"``` and supply an ```x_id```**.
 
 ```js
 eons: [
