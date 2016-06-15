@@ -143,6 +143,23 @@ pubnub.publish({
 
 It is possible to publish multiple plot points per payload. Rather than using the object name ```eon``` use the name ```eons``` and supply an ```Array```. Because you use the ```eons``` property name, the library will know to loop through the array and plot each point.
 
+Note that if publishing multiple points per payload, **you must use ```x_type: "custom"``` and supply an ```x_id```***.
+
+```js
+eons: [
+  {
+    x: new Date().getTime(),
+    value: 1
+  },
+  {
+    x: new Date().getTime(),
+    value: 2
+  }
+] 
+```
+
+Here's an example of data collected at 100ms increments, but only publishes every 1,000ms. Every payload includes 10 points with 100ms resolution. [See a full example here](https://github.com/pubnub/eon-chart/blob/master/examples/eons.html).
+
 ```js
 setInterval(function(){
 
