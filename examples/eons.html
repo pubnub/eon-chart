@@ -1,0 +1,87 @@
+<html>
+  <head>
+
+    <link rel="stylesheet" type="text/css" href="../bower_components/c3/c3.min.css">
+    <script src="../bower_components/pubnub/web/pubnub.min.js"></script>
+    <script src="../bower_components/d3/d3.min.js"></script>
+    <script src="../bower_components/c3/c3.min.js"></script>
+    <script src="../bower_components/subsub/subsub.js"></script>
+    <script src="../bower_components/visibilityjs/lib/visibility.core.js"></script>
+
+    <script src="../pubnub-c3.js"></script>
+
+  </head>
+  <body>
+    <div id="chart"></div>
+    <script>
+
+      var pubnub = PUBNUB.init({
+        publish_key: 'pub-c-923938f1-a4c1-4253-b15a-9c24087904c9',
+        subscribe_key: 'sub-c-bd9ab0d6-6e02-11e5-8d3b-0619f8945a4f'
+      });
+
+      var channel = "c3-spline" + Math.random();
+
+      eon.chart({
+        channel: channel,
+        history: true,
+        debug: false,
+        flow: true,
+        pubnub: pubnub,
+        limit: 100,
+        x_type: 'custom',
+        x_id: 'pub_time',
+        generate: {
+          bindto: '#chart',
+          data: {
+            type: 'spline',
+            labels: false
+          }
+        }
+      });
+    </script>
+    <script>
+      setInterval(function(){
+
+        var data = [];
+        var date = new Date().getTime();
+
+        for(var i = 0; i < 10; i++) {
+            data.push({
+                'pub_time': date + (100 * i),
+                'Austin': Math.floor(Math.random() * 99)
+            });
+        }
+
+        console.log(data)
+
+        pubnub.publish({
+          channel: channel,
+          message: {
+            eons: data
+          }
+        });
+
+
+        data2 = [];
+        date2 = new Date().getTime();
+        for(var j = 0; j < 10; j++) {
+            data2.push({
+                'pub_time': date2 + (100 * j),
+                'Otherwise': Math.floor(Math.random() * 99)
+            });
+        }
+
+        console.log(data2)
+
+        pubnub.publish({
+          channel: channel,
+          message: {
+            eons: data2
+          }
+        });
+
+      }, 1000);
+    </script>
+  </body>
+</html>
