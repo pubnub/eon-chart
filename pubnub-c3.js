@@ -121,8 +121,6 @@ window.eon.c = {
 
     var appendDate = function(data, pubnub_date) {
 
-      console.log(data)
-
       if (options.x_type == "auto") {
         clog('PubNub:', 'Appending PubNub datetime to columns.');
         var date = Math.floor(pubnub_date / 10000);
@@ -189,9 +187,9 @@ window.eon.c = {
                   ms.push(a.message.eon);
                 }
 
-                for(var i in as) {
-                  as[i] = appendDate(as[i], a.timetoken)
-                  storeData(as[i], true); 
+                for(var j in as) {
+                  as[j] = appendDate(as[j], a.timetoken)
+                  storeData(as[j], true); 
                 }
 
               } else {

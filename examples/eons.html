@@ -20,12 +20,12 @@
         subscribe_key: 'sub-c-bd9ab0d6-6e02-11e5-8d3b-0619f8945a4f'
       });
 
-      var channel = "c3-spline" + Math.random();
+      var channel = "c3-spline-woopy";
 
       eon.chart({
         channel: channel,
         history: true,
-        debug: false,
+        debug: true,
         flow: true,
         pubnub: pubnub,
         limit: 100,
@@ -53,8 +53,6 @@
             });
         }
 
-        console.log(data)
-
         pubnub.publish({
           channel: channel,
           message: {
@@ -68,11 +66,9 @@
         for(var j = 0; j < 10; j++) {
             data2.push({
                 'pub_time': date2 + (100 * j),
-                'Otherwise': Math.floor(Math.random() * 99)
+                'San Francisco': Math.floor(Math.random() * 99)
             });
         }
-
-        console.log(data2)
 
         pubnub.publish({
           channel: channel,

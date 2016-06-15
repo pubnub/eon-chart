@@ -139,6 +139,33 @@ pubnub.publish({
 });
 ```
 
+## Multiple Points Per Payload
+
+It is possible to publish multiple plot points per payload. Rather than using the object name ```eon``` use the name ```eons``` and supply an ```Array```. Because you use the ```eons``` property name, the library will know to loop through the array and plot each point.
+
+```js
+setInterval(function(){
+
+  var data = [];
+  var date = new Date().getTime();
+
+  for(var i = 0; i < 10; i++) {
+      data.push({
+          'pub_time': date + (100 * i),
+          'Austin': Math.floor(Math.random() * 99)
+      });
+  }
+
+  pubnub.publish({
+    channel: channel,
+    message: {
+      eons: data
+    }
+  });
+
+}, 1000);
+```
+
 ### Disable
 
 You can disable eon-chart modifications by setting ```x_type``` to ```false```. By default C3 will use an incremental x axis (1,2,3,4...).
