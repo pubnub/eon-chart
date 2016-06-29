@@ -19,7 +19,7 @@ Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.o
 <div id="chart"></div>
 <script>
   var pubnub = PUBNUB.init({
-    publish_key:   'demo' // replace with your own pub-key
+    publish_key:   'demo', // replace with your own pub-key
     subscribe_key: 'demo' // replace with your own sub-key
   });
 
@@ -57,7 +57,7 @@ Plug your normal C3 config into the ```generate``` param. Supply a PubNub channe
 <div id="chart"></div>
 <script>
   var pubnub = PUBNUB.init({
-    publish_key:   'demo' // replace with your own pub-key
+    publish_key:   'demo', // replace with your own pub-key
     subscribe_key: 'demo' // replace with your own sub-key
   });
 
@@ -78,7 +78,7 @@ That's it! Now you can publish messages to the same ```channel``` and they'll re
 
 ```js
 var pubnub = PUBNUB.init({
-  publish_key:   'demo' // replace with your own pub-key
+  publish_key:   'demo', // replace with your own pub-key
   subscribe_key: 'demo' // replace with your own sub-key
 });
 
@@ -128,7 +128,7 @@ If you'd like to supply your own Javascript timestamp, set ```x_type``` to ```cu
 
 ```js
 var pubnub = PUBNUB.init({
-  publish_key:   'demo' // replace with your own pub-key
+  publish_key:   'demo', // replace with your own pub-key
   subscribe_key: 'demo' // replace with your own sub-key
 });
 
@@ -146,13 +146,6 @@ eon.chart({
 Notice how the code below publishes a key value pair called ```x``` with every message.
 
 ```js
-var pubnub = PUBNUB.init({
-  publish_key:   'demo' // replace with your own pub-key
-  subscribe_key: 'demo' // replace with your own sub-key
-});
-
-eon.chart({
-  pubnub: pubnub,
 pubnub.publish({
   channel: 'c3-spline',
   message: {
