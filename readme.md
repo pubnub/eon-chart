@@ -18,7 +18,13 @@ Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.o
 <link type="text/css" rel="stylesheet" href="//pubnub.github.io/eon/v/eon/0.0.11/eon.css"/>
 <div id="chart"></div>
 <script>
+  var pubnub = PUBNUB.init({
+    publish_key:   'demo' // replace with your own pub-key
+    subscribe_key: 'demo' // replace with your own sub-key
+  });
+
   eon.chart({
+    pubnub: pubnub,
     channel: "c3-spline", // the pubnub channel for real time data
     generate: {           // c3 chart object
       bindto: '#chart'
@@ -50,7 +56,13 @@ Plug your normal C3 config into the ```generate``` param. Supply a PubNub channe
 ```html
 <div id="chart"></div>
 <script>
+  var pubnub = PUBNUB.init({
+    publish_key:   'demo' // replace with your own pub-key
+    subscribe_key: 'demo' // replace with your own sub-key
+  });
+
   eon.chart({
+    pubnub: pubnub,
     channel: "c3-spline",
     generate: {
       bindto: '#chart',
@@ -66,11 +78,11 @@ That's it! Now you can publish messages to the same ```channel``` and they'll re
 
 ```js
 var pubnub = PUBNUB.init({
-  publish_key: 'demo',
-  subscribe_key: 'demo'
+  publish_key:   'demo' // replace with your own pub-key
+  subscribe_key: 'demo' // replace with your own sub-key
 });
+
 setInterval(function(){
-  
   pubnub.publish({
     channel: 'c3-spline',
     message: {
@@ -115,7 +127,13 @@ eon-chart will automatically use the PubNub message timestamp for chart x values
 If you'd like to supply your own Javascript timestamp, set ```x_type``` to ```custom```. Then, set ```x_id``` to the x value that appears within your published messages. Any custom ```x``` must be a microtime date like ```1465417017340```.
 
 ```js
+var pubnub = PUBNUB.init({
+  publish_key:   'demo' // replace with your own pub-key
+  subscribe_key: 'demo' // replace with your own sub-key
+});
+
 eon.chart({
+  pubnub: pubnub,
   channel: "c3-spline", // the pubnub channel for real time data
   generate: {           // c3 chart object
     bindto: '#chart'
@@ -128,6 +146,13 @@ eon.chart({
 Notice how the code below publishes a key value pair called ```x``` with every message.
 
 ```js
+var pubnub = PUBNUB.init({
+  publish_key:   'demo' // replace with your own pub-key
+  subscribe_key: 'demo' // replace with your own sub-key
+});
+
+eon.chart({
+  pubnub: pubnub,
 pubnub.publish({
   channel: 'c3-spline',
   message: {
@@ -162,7 +187,6 @@ Here's an example of data collected at 100ms increments, but only publishes ever
 
 ```js
 setInterval(function(){
-
   var data = [];
   var date = new Date().getTime();
 
