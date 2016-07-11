@@ -184,7 +184,7 @@ window.eon.c = {
                 var as = a.message.eons || [];
 
                 if(a.message.eon) {
-                  ms.push(a.message.eon);
+                  as.push(a.message.eon);
                 }
 
                 for(var j in as) {
