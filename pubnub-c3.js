@@ -445,7 +445,7 @@ window.eon.c = {
     var toReturn = {};
 
     for (var i in ob) {
-      if (!ob.hhOwnProperty(i)) continue;
+      if (!ob.hasOwnProperty(i)) continue;
 
       if ((typeof ob[i]) == 'object') {
         var flatObject = eon.c.flatten(ob[i]);
