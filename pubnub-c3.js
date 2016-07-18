@@ -380,11 +380,8 @@ window.eon.c = {
             ms.push(message.eon);
           }
 
-          console.log(message)
-
           for(var i in ms) {
             
-            console.log(ms[i])
             ms[i] = appendDate(ms[i], env[1]);
             clog('PubNub:', 'Message Result', ms[i]);
 
