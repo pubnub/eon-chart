@@ -188,8 +188,12 @@ window.eon.c = {
                 }
 
                 for(var j in as) {
-                  as[j] = appendDate(as[j], a.timetoken)
-                  storeData(as[j], true); 
+
+                  if(as.hasOwnProperty[j]) {
+                    as[j] = appendDate(as[j], a.timetoken)
+                    storeData(as[j], true);  
+                  }
+                  
                 }
 
               } else {
@@ -382,11 +386,15 @@ window.eon.c = {
 
           for(var i in ms) {
             
-            ms[i] = appendDate(ms[i], env[1]);
-            clog('PubNub:', 'Message Result', ms[i]);
+            if(ms.hasOwnProperty(i)) {
 
-            stale = true;
-            storeData(ms[i], false);
+              ms[i] = appendDate(ms[i], env[1]);
+              clog('PubNub:', 'Message Result', ms[i]);
+
+              stale = true;
+              storeData(ms[i], false);
+               
+            }
 
           }
 
