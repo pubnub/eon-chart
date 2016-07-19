@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<head>
+
+    <title>Realtime survey with PubNub and EON</title>
+
+    <script type="text/javascript" src="http://pubnub.github.io/eon/v/eon/0.0.10/eon.js"></script>
+    <link type="text/css" rel="stylesheet" href="http://pubnub.github.io/eon/v/eon/0.0.10/eon.css" />
+
+</head>
+<body>
+
+    <h2>Who would you vote for president?</h2>
+
+    <div id="chart"></div>
+    <div id = "buttonDiv">
+
+    <script type="text/javascript">
+        
+        // the voting channel
+        var chan = "voting-channel";
+
+        // inti pubnub (PUBNUB is provided from eon.js)
+        var pb = PUBNUB.init({
+            publish_key: 'pub-c-923938f1-a4c1-4253-b15a-9c24087904c9',
+            subscribe_key: 'sub-c-bd9ab0d6-6e02-11e5-8d3b-0619f8945a4f'
+        });
+
+        // this is our data object that keeps track of vote counts
+        // by default everyone starts with 0
+        // notice the object has a property eon used for our charting lib
+        var pollData = {
+            eon: {
+                "Mushu" : 0,
+                "Hamilton" : 0,
+                "Stephen" : 0,
+                "Tomomi" : 0,
+                "Ian" : 0
+            }
+        };
+
+        // attempt to restore votes with pubnub history
+        function restoreVotes() {
+
+            // since the total vote count is supplied on every publish
+            // we only need to get the last message published
+            pb.history({
+                channel: chan,
+                count: 1,
+                callback: function(msg) {
+                    if(msg[0].length) {
+                        // update the polldata with what we found in history
+                        // note, eon.chart below will update itself in the same way just by
+                        // providing ```history: true```
+                        pollData = msg[0][0];   
+                    }
+                },
+            });
+
+        }
+
+        // restore the votes
+        restoreVotes();
+
+        // this function is run every time a button is pressed
+        function voteUp(person) {
+
+            // javascript closure to ensure that each button has a unique function
+            return function() {
+
+
+                console.log(pollData)
+
+                // this increments the values found within polldata
+                pollData.eon[person] = pollData.eon[person] + 1;
+
+                // then we publish the updated value
+                pb.publish({
+                    channel: chan,
+                    message: pollData
+                });
+
+            }
+            
+        }
+
+        // draw the buttons on the webpage
+        function createVoteButtons() {
+
+            // loop through the polldata and draw a button for each
+            for(key in pollData.eon) {
+
+                var b = document.createElement('BUTTON');
+
+                b.setAttribute('id', 'button' + i);
+                b.setAttribute('width', '30%');
+                b.setAttribute('style', 'left:5%;');
+                b.innerHTML = key;                           // set the text as the key
+                b.addEventListener("click", voteUp(key));    // run voteup on click
+
+                document.body.appendChild(b);
+
+            }
+
+        }
+        createVoteButtons();
+    
+        // draw our chart
+        eon.chart({
+            pubnub: pb,             // use shared pubnub var
+            channel: chan,          // same channel too
+            history: true,          // restore the chart state with history
+            generate: {
+                bindto: '#chart',
+                data: {
+                    labels: true,
+                    type: 'bar',
+                    colors: {                   // assign custom colors to the keys
+                        'Mushu': '#cc6699',
+                        'Hamilton': '#0099cc',
+                        'Stephen': '#ffcc99',
+                        'Tomomi': '#33cccc',
+                        'Ian': '#0000ff'
+                    }
+                },
+                bar: {
+                    width: {
+                        ratio: 0.5
+                    }
+                },
+                tooltip: {
+                    show: false
+                }
+            }
+        });
+
+    </script>
+  </body>
+</html>
