@@ -14,12 +14,11 @@
         subscribe_key: 'sub-c-bd9ab0d6-6e02-11e5-8d3b-0619f8945a4f'
       });
 
-      var channel = "c3-spline" + Math.random();
+      var channel = "c3-bar-test" + Math.random();
 
       eon.chart({
         pubnub: pubnub,
         channel: channel,
-        history: true,
         debug: true,
         generate: {
           bindto: '#chart',
