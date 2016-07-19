@@ -87,10 +87,6 @@
             for(key in pollData.eon) {
 
                 var b = document.createElement('BUTTON');
-
-                b.setAttribute('id', 'button' + key);
-                b.setAttribute('width', '30%');
-                b.setAttribute('style', 'left:5%;');
                 b.innerHTML = key;                           // set the text as the key
                 b.addEventListener("click", voteUp(key));    // run voteup on click
 
