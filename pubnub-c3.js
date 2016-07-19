@@ -189,7 +189,7 @@ window.eon.c = {
 
                 for(var j in as) {
 
-                  if(as.hasOwnProperty[j]) {
+                  if(as.hasOwnProperty(j)) {
                     as[j] = appendDate(as[j], a.timetoken)
                     storeData(as[j], true);  
                   }
@@ -199,6 +199,8 @@ window.eon.c = {
               } else {
                 clog('Rejecting history message as improper format supplied.');
               }
+
+              
 
               i++;
 
@@ -399,7 +401,6 @@ window.eon.c = {
           }
 
           clog('PubNub:', 'Calling options.message');
-          options.message(message, env, channel);
            
         } else {
 
@@ -410,6 +411,8 @@ window.eon.c = {
             }
 
         }
+        
+        options.message(message, env, channel);
 
       });
 
