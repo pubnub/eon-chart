@@ -14,25 +14,26 @@
         subscribe_key: 'sub-c-bd9ab0d6-6e02-11e5-8d3b-0619f8945a4f'
       });
 
-      var channel = "c3-spline" + Math.random();
+      var channel = "c3-spline-test-test-test";
 
       eon.chart({
         channel: channel,
         flow: true,
         pubnub: pubnub,
-        debug: true,
         generate: {
           bindto: '#chart',
           data: {
             type: 'spline',
             labels: false
-          }
-        },
-        transform: function(m) {
-            if(Math.random() > .2) {
-                return null;
-            } else {
-                return m;
+          },
+            axis: {
+                x: {
+                    show: false,
+                },
+                y: {
+                    max: 600,
+                    min: -600
+                }
             }
         }
       });
@@ -44,10 +45,10 @@
           channel: channel,
           message: {
             eon: {
-              'Austin': Math.floor(Math.random() * 99),
-              'New York': Math.floor(Math.random() * 99),
-              'San Francisco': Math.floor(Math.random() * 99),
-              'Portland': Math.floor(Math.random() * 99)
+              'Austin': Math.floor(Math.random() * 399),
+              'New York': Math.floor(Math.random() * 399),
+              'San Francisco': Math.floor(Math.random() * -399),
+              'Portland': Math.floor(Math.random() * -399)
             }
           }
         });
