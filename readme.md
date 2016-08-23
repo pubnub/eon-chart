@@ -33,6 +33,8 @@ Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.o
 </script>
 ```
 
+# Parameters
+
 Parameter | Value | Default
 | :------------ |:---------------| -----:|
 | channel | Your [PubNub channel name](http://www.pubnub.com/docs/javascript/overview/data-push.html). | ```false```
