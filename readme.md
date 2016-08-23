@@ -41,7 +41,7 @@ Parameter | Value | Default
 | generate | Your [C3 chart generation config](http://c3js.org/gettingstarted.html#generate). | ```undefined```
 | flow | Used to update spline charts over time series. | ```false```
 | limit | The size of your buffer. How many values to display on the chart before shifting the first value off and appending a new value. This is not native to C3. | ```10```
-| rate | The rate at which eon looks for new data points in milliseconds. | ```1000```
+| rate | Interval at which new datapoints are drawn on the chart in milliseconds. | ```1000```
 | history | Fill the buffer by using PubNub history call to retrieve last ```limit``` messages. Requires [PubNub storage](http://www.pubnub.com/how-it-works/storage-and-playback/) to be enabled. | ```false```
 | x_type | Your x axis configuration. Can be ```"auto"```, ```"custom"```, or ```false```. Read more about ```x_type``` below. | ```"auto"```
 | x_id | Your x axis source if ```x_type == "custom"``` | ```"x"```
