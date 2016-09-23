@@ -1,7 +1,6 @@
 "use strict";
 
 window.eon = window.eon || {};
-window.eon.subsub = subsub;
 window.PUBNUB = PUBNUB;
 window.eon.c = {
   create: function(options) {
