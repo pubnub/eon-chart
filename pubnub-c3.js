@@ -1,7 +1,7 @@
 "use strict";
 
 window.eon = window.eon || {};
-window.PUBNUB = PUBNUB;
+window.PubNub = PubNub;
 window.eon.c = {
   create: function(options) {
 
@@ -161,59 +161,60 @@ window.eon.c = {
           count: options.limit,
           channel: options.channel,
           end: timetoken,
-          include_token: true,
-          callback: function(payload) {
+          includeTimetoken: true
+        }, function(status, payload) {
 
-            var msgs = payload[0];
-            var start = payload[1];
-            var end = payload[2];
+          var msgs = payload.messages;
+          var start = payload.startTimeToken;
+          var end = payload.endTimeToken;
 
-            clog('History:', msgs.length + ' messages found');
+          clog('History:', msgs.length + ' messages found');
 
-            clog('History:', 'Complete... Rendering');
+          clog('History:', 'Complete... Rendering');
 
-            i = 0;
-            while (i < msgs.length) {
+          i = 0;
+          while (i < msgs.length) {
 
-              var a = msgs[i];
-              a.message = options.transform(a.message);
+            var a = msgs[i];
 
-              if(a.message && (a.message.eon || a.message.eons)) {
+            a.message = options.transform(a.entry);
 
-                var as = a.message.eons || [];
+            if(a.message && (a.message.eon || a.message.eons)) {
 
-                if(a.message.eon) {
-                  as.push(a.message.eon);
-                }
+              var as = a.message.eons || [];
 
-                for(var j in as) {
-
-                  if(as.hasOwnProperty(j)) {
-                    as[j] = appendDate(as[j], a.timetoken)
-                    storeData(as[j], true);  
-                  }
-                  
-                }
-
-              } else {
-                clog('Rejecting history message as improper format supplied.');
+              if(a.message.eon) {
+                as.push(a.message.eon);
               }
 
-              
+              for(var j in as) {
 
-              i++;
+                if(as.hasOwnProperty(j)) {
+                  as[j] = appendDate(as[j], a.timetoken)
+                  storeData(as[j], true);  
+                }
+                
+              }
 
-            }
-
-            if (msgs.length > 1 && object.json.length < options.limit - 1) {
-              page(end);
             } else {
-              loadData(object);
-              done();
+              clog('Rejecting history message as improper format supplied.');
             }
+
+            
+
+            i++;
 
           }
+
+          if (msgs.length > 1 && object.json.length < options.limit - 1) {
+            page(end);
+          } else {
+            loadData(object);
+            done();
+          }
+
         });
+
       };
 
       page();
@@ -368,51 +369,60 @@ window.eon.c = {
 
     var subscribe = function() {
 
-      subsub.subscribe(self.pubnub, options.channel, options.connect, function(message, env, channel) {
-
-        clog('PubNub:', '-------------------');
-        clog('PubNub:', 'Received Message', message);
-
-        clog('PubNub:', 'Transforming Message using options.transform');
-
-        var message = options.transform(message);
-
-        if(message && (message.eon || message.eons)) {
-
-          var ms = message.eons || [];
-
-          if(message.eon) {
-            ms.push(message.eon);
+      self.pubnub.addListener({
+        status: function(statusEvent) {
+          if (statusEvent.category === "PNConnectedCategory") {
+            options.connect();
           }
+        },
+        message: function(m) {
+          clog('PubNub:', '-------------------');
+          clog('PubNub:', 'Received Message', m);
 
-          for(var i in ms) {
-            
-            if(ms.hasOwnProperty(i)) {
+          clog('PubNub:', 'Transforming Message using options.transform');
 
-              ms[i] = appendDate(ms[i], env[1]);
-              clog('PubNub:', 'Message Result', ms[i]);
+          var message = options.transform(m.message);
 
-              stale = true;
-              storeData(ms[i], false);
-               
+          if(message && (message.eon || message.eons)) {
+
+            var ms = message.eons || [];
+
+            if(message.eon) {
+              ms.push(message.eon);
             }
 
-          }
+            for(var i in ms) {
+              
+              if(ms.hasOwnProperty(i)) {
 
-          clog('PubNub:', 'Calling options.message');
-           
-        } else {
+                ms[i] = appendDate(ms[i], m.timetoken);
+                clog('PubNub:', 'Message Result', ms[i]);
 
-            if(message && !message.eon) {
-              console.error('Eon messages must be in proper format. For example:',  {eon: [1,2,3]})
-            } else {
-              clog('EON:', 'Message rejected');
+                stale = true;
+                storeData(ms[i], false);
+                 
+              }
+
             }
 
+            clog('PubNub:', 'Calling options.message');
+             
+          } else {
+
+              if(message && !message.eon) {
+                console.error('Eon messages must be in proper format. For example:',  {eon: [1,2,3]})
+              } else {
+                clog('EON:', 'Message rejected');
+              }
+
+          }
+          
+          options.message(message.message, message.timetoken, channel);
         }
-        
-        options.message(message, env, channel);
+      });
 
+      self.pubnub.subscribe({
+        channels: [options.channel]
       });
 
     };

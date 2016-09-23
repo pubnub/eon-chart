@@ -29,11 +29,8 @@
   ],
   "dependencies": {
     "d3": "~3.5.5",
-    "pubnub": "~3.7.8",
+    "pubnub": "~4.0.10",
     "visibilityjs": "~1.2.1",
     "c3": "0.4.11-rc4"
-  },
-  "resolutions": {
-    "d3": "<=3.5.0"
   }
 }
