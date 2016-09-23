@@ -30,7 +30,6 @@
   "dependencies": {
     "d3": "~3.5.5",
     "pubnub": "~3.7.8",
-    "subsub": "0.0.1",
     "visibilityjs": "~1.2.1",
     "c3": "0.4.11-rc4"
   },
