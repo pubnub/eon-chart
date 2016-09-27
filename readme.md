@@ -18,9 +18,9 @@ Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.o
 <link type="text/css" rel="stylesheet" href="//pubnub.github.io/eon/v/eon/0.0.10/eon.css"/>
 <div id="chart"></div>
 <script>
-  var pubnub = PUBNUB.init({
-    publish_key:   'demo', // replace with your own pub-key
-    subscribe_key: 'demo' // replace with your own sub-key
+  var pubnub = new PubNub({
+    publishKey:   'demo', // replace with your own pub-key
+    subscribeKey: 'demo' // replace with your own sub-key
   });
 
   eon.chart({
@@ -48,7 +48,7 @@ Parameter | Value | Default
 | message | A function to call everytime a PubNub message is recieved. See [PubNub subscribe](http://www.pubnub.com/docs/javascript/api/reference.html#subscribe) | ```function(message, env, channel){}``` |
 | transform | Method for changing the payload format of your stream. See [example](https://github.com/pubnub/eon-chart/blob/master/examples/transform.html)| ```function(m){return m}```
 | connect | A function to call when PubNub makes a connection. See [PubNub subscribe](http://www.pubnub.com/docs/javascript/api/reference.html#subscribe) | ```function(){}``` |
-| pubnub | An instance of the PUBNUB javascript global. This is required when using your own keys. See the ```subscribe_key``` example. | ```false```
+| pubnub | An instance of the PUBNUB javascript global. This is required when using your own keys. See the ```subscribeKey``` example. | ```false```
 | debug | Log EON events to console as they happen | ```false``` 
 
 
@@ -59,9 +59,9 @@ Plug your normal C3 config into the ```generate``` param. Supply a PubNub channe
 ```html
 <div id="chart"></div>
 <script>
-  var pubnub = PUBNUB.init({
-    publish_key:   'demo', // replace with your own pub-key
-    subscribe_key: 'demo' // replace with your own sub-key
+  var pubnub = new PubNub({
+    publishKey:   'demo', // replace with your own pub-key
+    subscribeKey: 'demo' // replace with your own sub-key
   });
 
   eon.chart({
@@ -80,9 +80,9 @@ Plug your normal C3 config into the ```generate``` param. Supply a PubNub channe
 That's it! Now you can publish messages to the same ```channel``` and they'll render in the graph.
 
 ```js
-var pubnub = PUBNUB.init({
-  publish_key:   'demo', // replace with your own pub-key
-  subscribe_key: 'demo' // replace with your own sub-key
+var pubnub = new PubNub({
+  publishKey:   'demo', // replace with your own pub-key
+  subscribeKey: 'demo' // replace with your own sub-key
 });
 
 setInterval(function(){
@@ -130,9 +130,9 @@ eon-chart will automatically use the PubNub message timestamp for chart x values
 If you'd like to supply your own Javascript timestamp, set ```x_type``` to ```custom```. Then, set ```x_id``` to the x value that appears within your published messages. Any custom ```x``` must be a microtime date like ```1465417017340```.
 
 ```js
-var pubnub = PUBNUB.init({
-  publish_key:   'demo', // replace with your own pub-key
-  subscribe_key: 'demo' // replace with your own sub-key
+var pubnub = new PubNub({
+  publishKey:   'demo', // replace with your own pub-key
+  subscribeKey: 'demo' // replace with your own sub-key
 });
 
 eon.chart({
