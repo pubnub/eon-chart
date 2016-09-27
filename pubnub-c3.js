@@ -417,7 +417,7 @@ window.eon.c = {
 
           }
           
-          options.message(message, m.timetoken, channel);
+          options.message(message, m.timetoken, m.channel);
         }
       });
 
