@@ -18,13 +18,45 @@
         subscribeKey: 'sub-c-2a73818c-d2d3-11e3-9244-02ee2ddab7fe'
       });
 
-      var channels = [
-        'pubnub-c3-history-1', 
-        'pubnub-c3-history-2', 
-        'pubnub-c3-history-3'];
+      var channels = ['pubnub-c3-1', 'pubnub-c3-2', 'pubnub-c3-3'];
+
+      // create channel group
+      pubnub.channelGroups.addChannels(
+          {
+              channels: channels,
+              channelGroup: "pubnub-c3-example"
+          }, 
+          function(status) {
+              if (status.error) {
+                  console.log("operation failed w/ status: ", status);
+              } else {
+                  console.log("operation done!")
+
+                  // list channels
+                  pubnub.channelGroups.listChannels(
+                    {
+                      channelGroup: "pubnub-c3-example"
+                    }, 
+                    function (status, response) {
+                      if (status.error) {
+                        console.log("operation failed w/ error:", status);
+                        return;
+                      }
+                       
+                      console.log("listing push channel for device")
+                      response.channels.forEach( function (channel) {
+                        console.log(channel)
+                      })
+                    }
+                  );
+
+              }
+          }
+      );
+
 
       eon.chart({
-        channels: channels,
+        channelGroups: ['pubnub-c3-example'],
         history: true,
         flow: true,
         pubnub: pubnub,
