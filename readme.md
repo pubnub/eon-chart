@@ -37,7 +37,7 @@ npm install eon-chart --save
 Check out our [webpack example](https://github.com/pubnub/eon-chart-webpack).
 
 
-## Simple Example
+## Quick Start
 
 Plug your normal C3 config into the ```generate``` param. Supply an array of PubNub channel in ```channels``` param. ```eon.chart``` returns the normal C3 chart object.
 
