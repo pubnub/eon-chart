@@ -37,6 +37,8 @@ window.eon.c = {
       return m
     };
     options.channels = options.channels || false;
+    options.channelGroups = options.channelGroups || false;
+
     options.generate = options.generate || {};
     if (!options.generate.data) {
       options.generate.data = {
@@ -107,8 +109,9 @@ window.eon.c = {
 
     clog('Options:', options);
 
-    if (!options.channels) {
-      error = "No channel supplied.";
+    console.log(options.channelGroups)
+    if (!options.channels && !options.channelGroups) {
+      error = "No channels or channel groups supplied.";
     };
 
     if (['spline', 'area', 'area-spline', 'step', 'area-step', 'scatter'].indexOf(options.generate.data.type) == -1 
@@ -427,9 +430,36 @@ window.eon.c = {
         }
       });
 
-      self.pubnub.subscribe({
-        channels: options.channels
-      });
+      if(options.channelGroups) {
+
+        // assuming an intialized PubNub instance already exists
+        pubnub.channelGroups.listChannels({
+            channelGroup: options.channelGroups
+          }, function (status, response) {
+            
+            if (status.error) {
+              clog("operation failed w/ error:", status);
+              return;
+            }
+
+            options.channels = response.channels;
+
+            if(options.history) {
+              self.load_history();
+            }
+
+            self.pubnub.subscribe({
+              channelGroups: options.channelGroups
+            });
+
+          }
+        );
+
+      } else {
+        self.pubnub.subscribe({
+          channels: options.channels
+        });
+      }
 
     };
 
