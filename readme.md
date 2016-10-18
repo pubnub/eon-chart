@@ -11,51 +11,35 @@ Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.o
 * [Donut Chart](http://pubnub.com/developers/eon/chart/donut/)
 * [Gauge Chart](http://pubnub.com/developers/eon/chart/gauge/)
 
-## Quickstart
+## Installing
 
-```html
-<script type="text/javascript" src="//pubnub.github.io/eon/v/eon/0.1.0/eon.js"></script>
-<link type="text/css" rel="stylesheet" href="//pubnub.github.io/eon/v/eon/0.1.0/eon.css"/>
-<div id="chart"></div>
-<script>
-  var pubnub = new PubNub({
-    publishKey:   'demo', // replace with your own pub-key
-    subscribeKey: 'demo' // replace with your own sub-key
-  });
+### CDN Hosted
 
-  eon.chart({
-    pubnub: pubnub,
-    channel: "c3-spline", // the pubnub channel for real time data
-    generate: {           // c3 chart object
-      bindto: '#chart'
-    }
-  });
-</script>
+```js
+<script type="text/javascript" src="//pubnub.github.io/eon/v/eon/1.0.0/eon.js"></script>
+<link type="text/css" rel="stylesheet" href="//pubnub.github.io/eon/v/eon/1.0.0/eon.css"/>
 ```
 
-# Parameters
+### Bower
 
-Parameter | Value | Default
-| :------------ |:---------------| -----:|
-| channels | An array of PubNub channels to subscribe to. Either ```channels``` or ```channelGroups``` must be supplied. | ```false```
-| channelGroups | An array of PubNub channel groups to subscribe to. Either ```channels``` or ```channelGroups``` must be supplied. | ```false```
-| generate | Your [C3 chart generation config](http://c3js.org/gettingstarted.html#generate). | ```undefined```
-| flow | Used to update spline charts over time series. | ```false```
-| limit | The size of your buffer. How many values to display on the chart before shifting the first value off and appending a new value. This is not native to C3. | ```10```
-| rate | Interval at which new datapoints are drawn on the chart in milliseconds. | ```1000```
-| history | Fill the buffer by using PubNub history call to retrieve last ```limit``` messages. Requires [PubNub storage](http://www.pubnub.com/how-it-works/storage-and-playback/) to be enabled. | ```false```
-| xType | Your x axis configuration. Can be ```"auto"```, ```"custom"```, or ```false```. Read more about ```xType``` below. | ```"auto"```
-| xId | Your x axis source if ```xType == "custom"``` | ```"x"```
-| message | A function to call everytime a PubNub message is recieved. See [PubNub subscribe](http://www.pubnub.com/docs/javascript/api/reference.html#subscribe) | ```function(message, env, channel){}``` |
-| transform | Method for changing the payload format of your stream. See [example](https://github.com/pubnub/eon-chart/blob/master/examples/transform.html)| ```function(m){return m}```
-| connect | A function to call when PubNub makes a connection. See [PubNub subscribe](http://www.pubnub.com/docs/javascript/api/reference.html#subscribe) | ```function(){}``` |
-| pubnub | An instance of the PUBNUB javascript global. This is required when using your own keys. See the ```subscribeKey``` example. | ```false```
-| debug | Log EON events to console as they happen | ```false``` 
+```sh
+bower install eon-chart --save
+```
+
+Check out our [bower example](https://github.com/pubnub/eon-chart/examples/bower.html).
+
+### NPM
+
+```sh
+npm install eon-chart --save
+```
+
+Check out our [webpack example](https://github.com/pubnub/eon-chart-webpack).
 
 
 ## Simple Example
 
-Plug your normal C3 config into the ```generate``` param. Supply a PubNub channel in ```channel``` param. ```eon.chart``` returns the normal c3 chart object.
+Plug your normal C3 config into the ```generate``` param. Supply an array of PubNub channel in ```channels``` param. ```eon.chart``` returns the normal C3 chart object.
 
 ```html
 <div id="chart"></div>
@@ -67,7 +51,7 @@ Plug your normal C3 config into the ```generate``` param. Supply a PubNub channe
 
   eon.chart({
     pubnub: pubnub,
-    channel: "c3-spline",
+    channels: ["c3-spline"],
     generate: {
       bindto: '#chart',
       data: {
@@ -101,7 +85,27 @@ setInterval(function(){
 
 }, 1000);
 ```
-All chart data must exist within an object called ```eon```. Also notice how the ```channel```  matches in both examples.
+
+All chart data must exist within an object called ```eon```. Also notice how the ```channel``` and ```channels``` matches in both examples.
+
+# Configuration
+
+Parameter | Value | Default
+| :------------ |:---------------| -----:|
+| channels | An array of PubNub channels to subscribe to. Either ```channels``` or ```channelGroups``` must be supplied. | ```false```
+| channelGroups | An array of PubNub channel groups to subscribe to. Either ```channels``` or ```channelGroups``` must be supplied. | ```false```
+| generate | Your [C3 chart generation config](http://c3js.org/gettingstarted.html#generate). | ```undefined```
+| flow | Used to update spline charts over time series. | ```false```
+| limit | The size of your buffer. How many values to display on the chart before shifting the first value off and appending a new value. This is not native to C3. | ```10```
+| rate | Interval at which new datapoints are drawn on the chart in milliseconds. | ```1000```
+| history | Fill the buffer by using PubNub history call to retrieve last ```limit``` messages. Requires [PubNub storage](http://www.pubnub.com/how-it-works/storage-and-playback/) to be enabled. | ```false```
+| xType | Your x axis configuration. Can be ```"auto"```, ```"custom"```, or ```false```. Read more about ```xType``` below. | ```"auto"```
+| xId | Your x axis source if ```xType == "custom"``` | ```"x"```
+| message | A function to call everytime a PubNub message is recieved. See [PubNub subscribe](http://www.pubnub.com/docs/javascript/api/reference.html#subscribe) | ```function(message, env, channel){}``` |
+| transform | Method for changing the payload format of your stream. See [example](https://github.com/pubnub/eon-chart/blob/master/examples/transform.html)| ```function(m){return m}```
+| connect | A function to call when PubNub makes a connection. See [PubNub subscribe](http://www.pubnub.com/docs/javascript/api/reference.html#subscribe) | ```function(){}``` |
+| pubnub | An instance of the PUBNUB javascript global. This is required when using your own keys. See the ```subscribeKey``` example. | ```false```
+| debug | Log EON events to console as they happen | ```false``` 
 
 ## More on Publishing Messages
 
@@ -138,7 +142,7 @@ var pubnub = new PubNub({
 
 eon.chart({
   pubnub: pubnub,
-  channel: "c3-spline", // the pubnub channel for real time data
+  channels: ["c3-spline"], // the pubnub channel for real time data
   generate: {           // c3 chart object
     bindto: '#chart'
   },
