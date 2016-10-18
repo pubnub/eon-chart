@@ -37,7 +37,8 @@ Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.o
 
 Parameter | Value | Default
 | :------------ |:---------------| -----:|
-| channel | Your [PubNub channel name](http://www.pubnub.com/docs/javascript/overview/data-push.html). | ```false```
+| channels | An array of PubNub channels to subscribe to. Either ```channels``` or ```channelGroups``` must be supplied. | ```false```
+| channelGroups | An array of PubNub channel groups to subscribe to. Either ```channels``` or ```channelGroups``` must be supplied. | ```false```
 | generate | Your [C3 chart generation config](http://c3js.org/gettingstarted.html#generate). | ```undefined```
 | flow | Used to update spline charts over time series. | ```false```
 | limit | The size of your buffer. How many values to display on the chart before shifting the first value off and appending a new value. This is not native to C3. | ```10```
