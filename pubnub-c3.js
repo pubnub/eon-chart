@@ -22,10 +22,10 @@ window.eon.c = {
 
     var self = this;
     var error = false;
-    var dateID = "_eon_datetime";
+    var dateID = "_eonDatetime";
 
     self.chart = false;
-    self.is_dead = false;
+    self.isDead = false;
 
     self.pubnub = options.pubnub || PubNub || false;
 
@@ -63,27 +63,27 @@ window.eon.c = {
     options.connect = options.connect || function() {};
 
     // x axis definition
-    options.x_type = options.x_type || "auto";
-    options.x_id = options.x_id || "x";
+    options.xType = options.xType || "auto";
+    options.xId = options.xId || "x";
 
     options.rate = options.rate || 1000;
 
-    if (options.x_type == "custom") {
+    if (options.xType == "custom") {
 
-      options.generate.data.x = options.x_id;
+      options.generate.data.x = options.xId;
 
-    } else if (options.x_type == "auto") {
+    } else if (options.xType == "auto") {
 
-      options.x_id = dateID;
-      options.generate.data.x = options.x_id;
+      options.xId = dateID;
+      options.generate.data.x = options.xId;
 
     } else {
-      options.x_type = false;
+      options.xType = false;
     }
 
-    if (options.x_type) {
+    if (options.xType) {
 
-      clog('Setup:', 'X_Type Supplied');
+      clog('Setup:', 'xType Supplied');
 
       if (!options.generate.axis) {
         options.generate.axis = {}
@@ -118,11 +118,11 @@ window.eon.c = {
       options.limit = options.limit || 10;
     }
 
-    var appendDate = function(data, pubnub_date) {
+    var appendDate = function(data, pubnubDate) {
 
-      if (options.x_type == "auto") {
+      if (options.xType == "auto") {
         clog('PubNub:', 'Appending PubNub datetime to columns.');
-        var date = Math.floor(pubnub_date / 10000);
+        var date = Math.floor(pubnubDate / 10000);
         data[dateID] = new Date(date).getTime();
       }
 
@@ -139,7 +139,7 @@ window.eon.c = {
       json: [],
       keys: {
         value: [],
-        x: options.x_id
+        x: options.xId
       }
     };
 
@@ -225,7 +225,7 @@ window.eon.c = {
 
       clog('Status:', 'Chart Animation Disabled');
 
-      self.is_dead = true;
+      self.isDead = true;
 
       if (['donut', 'pie', 'gauge'].indexOf(options.generate.data.type) == -1) {
         self.chart.destroy();
@@ -241,13 +241,13 @@ window.eon.c = {
         json: [],
         keys: {
           value: [],
-          x: options.x_id
+          x: options.xId
         }
       };
 
       clog('Status:', 'Chart Animation Enabled');
 
-      self.is_dead = false;
+      self.isDead = false;
 
       options.generate.data.columns = [];
       self.chart = c3.generate(options.generate);
@@ -298,7 +298,7 @@ window.eon.c = {
 
     }
 
-    var storeData = function(data, is_history) {
+    var storeData = function(data, isHistory) {
 
       object.json.push(data);
       
@@ -309,7 +309,7 @@ window.eon.c = {
 
       mapAppend(object);
 
-      if (options.flow && !is_history) {
+      if (options.flow && !isHistory) {
 
         fobject.json.push(data);
         mapAppend(fobject);
@@ -330,7 +330,7 @@ window.eon.c = {
 
       if (!stale) {
         clog('Render:', 'No new data');
-      } else if(self.is_dead) {
+      } else if(self.isDead) {
         clog('Render:', 'Tab out of focus.');
       } else {
 
@@ -344,7 +344,7 @@ window.eon.c = {
             json: [],
             keys: {
               value: [],
-              x: options.x_id
+              x: options.xId
             }
           };
 
