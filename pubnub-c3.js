@@ -377,7 +377,7 @@ window.eon.c = {
       self.pubnub.addListener({
         status: function(statusEvent) {
           if (statusEvent.category === "PNConnectedCategory") {
-            options.connectNull();
+            options.connect();
           }
         },
         message: function(m) {
