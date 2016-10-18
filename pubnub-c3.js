@@ -109,7 +109,6 @@ window.eon.c = {
 
     clog('Options:', options);
 
-    console.log(options.channelGroups)
     if (!options.channels && !options.channelGroups) {
       error = "No channels or channel groups supplied.";
     };
@@ -168,8 +167,6 @@ window.eon.c = {
             end: timetoken,
             includeTimetoken: true
           }, function(status, payload) {
-
-            console.log(status, payload)
 
             var msgs = payload.messages;
             var start = payload.startTimeToken;

@@ -105,7 +105,7 @@
         // draw our chart
         eon.chart({
             pubnub: pb,             // use shared pubnub var
-            channel: chan,          // same channel too
+            channels: [chan],          // same channel too
             history: true,          // restore the chart state with history
             generate: {
                 bindto: '#chart',
