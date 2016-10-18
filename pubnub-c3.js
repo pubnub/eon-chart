@@ -150,77 +150,82 @@ window.eon.c = {
     var fobject = {};
     var stale = false;
 
-    var getAllMessages = function(done) {
+    var loadHistory = function() {
 
       clog('Status:', 'Restoring from history');
 
-      var i = 0;
+      for(var k in options.channels) {
 
-      var page = function(timetoken) {
+        var i = 0;
 
-        clog('History:', 'Retrieving messages from ' + timetoken);
+        var page = function(timetoken) {
 
-        self.pubnub.history({
-          count: options.limit,
-          channels: options.channels,
-          end: timetoken,
-          includeTimetoken: true
-        }, function(status, payload) {
+          clog('History:', 'Retrieving messages from ' + timetoken);
 
-          var msgs = payload.messages;
-          var start = payload.startTimeToken;
-          var end = payload.endTimeToken;
+          self.pubnub.history({
+            count: options.limit,
+            channel: options.channels[k],
+            end: timetoken,
+            includeTimetoken: true
+          }, function(status, payload) {
 
-          clog('History:', msgs.length + ' messages found');
+            console.log(status, payload)
 
-          clog('History:', 'Complete... Rendering');
+            var msgs = payload.messages;
+            var start = payload.startTimeToken;
+            var end = payload.endTimeToken;
 
-          i = 0;
-          while (i < msgs.length) {
+            clog('History:', msgs.length + ' messages found');
 
-            var a = msgs[i];
+            clog('History:', 'Complete... Rendering');
 
-            a.message = options.transform(a.entry);
+            i = 0;
+            while (i < msgs.length) {
 
-            if(a.message && (a.message.eon || a.message.eons)) {
+              var a = msgs[i];
 
-              var as = a.message.eons || [];
+              a.message = options.transform(a.entry);
 
-              if(a.message.eon) {
-                as.push(a.message.eon);
-              }
+              if(a.message && (a.message.eon || a.message.eons)) {
 
-              for(var j in as) {
+                var as = a.message.eons || [];
 
-                if(as.hasOwnProperty(j)) {
-                  as[j] = appendDate(as[j], a.timetoken)
-                  storeData(as[j], true);  
+                if(a.message.eon) {
+                  as.push(a.message.eon);
                 }
-                
+
+                for(var j in as) {
+
+                  if(as.hasOwnProperty(j)) {
+                    as[j] = appendDate(as[j], a.timetoken)
+                    storeData(as[j], true);  
+                  }
+                  
+                }
+
+              } else {
+                clog('Rejecting history message as improper format supplied.');
               }
 
-            } else {
-              clog('Rejecting history message as improper format supplied.');
+              
+
+              i++;
+
             }
 
-            
+            if (msgs.length > 1 && object.json.length < options.limit - 1) {
+              page(end);
+            } else {
+              loadData(object);
+            }
 
-            i++;
+          });
 
-          }
+        };
 
-          if (msgs.length > 1 && object.json.length < options.limit - 1) {
-            page(end);
-          } else {
-            loadData(object);
-            done();
-          }
-
-        });
-
-      };
-
-      page();
+        page();
+      
+      }
 
     };
 
@@ -305,7 +310,7 @@ window.eon.c = {
 
       object.json.push(data);
       
-      if(object.json.length > options.limit) {
+      if(object.json.length > (options.limit * options.channels.length)) {
         object.json.shift();
         flowLength++;
       }
@@ -445,7 +450,7 @@ window.eon.c = {
             options.channels = response.channels;
 
             if(options.history) {
-              self.load_history();
+              loadHistory();
             }
 
             self.pubnub.subscribe({
@@ -456,9 +461,15 @@ window.eon.c = {
         );
 
       } else {
+        
+        if(options.history) {
+          loadHistory();
+        }
+
         self.pubnub.subscribe({
           channels: options.channels
         });
+
       }
 
     };
@@ -466,14 +477,7 @@ window.eon.c = {
     var init = function() {
 
       clog('PubNub:', 'Subscribed to ' + options.channels);
-
-      if (options.history) {
-        getAllMessages(function(){
-          subscribe();
-        });
-      } else {
-        subscribe();
-      }
+      subscribe();
 
     };
 
