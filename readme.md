@@ -194,7 +194,7 @@ setInterval(function(){
   }
 
   pubnub.publish({
-    channel: channel,
+    channels: [channel],
     message: {
       eons: data
     }
