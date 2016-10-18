@@ -23,10 +23,10 @@
 
       eon.chart({
         debug: true,
-        channel: channel,
+        channels: [channel],
         flow: true,
         pubnub: pubnub,
-        history: true,
+        history: false,
         generate: {
           bindto: '#chart',
           data: {

@@ -36,7 +36,7 @@ window.eon.c = {
     options.transform = options.transform || function(m) {
       return m
     };
-    options.channel = options.channel || false;
+    options.channels = options.channels || false;
     options.generate = options.generate || {};
     if (!options.generate.data) {
       options.generate.data = {
@@ -107,7 +107,7 @@ window.eon.c = {
 
     clog('Options:', options);
 
-    if (!options.channel) {
+    if (!options.channels) {
       error = "No channel supplied.";
     };
 
@@ -159,7 +159,7 @@ window.eon.c = {
 
         self.pubnub.history({
           count: options.limit,
-          channel: options.channel,
+          channels: options.channels,
           end: timetoken,
           includeTimetoken: true
         }, function(status, payload) {
@@ -377,7 +377,7 @@ window.eon.c = {
         },
         message: function(m) {
 
-          if(m.channel == options.channel) {
+          if(options.channels.indexOf(m.channel) > -1) {
             
             clog('PubNub:', '-------------------');
             clog('PubNub:', 'Received Message', m);
@@ -428,14 +428,14 @@ window.eon.c = {
       });
 
       self.pubnub.subscribe({
-        channels: [options.channel]
+        channels: options.channels
       });
 
     };
 
     var init = function() {
 
-      clog('PubNub:', 'Subscribed to ' + options.channel);
+      clog('PubNub:', 'Subscribed to ' + options.channels);
 
       if (options.history) {
         getAllMessages(function(){
