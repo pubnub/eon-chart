@@ -1,8 +1,13 @@
 <html>
   <head>
 
-    <script src="https://pubnub.github.io/eon/v/eon/0.1.0/eon.js" type="text/javascript"></script>
-    <link href="https://pubnub.github.io/eon/v/eon/0.1.0/eon.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../bower_components/c3/c3.min.css">
+    <script src="../bower_components/pubnub/dist/web/pubnub.min.js"></script>
+    <script src="../bower_components/d3/d3.min.js"></script>
+    <script src="../bower_components/c3/c3.min.js"></script>
+    <script src="../bower_components/visibilityjs/lib/visibility.core.js"></script>
+
+    <script src="../pubnub-c3.js"></script>
 
   </head>
   <body>
@@ -17,11 +22,11 @@
       var channel = "c3-spline" + Math.random();
 
       eon.chart({
-        channel: channel,
+        channels: [channel],
         flow: true,
         pubnub: pubnub,
-        x_type: 'custom',
-        x_id: 'yesterday',
+        xType: 'custom',
+        xId: 'yesterday',
         generate: {
           bindto: '#chart',
           data: {
