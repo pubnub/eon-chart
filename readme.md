@@ -43,8 +43,8 @@ Parameter | Value | Default
 | limit | The size of your buffer. How many values to display on the chart before shifting the first value off and appending a new value. This is not native to C3. | ```10```
 | rate | Interval at which new datapoints are drawn on the chart in milliseconds. | ```1000```
 | history | Fill the buffer by using PubNub history call to retrieve last ```limit``` messages. Requires [PubNub storage](http://www.pubnub.com/how-it-works/storage-and-playback/) to be enabled. | ```false```
-| x_type | Your x axis configuration. Can be ```"auto"```, ```"custom"```, or ```false```. Read more about ```x_type``` below. | ```"auto"```
-| x_id | Your x axis source if ```x_type == "custom"``` | ```"x"```
+| xType | Your x axis configuration. Can be ```"auto"```, ```"custom"```, or ```false```. Read more about ```xType``` below. | ```"auto"```
+| xId | Your x axis source if ```xType == "custom"``` | ```"x"```
 | message | A function to call everytime a PubNub message is recieved. See [PubNub subscribe](http://www.pubnub.com/docs/javascript/api/reference.html#subscribe) | ```function(message, env, channel){}``` |
 | transform | Method for changing the payload format of your stream. See [example](https://github.com/pubnub/eon-chart/blob/master/examples/transform.html)| ```function(m){return m}```
 | connect | A function to call when PubNub makes a connection. See [PubNub subscribe](http://www.pubnub.com/docs/javascript/api/reference.html#subscribe) | ```function(){}``` |
@@ -123,11 +123,11 @@ You can learn more about customizing your graph from [the official C3 docs](http
 
 ### Automatic
 
-eon-chart will automatically use the PubNub message timestamp for chart x values. This timestamp is recorded when a message is published to the PubNub data stream network. This is the case when ```x_type``` is set to ```"auto"```.
+eon-chart will automatically use the PubNub message timestamp for chart x values. This timestamp is recorded when a message is published to the PubNub data stream network. This is the case when ```xType``` is set to ```"auto"```.
 
 ### Custom
 
-If you'd like to supply your own Javascript timestamp, set ```x_type``` to ```custom```. Then, set ```x_id``` to the x value that appears within your published messages. Any custom ```x``` must be a microtime date like ```1465417017340```.
+If you'd like to supply your own Javascript timestamp, set ```xType``` to ```custom```. Then, set ```xId``` to the x value that appears within your published messages. Any custom ```x``` must be a microtime date like ```1465417017340```.
 
 ```js
 var pubnub = new PubNub({
@@ -141,8 +141,8 @@ eon.chart({
   generate: {           // c3 chart object
     bindto: '#chart'
   },
-  x_type: 'custom',
-  x_id: 'x'
+  xType: 'custom',
+  xId: 'x'
 });
 ```
 
@@ -164,7 +164,7 @@ pubnub.publish({
 
 It is possible to publish multiple plot points per payload. Rather than using the object name ```eon``` use the name ```eons``` and supply an ```Array```. Because you use the ```eons``` property name, the library will know to loop through the array and plot each point.
 
-Note that if publishing multiple points per payload, **you must use ```x_type: "custom"``` and supply an ```x_id```**.
+Note that if publishing multiple points per payload, **you must use ```xType: "custom"``` and supply an ```xId```**.
 
 ```js
 eons: [
@@ -205,7 +205,7 @@ setInterval(function(){
 
 ### Disable
 
-You can disable eon-chart modifications by setting ```x_type``` to ```false```. By default C3 will use an incremental x axis (1,2,3,4...).
+You can disable eon-chart modifications by setting ```xType``` to ```false```. By default C3 will use an incremental x axis (1,2,3,4...).
 
 ## Distributed Systems
 
