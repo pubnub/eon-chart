@@ -22,11 +22,9 @@
       var channel = "c3-spline-history";
 
       eon.chart({
-        debug: true,
         channels: [channel],
         flow: true,
         pubnub: pubnub,
-        history: false,
         generate: {
           bindto: '#chart',
           data: {
