@@ -15,7 +15,7 @@ Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.o
 
 ### CDN Hosted
 
-```js
+```html
 <script type="text/javascript" src="//pubnub.github.io/eon/v/eon/1.0.0/eon.js"></script>
 <link type="text/css" rel="stylesheet" href="//pubnub.github.io/eon/v/eon/1.0.0/eon.css"/>
 ```
