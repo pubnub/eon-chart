@@ -382,7 +382,7 @@ window.eon.c = {
         },
         message: function(m) {
 
-          if(options.channels.indexOf(m.channel) > -1) {
+          if(options.channels.indexOf(m.subscribedChannel) > -1) {
             
             clog('PubNub:', '-------------------');
             clog('PubNub:', 'Received Message', m);
