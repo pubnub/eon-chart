@@ -4,8 +4,7 @@
     <link rel="stylesheet" type="text/css" href="../bower_components/c3/c3.min.css">
     <script src="../bower_components/pubnub/dist/web/pubnub.min.js"></script>
     <script src="../bower_components/d3/d3.min.js"></script>
-    <script src="../bower_components/c3/c3.min.js"></script>
-    <script src="../bower_components/visibilityjs/lib/visibility.core.js"></script>
+    <script src="../bower_components/c3/c3.js"></script>
 
     <script src="../pubnub-c3.js"></script>
 
@@ -15,15 +14,17 @@
     <script>
 
       var pubnub = new PubNub({
-        publishKey: 'your_pub_key',
-        subscribeKey: 'your_sub_key'
+            publishKey: 'pub-c-f7d7be90-895a-4b24-bf99-5977c22c66c9',
+            subscribeKey: 'sub-c-bd013f24-9a24-11e6-a681-02ee2ddab7fe',
       });
 
       var channel = "c3-spline-history";
 
       eon.chart({
+        debug: false,
         channels: [channel],
         flow: true,
+        limit: 3,
         pubnub: pubnub,
         generate: {
           bindto: '#chart',

@@ -1,6 +1,6 @@
 {
   "name": "eon-chart",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "C3 Realtime Charts with PubNub. Part of the EON Framework.",
   "main": "pubnub-c3.js",
   "directories": {

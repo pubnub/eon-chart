@@ -259,16 +259,16 @@ window.eon.c = {
 
     };
 
-    Visibility.change(function(e, state) {
+    // Visibility.change(function(e, state) {
 
-      if (Visibility.hidden()) {
-        kill();
-      } else {
-        boot();
-        loadData(object)
-      }
+    //   if (Visibility.hidden()) {
+    //     kill();
+    //   } else {
+    //     boot();
+    //     loadData(object)
+    //   }
 
-    });
+    // });
 
     var uniqueAppend = function(array, append) {
 
@@ -307,6 +307,8 @@ window.eon.c = {
 
       object.json.push(data);
       
+      console.log(object.json.length, '>', (options.limit * options.channels.length));
+
       if(object.json.length > (options.limit * options.channels.length)) {
         object.json.shift();
         flowLength++;
@@ -331,39 +333,43 @@ window.eon.c = {
 
     setInterval(function(){
 
-      clog('Status:', 'Rendering');
+      // console.log('interval called', new Date())
 
-      if (!stale) {
-        clog('Render:', 'No new data');
-      } else if(self.isDead) {
-        clog('Render:', 'Tab out of focus.');
-      } else {
+      // clog('Status:', 'Rendering');
 
-        if(fobject.json.length) {
+      // if (!stale) {
+      //   clog('Render:', 'No new data');
+      // } else if(self.isDead) {
+      //   clog('Render:', 'Tab out of focus.');
+      // } else {
+
+      //   if(fobject.json.length) {
+
+      //     console.log('flowing data', flowLength)
           
-          fobject.length = flowLength;
+      //     fobject.length = flowLength;
 
-          self.chart.flow(fobject);
+      //     self.chart.flow(fobject);
 
-          fobject = {
-            json: [],
-            keys: {
-              value: [],
-              x: options.xId
-            }
-          };
+      //     fobject = {
+      //       json: [],
+      //       keys: {
+      //         value: [],
+      //         x: options.xId
+      //       }
+      //     };
 
-          flowLength = 0;
+      //     flowLength = 0;
 
-        } else {
-          loadData(object);
-        }
+      //   } else {
+      //     loadData(object);
+      //   }
 
-        stale = false;
+      //   stale = false;
 
-        clog('Render:', 'Complete');
+      //   clog('Render:', 'Complete');
 
-      }
+      // }
 
     }, options.rate);
 
@@ -425,7 +431,32 @@ window.eon.c = {
 
             }
             
+            if(fobject.json.length) {
+
+              var numPoints = self.chart.data()[0] && self.chart.data()[0].values.length;
+
+               console.log('flowing data', flowLength)
+               
+               fobject.length = (numPoints -1) - options.limit;
+
+               self.chart.flow(fobject);
+
+               fobject = {
+                 json: [],
+                 keys: {
+                   value: [],
+                   x: options.xId
+                 }
+               };
+
+               flowLength = 0;
+
+             } else {
+               loadData(object);
+             }
+
             options.message(message, m.timetoken, m.channel);
+
 
           }
 
