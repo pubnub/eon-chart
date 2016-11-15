@@ -262,10 +262,10 @@ window.eon.c = {
     Visibility.change(function(e, state) {
 
       if (Visibility.hidden()) {
-        kill();
+        // kill();
       } else {
-        boot();
-        loadData(object)
+        // boot();
+        // loadData(object)
       }
 
     });
@@ -305,11 +305,13 @@ window.eon.c = {
 
     var storeData = function(data, isHistory) {
 
+      console.log('store data', options)
+
       object.json.push(data);
       
       if(object.json.length > (options.limit * options.channels.length)) {
         object.json.shift();
-        flowLength++;
+        console.log(object.json.length, options.limit)
       }
 
       mapAppend(object);
@@ -324,7 +326,6 @@ window.eon.c = {
     };
 
     var loadData = function(data) {
-      flowLength = 0;
       clog('Load Data')
       self.chart.load(data);
     }
@@ -340,8 +341,23 @@ window.eon.c = {
       } else {
 
         if(fobject.json.length) {
-          
-          fobject.length = flowLength;
+
+          var data = self.chart.data();
+          var mostValues = 0;
+          for(var i in data) {
+            if(data[i].values.length > mostValues) {
+                mostValues = data[i].values.length;
+            }
+          }
+
+          var flowLength = mostValues  + 1 - options.limit;
+
+
+          if(flowLength > 0) {
+            fobject.length = flowLength; 
+          } else {
+            fobject.length = 0;
+          }
 
           self.chart.flow(fobject);
 

@@ -15,13 +15,14 @@
     <script>
 
       var pubnub = new PubNub({
-        publishKey: 'your_pub_key',
-        subscribeKey: 'your_sub_key'
+        publishKey: 'pub-c-191d5212-dd99-4f2e-a8cf-fb63775232bc',
+        subscribeKey: 'sub-c-aa1d9fe8-a85b-11e6-a397-02ee2ddab7fe',
       });
 
       var channel = "c3-spline-history";
 
       eon.chart({
+        limit: 3,
         channels: [channel],
         flow: true,
         pubnub: pubnub,
