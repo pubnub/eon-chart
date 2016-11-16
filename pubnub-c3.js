@@ -226,20 +226,6 @@ window.eon.c = {
 
     };
 
-    var kill = function() {
-
-      clog('Status:', 'Chart Animation Disabled');
-
-      self.isDead = true;
-
-      if (['donut', 'pie', 'gauge'].indexOf(options.generate.data.type) == -1) {
-        self.chart.destroy();
-      }
-
-      delete self.chart;
-
-    };
-
     var boot = function() {  
 
       fobject = {
@@ -258,17 +244,6 @@ window.eon.c = {
       self.chart = c3.generate(options.generate);
 
     };
-
-    Visibility.change(function(e, state) {
-
-      if (Visibility.hidden()) {
-        kill();
-      } else {
-        boot();
-        loadData(object)
-      }
-
-    });
 
     var uniqueAppend = function(array, append) {
 
@@ -329,43 +304,42 @@ window.eon.c = {
       self.chart.load(data);
     }
 
-    setInterval(function(){
+    Visibility.every(options.rate, function () {
+        clog('Status:', 'Rendering');
 
-      clog('Status:', 'Rendering');
-
-      if (!stale) {
-        clog('Render:', 'No new data');
-      } else if(self.isDead) {
-        clog('Render:', 'Tab out of focus.');
-      } else {
-
-        if(fobject.json.length) {
-          
-          fobject.length = flowLength;
-
-          self.chart.flow(fobject);
-
-          fobject = {
-            json: [],
-            keys: {
-              value: [],
-              x: options.xId
-            }
-          };
-
-          flowLength = 0;
-
+        if (!stale) {
+          clog('Render:', 'No new data');
+        } else if(self.isDead) {
+          clog('Render:', 'Tab out of focus.');
         } else {
-          loadData(object);
+
+          if(fobject.json.length) {
+            
+            fobject.length = flowLength;
+
+            self.chart.flow(fobject);
+
+            fobject = {
+              json: [],
+              keys: {
+                value: [],
+                x: options.xId
+              }
+            };
+
+            flowLength = 0;
+
+          } else {
+            loadData(object);
+          }
+
+          stale = false;
+
+          clog('Render:', 'Complete');
+
         }
 
-        stale = false;
-
-        clog('Render:', 'Complete');
-
-      }
-
-    }, options.rate);
+    });
 
     var elog = function(text) {
       console.error("EON:" + text);

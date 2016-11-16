@@ -1,6 +1,6 @@
 {
   "name": "visibilityjs",
-  "version": "1.2.1",
+  "version": "1.2.4",
   "homepage": "https://github.com/ai/visibilityjs",
   "authors": [
     "Andrey A.I. Sitnik <andrey@sitnik.ru>"
@@ -19,13 +19,13 @@
     "*.rb",
     ".*"
   ],
-  "_release": "1.2.1",
+  "_release": "1.2.4",
   "_resolution": {
     "type": "version",
-    "tag": "1.2.1",
-    "commit": "97c8ea0defd6737de911647598d6e195ff177e39"
+    "tag": "1.2.4",
+    "commit": "8646c4ff8f1d0ab4784034daaf0902d8f72d499a"
   },
-  "_source": "git://github.com/ai/visibility.js.git",
-  "_target": "~1.2.1",
+  "_source": "https://github.com/ai/visibility.js.git",
+  "_target": "^1.2.4",
   "_originalSource": "visibilityjs"
 }
