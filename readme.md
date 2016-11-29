@@ -72,7 +72,7 @@ var pubnub = new PubNub({
 
 setInterval(function(){
   pubnub.publish({
-    channel: 'c3-spline',
+    channels: 'c3-spline',
     message: {
       eon: {
         'Austin': Math.floor(Math.random() * 99),
@@ -155,7 +155,7 @@ Notice how the code below publishes a key value pair called ```x``` with every m
 
 ```js
 pubnub.publish({
-  channel: 'c3-spline',
+  channels: 'c3-spline',
   message: {
     eon: {
       'x': new Date().getTime(),
