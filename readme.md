@@ -72,7 +72,7 @@ var pubnub = new PubNub({
 
 setInterval(function(){
   pubnub.publish({
-    channels: 'c3-spline',
+    channel: 'c3-spline',
     message: {
       eon: {
         'Austin': Math.floor(Math.random() * 99),
