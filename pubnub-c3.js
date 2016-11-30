@@ -408,8 +408,7 @@ window.eon.c = {
 
       if(options.channelGroups) {
 
-        // assuming an intialized PubNub instance already exists
-        pubnub.channelGroups.listChannels({
+        self.pubnub.channelGroups.listChannels({
             channelGroup: options.channelGroups
           }, function (status, response) {
             
