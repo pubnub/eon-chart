@@ -1,15 +1,19 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
 <html>
-  <head>
-    <script type="text/javascript" src="../pubnub-c3.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://pubnub.github.io/eon/v/eon/1.0.0/eon.css"/>
-  </head>
-  <body>
+<body>
+    <script type="text/javascript" src="../bundle.js"></script>
+    <script type="text/javascript">
+        console.log(PubNub);
+        console.log(c3);
+        console.log(eon);
+    </script>
     <div id="chart"></div>
     <script>
 
       var pubnub = new PubNub({
-        publishKey: 'your_pub_key',
-        subscribeKey: 'your_sub_key'
+          publishKey: 'pub-c-923938f1-a4c1-4253-b15a-9c24087904c9',
+          subscribeKey: 'sub-c-bd9ab0d6-6e02-11e5-8d3b-0619f8945a4f'
       });
 
       var channel = "c3-spline" + Math.random();
@@ -44,5 +48,5 @@
 
       }, 1000);
     </script>
-  </body>
+</body>
 </html>

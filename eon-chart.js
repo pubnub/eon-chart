@@ -342,7 +342,6 @@ window.eon.c = {
 
     var elog = function(text) {
       console.error("EON:" + text);
-      kill();
     };
 
     var subscribe = function() {
