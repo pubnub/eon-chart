@@ -1,7 +1,6 @@
 "use strict";
 
 window.eon = window.eon || {};
-window.PubNub = PubNub;
 window.eon.c = {
   create: function(options) {
 
@@ -47,7 +46,7 @@ window.eon.c = {
     }
 
     options.generate.line = options.generate.line || {};
-    
+
     if(!options.generate.line.connectNull) {
       options.generate.line.connectNull = true;
     }
@@ -113,7 +112,7 @@ window.eon.c = {
       error = "No channels or channel groups supplied.";
     };
 
-    if (['spline', 'area', 'area-spline', 'step', 'area-step', 'scatter'].indexOf(options.generate.data.type) == -1 
+    if (['spline', 'area', 'area-spline', 'step', 'area-step', 'scatter'].indexOf(options.generate.data.type) == -1
       && typeof(options.generate.data.type) != "undefined") {
       options.limit = options.limit || 1;
     } else {
@@ -195,16 +194,16 @@ window.eon.c = {
 
                   if(as.hasOwnProperty(j)) {
                     as[j] = appendDate(as[j], a.timetoken)
-                    storeData(as[j], true);  
+                    storeData(as[j], true);
                   }
-                  
+
                 }
 
               } else {
                 clog('Rejecting history message as improper format supplied.');
               }
 
-              
+
 
               i++;
 
@@ -221,12 +220,12 @@ window.eon.c = {
         };
 
         page();
-      
+
       }
 
     };
 
-    var boot = function() {  
+    var boot = function() {
 
       fobject = {
         json: [],
@@ -281,7 +280,7 @@ window.eon.c = {
     var storeData = function(data, isHistory) {
 
       object.json.push(data);
-      
+
       if(object.json.length > (options.limit * options.channels.length)) {
         object.json.shift();
         flowLength++;
@@ -314,7 +313,7 @@ window.eon.c = {
         } else {
 
           if(fobject.json.length) {
-            
+
             fobject.length = flowLength;
 
             self.chart.flow(fobject);
@@ -343,7 +342,6 @@ window.eon.c = {
 
     var elog = function(text) {
       console.error("EON:" + text);
-      kill();
     };
 
     var subscribe = function() {
@@ -357,7 +355,7 @@ window.eon.c = {
         message: function(m) {
 
           if(options.channels.indexOf(m.subscribedChannel) > -1) {
-            
+
             clog('PubNub:', '-------------------');
             clog('PubNub:', 'Received Message', m);
 
@@ -374,7 +372,7 @@ window.eon.c = {
               }
 
               for(var i in ms) {
-                
+
                 if(ms.hasOwnProperty(i)) {
 
                   ms[i] = appendDate(ms[i], m.timetoken);
@@ -382,13 +380,13 @@ window.eon.c = {
 
                   stale = true;
                   storeData(ms[i], false);
-                   
+
                 }
 
               }
 
               clog('PubNub:', 'Calling options.message');
-               
+
             } else {
 
                 if(message && !message.eon) {
@@ -398,7 +396,7 @@ window.eon.c = {
                 }
 
             }
-            
+
             options.message(message, m.timetoken, m.channel);
 
           }
@@ -412,7 +410,7 @@ window.eon.c = {
         pubnub.channelGroups.listChannels({
             channelGroup: options.channelGroups
           }, function (status, response) {
-            
+
             if (status.error) {
               clog("operation failed w/ error:", status);
               return;
@@ -432,7 +430,7 @@ window.eon.c = {
         );
 
       } else {
-        
+
         if(options.history) {
           loadHistory();
         }
