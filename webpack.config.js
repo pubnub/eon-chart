@@ -4,7 +4,7 @@ module.exports = {
   entry:   "./entry.js",
   output:  {
     path:     __dirname,
-    filename: "bundle.js"
+    filename: "eon-chart.js"
   },
   module: {
     loaders: [
