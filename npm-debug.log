@@ -1,0 +1,114 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/ian/.nvm/versions/node/v4.2.6/bin/node',
+1 verbose cli   '/Users/ian/.nvm/versions/node/v4.2.6/bin/npm',
+1 verbose cli   'publish' ]
+2 info using npm@2.14.12
+3 info using node@v4.2.6
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/Users/ian/Development/eon-chart',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /Users/ian/.npm/eon-chart/1.2.0/package.tgz not in flight; packing
+9 verbose tar pack [ '/Users/ian/.npm/eon-chart/1.2.0/package.tgz',
+9 verbose tar pack   '/Users/ian/Development/eon-chart' ]
+10 verbose tarball /Users/ian/.npm/eon-chart/1.2.0/package.tgz
+11 verbose folder /Users/ian/Development/eon-chart
+12 info prepublish eon-chart@1.2.0
+13 verbose addLocalTarball adding from inside cache /Users/ian/.npm/eon-chart/1.2.0/package.tgz
+14 silly cache afterAdd eon-chart@1.2.0
+15 verbose afterAdd /Users/ian/.npm/eon-chart/1.2.0/package/package.json not in flight; writing
+16 verbose afterAdd /Users/ian/.npm/eon-chart/1.2.0/package/package.json written
+17 silly publish { name: 'eon-chart',
+17 silly publish   version: '1.2.0',
+17 silly publish   description: 'C3 Realtime Charts with PubNub. Part of the EON Framework.',
+17 silly publish   main: 'eon-chart.js',
+17 silly publish   directories: { example: 'examples' },
+17 silly publish   scripts: { test: 'echo "Error: no test specified" && exit 1' },
+17 silly publish   repository:
+17 silly publish    { type: 'git',
+17 silly publish      url: 'git+https://github.com/pubnub/eon-chart.git' },
+17 silly publish   keywords:
+17 silly publish    [ 'pubnub',
+17 silly publish      'd3',
+17 silly publish      'c3',
+17 silly publish      'charts',
+17 silly publish      'donut',
+17 silly publish      'graph',
+17 silly publish      'realtime',
+17 silly publish      'bar',
+17 silly publish      'series',
+17 silly publish      'stack' ],
+17 silly publish   author: { name: 'Ian Jennings' },
+17 silly publish   license: 'MIT',
+17 silly publish   bugs: { url: 'https://github.com/pubnub/eon-chart/issues' },
+17 silly publish   homepage: 'https://github.com/pubnub/eon-chart#readme',
+17 silly publish   devDependencies: { webpack: '^3.1.0' },
+17 silly publish   dependencies:
+17 silly publish    { c3: '^0.4.14',
+17 silly publish      'css-loader': '^0.28.4',
+17 silly publish      pubnub: '^4.12.0',
+17 silly publish      'style-loader': '^0.18.2',
+17 silly publish      visibilityjs: '^1.2.4' },
+17 silly publish   readme: '# EON Charts\n\nRealtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.org/).\n\n![](http://i.imgur.com/MRK20Kb.gif)\n\n# Examples\n\n* [Spline Chart](http://pubnub.com/developers/eon/chart/spline/)\n* [Bar Chart](http://pubnub.com/developers/eon/chart/bar/)\n* [Donut Chart](http://pubnub.com/developers/eon/chart/donut/)\n* [Gauge Chart](http://pubnub.com/developers/eon/chart/gauge/)\n\n## Installing\n\n### Hotlink\n\n```html\n<script type="text/javascript" src="https://pubnub.github.io/eon/v/eon/1.0.0/eon.js"></script>\n<link type="text/css" rel="stylesheet" href="https://pubnub.github.io/eon/v/eon/1.0.0/eon.css"/>\n```\n\n### Bower\n\n```sh\nbower install eon-chart --save\n```\n\nCheck out our [bower example](https://github.com/pubnub/eon-chart/examples/bower.html).\n\n### NPM\n\n```sh\nnpm install eon-chart --save\n```\n\nCheck out our [webpack example](https://github.com/pubnub/eon-chart-webpack).\n\n\n## Quick Start\n\nPlug your normal C3 config into the ```generate``` param. Supply an array of PubNub channel in ```channels``` param. ```eon.chart``` returns the normal C3 chart object.\n\n```html\n<div id="chart"></div>\n<script>\n  var pubnub = new PubNub({\n    publishKey:   \'demo\', // replace with your own pub-key\n    subscribeKey: \'demo\' // replace with your own sub-key\n  });\n\n  eon.chart({\n    pubnub: pubnub,\n    channels: ["c3-spline"],\n    generate: {\n      bindto: \'#chart\',\n      data: {\n        labels: true\n      }\n    }\n  });\n</script>\n```\n\nThat\'s it! Now you can publish messages to the same ```channel``` and they\'ll render in the graph.\n\n```js\nvar pubnub = new PubNub({\n  publishKey:   \'demo\', // replace with your own pub-key\n  subscribeKey: \'demo\' // replace with your own sub-key\n});\n\nsetInterval(function(){\n  pubnub.publish({\n    channel: \'c3-spline\',\n    message: {\n      eon: {\n        \'Austin\': Math.floor(Math.random() * 99),\n        \'New York\': Math.floor(Math.random() * 99),\n        \'San Francisco\': Math.floor(Math.random() * 99),\n        \'Portland\': Math.floor(Math.random() * 99)\n      }\n    }\n  });\n\n}, 1000);\n```\n\nAll chart data must exist within an object called ```eon```. Also notice how the ```channel``` and ```channels``` matches in both examples.\n\n# Configuration\n\nParameter | Value | Default\n| :------------ |:---------------| -----:|\n| channels | An array of PubNub channels to subscribe to. Either ```channels``` or ```channelGroups``` must be supplied. | ```false```\n| channelGroups | An array of PubNub channel groups to subscribe to. Either ```channels``` or ```channelGroups``` must be supplied. | ```false```\n| generate | Your [C3 chart generation config](http://c3js.org/gettingstarted.html#generate). | ```undefined```\n| flow | Used to update spline charts over time series. | ```false```\n| limit | The size of your buffer. How many values to display on the chart before shifting the first value off and appending a new value. This is not native to C3. | ```10```\n| rate | Interval at which new datapoints are drawn on the chart in milliseconds. | ```1000```\n| history | Fill the buffer by using PubNub history call to retrieve last ```limit``` messages. Requires [PubNub storage](http://www.pubnub.com/how-it-works/storage-and-playback/) to be enabled. | ```false```\n| xType | Your x axis configuration. Can be ```"auto"```, ```"custom"```, or ```false```. Read more about ```xType``` below. | ```"auto"```\n| xId | Your x axis source if ```xType == "custom"``` | ```"x"```\n| message | A function to call everytime a PubNub message is recieved. See [PubNub subscribe](http://www.pubnub.com/docs/javascript/api/reference.html#subscribe) | ```function(message, env, channel){}``` |\n| transform | Method for changing the payload format of your stream. See [example](https://github.com/pubnub/eon-chart/blob/master/examples/transform.html)| ```function(m){return m}```\n| connect | A function to call when PubNub makes a connection. See [PubNub subscribe](http://www.pubnub.com/docs/javascript/api/reference.html#subscribe) | ```function(){}``` |\n| pubnub | An instance of the PUBNUB javascript global. This is required when using your own keys. See the ```subscribeKey``` example. | ```false```\n| debug | Log EON events to console as they happen | ```false``` \n\n## More on Publishing Messages\n\nThis uses the included PubNub library to pubnub.publish() \npackets to the pubnub.subscribe() call waiting inside the \nC3 framework.\n\nYou probably want to publish data from the back-end instead. \nCheck out our docs for more info:\n\n[http://www.pubnub.com/documentation/](http://www.pubnub.com/documentation/)\n\n## Customize Your Graph\n\neon-chart works will all supported graph types in C3. Just check out the examples above. \n\nYou can learn more about customizing your graph from [the official C3 docs](http://c3js.org/gettingstarted.html#customize).\n\n## X Axis Configuration\n\n### Automatic\n\neon-chart will automatically use the PubNub message timestamp for chart x values. This timestamp is recorded when a message is published to the PubNub data stream network. This is the case when ```xType``` is set to ```"auto"```.\n\n### Custom\n\nIf you\'d like to supply your own Javascript timestamp, set ```xType``` to ```custom```. Then, set ```xId``` to the x value that appears within your published messages. Any custom ```x``` must be a microtime date like ```1465417017340```.\n\n```js\nvar pubnub = new PubNub({\n  publishKey:   \'demo\', // replace with your own pub-key\n  subscribeKey: \'demo\' // replace with your own sub-key\n});\n\neon.chart({\n  pubnub: pubnub,\n  channels: ["c3-spline"], // the pubnub channel for real time data\n  generate: {           // c3 chart object\n    bindto: \'#chart\'\n  },\n  xType: \'custom\',\n  xId: \'x\'\n});\n```\n\nNotice how the code below publishes a key value pair called ```x``` with every message.\n\n```js\npubnub.publish({\n  channels: \'c3-spline\',\n  message: {\n    eon: {\n      \'x\': new Date().getTime(),\n      \'Austin\': Math.floor(Math.random() * 99)\n    }\n  }\n});\n```\n\n## Multiple Points Per Payload\n\nIt is possible to publish multiple plot points per payload. Rather than using the object name ```eon``` use the name ```eons``` and supply an ```Array```. Because you use the ```eons``` property name, the library will know to loop through the array and plot each point.\n\nNote that if publishing multiple points per payload, **you must use ```xType: "custom"``` and supply an ```xId```**.\n\n```js\neons: [\n  {\n    x: new Date().getTime(),\n    value: 1\n  },\n  {\n    x: new Date().getTime(),\n    value: 2\n  }\n] \n```\n\nHere\'s an example of data collected at 100ms increments, but only publishes every 1,000ms. Every payload includes 10 points with 100ms resolution. [See a full example here](https://github.com/pubnub/eon-chart/blob/master/examples/eons.html).\n\n```js\nsetInterval(function(){\n  var data = [];\n  var date = new Date().getTime();\n\n  for(var i = 0; i < 10; i++) {\n      data.push({\n          \'pub_time\': date + (100 * i),\n          \'Austin\': Math.floor(Math.random() * 99)\n      });\n  }\n\n  pubnub.publish({\n    channels: [channel],\n    message: {\n      eons: data\n    }\n  });\n\n}, 1000);\n```\n\n### Disable\n\nYou can disable eon-chart modifications by setting ```xType``` to ```false```. By default C3 will use an incremental x axis (1,2,3,4...).\n\n## Distributed Systems\n\nYou can publish from multiple sources into one chart. For example, you can graph the individual memory usage from 3 servers by supplying the same channel to your PubNub publish requests.\n\nCheck out our [distributed chart example](https://github.com/pubnub/EON-distributed-chart).\n',
+17 silly publish   readmeFilename: 'readme.md',
+17 silly publish   gitHead: '83a17ff4522aee4156eea64a1890322628be67bb',
+17 silly publish   _id: 'eon-chart@1.2.0',
+17 silly publish   _shasum: 'ca63e050ced08d45bd87f81607f4e073a40e8a29',
+17 silly publish   _from: '.' }
+18 verbose getPublishConfig undefined
+19 silly mapToRegistry name eon-chart
+20 silly mapToRegistry using default registry
+21 silly mapToRegistry registry https://registry.npmjs.org/
+22 silly mapToRegistry uri https://registry.npmjs.org/eon-chart
+23 verbose publish registryBase https://registry.npmjs.org/
+24 silly publish uploading /Users/ian/.npm/eon-chart/1.2.0/package.tgz
+25 verbose request uri https://registry.npmjs.org/eon-chart
+26 verbose request sending authorization for write operation
+27 info attempt registry request try #1 at 6:36:31 PM
+28 verbose request using bearer token for auth
+29 verbose request id ba595a6a21ea14fa
+30 http request PUT https://registry.npmjs.org/eon-chart
+31 http 403 https://registry.npmjs.org/eon-chart
+32 verbose headers { 'content-type': 'application/json',
+32 verbose headers   'cache-control': 'max-age=300',
+32 verbose headers   'content-length': '95',
+32 verbose headers   'accept-ranges': 'bytes',
+32 verbose headers   date: 'Thu, 06 Jul 2017 23:36:33 GMT',
+32 verbose headers   via: '1.1 varnish',
+32 verbose headers   connection: 'keep-alive',
+32 verbose headers   'x-served-by': 'cache-dfw1823-DFW',
+32 verbose headers   'x-cache': 'MISS',
+32 verbose headers   'x-cache-hits': '0',
+32 verbose headers   'x-timer': 'S1499384192.052608,VS0,VE1131',
+32 verbose headers   vary: 'Accept-Encoding' }
+33 verbose request invalidating /Users/ian/.npm/registry.npmjs.org/eon-chart on PUT
+34 error publish Failed PUT 403
+35 verbose stack Error: "You cannot publish over the previously published version 1.2.0." : eon-chart
+35 verbose stack     at makeError (/Users/ian/.nvm/versions/node/v4.2.6/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+35 verbose stack     at CachingRegistryClient.<anonymous> (/Users/ian/.nvm/versions/node/v4.2.6/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:252:14)
+35 verbose stack     at Request._callback (/Users/ian/.nvm/versions/node/v4.2.6/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+35 verbose stack     at Request.self.callback (/Users/ian/.nvm/versions/node/v4.2.6/lib/node_modules/npm/node_modules/request/request.js:198:22)
+35 verbose stack     at emitTwo (events.js:87:13)
+35 verbose stack     at Request.emit (events.js:172:7)
+35 verbose stack     at Request.<anonymous> (/Users/ian/.nvm/versions/node/v4.2.6/lib/node_modules/npm/node_modules/request/request.js:1082:10)
+35 verbose stack     at emitOne (events.js:82:20)
+35 verbose stack     at Request.emit (events.js:169:7)
+35 verbose stack     at IncomingMessage.<anonymous> (/Users/ian/.nvm/versions/node/v4.2.6/lib/node_modules/npm/node_modules/request/request.js:1009:12)
+36 verbose statusCode 403
+37 verbose pkgid eon-chart
+38 verbose cwd /Users/ian/Development/eon-chart
+39 error Darwin 15.6.0
+40 error argv "/Users/ian/.nvm/versions/node/v4.2.6/bin/node" "/Users/ian/.nvm/versions/node/v4.2.6/bin/npm" "publish"
+41 error node v4.2.6
+42 error npm  v2.14.12
+43 error code E403
+44 error "You cannot publish over the previously published version 1.2.0." : eon-chart
+45 error If you need help, you may report this error at:
+45 error     <https://github.com/npm/npm/issues>
+46 verbose exit [ 1, true ]
