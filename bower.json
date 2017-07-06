@@ -6,7 +6,7 @@
     "Ian Jennings <ian@meetjennings.com>"
   ],
   "description": "C3 Realtime Charts with PubNub. Part of the EON Framework.",
-  "main": "pubnub-c3.js",
+  "main": "eon-chart.js",
   "keywords": [
     "pubnub",
     "d3",
