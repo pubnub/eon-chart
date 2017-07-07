@@ -3,11 +3,10 @@
 <html>
 <body>
     <script type="text/javascript" src="../eon-chart.js"></script>
-    <script type="text/javascript">
-        console.log(eon);
-    </script>
     <div id="chart"></div>
     <script>
+
+    console.log(eon)
 
       var pubnub = new PubNub({
           publishKey: 'pub-c-923938f1-a4c1-4253-b15a-9c24087904c9',
@@ -26,7 +25,8 @@
             type: 'spline',
             labels: false
           }
-        }
+        },
+        debug: true
       });
     </script>
     <script>
@@ -44,7 +44,7 @@
           }
         });
 
-      }, 1000);
+      }, 100);
     </script>
 </body>
 </html>

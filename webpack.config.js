@@ -5,7 +5,8 @@ module.exports = {
   output:  {
     path:     __dirname,
     filename: "eon-chart.js",
-    library: "eon"
+    library: ["eon", "chart"],
+    libraryTarget: "umd"
   },
   module: {
     loaders: [

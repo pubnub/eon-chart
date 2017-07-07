@@ -1,5 +1,14 @@
-var eon =
-/******/ (function(modules) { // webpackBootstrap
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else if(typeof exports === 'object')
+		exports["chart"] = factory();
+	else
+		root["eon"] = root["eon"] || {}, root["eon"]["chart"] = factory();
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -73,7 +82,6 @@ window.PubNub = __webpack_require__(3);
 window.Visibility = __webpack_require__(4);
 __webpack_require__(7);
 module.exports = __webpack_require__(12);
-console.log(module.exports)
 
 
 /***/ }),
@@ -18950,234 +18958,141 @@ module.exports = function (css) {
 "use strict";
 
 
-window.eon = window.eon || {};
-window.eon.c = {
-  create: function(options) {
+module.exports = function(options) {
 
-    options.debug = options.debug || false;
+      options.debug = options.debug || false;
 
-    var clog = function(s, o, e) {
+      var clog = function(s, o, e) {
 
-      if (options.debug) {
-        if (e) {
-          console.log('EON-CHART:', s, o, e);
-        } else {
-          console.log('EON-CHART:', s, o);
+        if (options.debug) {
+          if (e) {
+            console.log('EON-CHART:', s, o, e);
+          } else {
+            console.log('EON-CHART:', s, o);
+          }
         }
-      }
-    };
-
-    clog('Status:', 'Initialized');
-
-    var self = this;
-    var error = false;
-    var dateID = "_eonDatetime";
-
-    self.chart = false;
-    self.isDead = false;
-
-    self.pubnub = options.pubnub || PubNub || false;
-
-    if (!self.pubnub) {
-      error = "PubNub not found. See http://www.pubnub.com/docs/javascript/javascript-sdk.html#_where_do_i_get_the_code";
-    }
-
-    options.transform = options.transform || function(m) {
-      return m
-    };
-    options.channels = options.channels || false;
-    options.channelGroups = options.channelGroups || false;
-
-    options.generate = options.generate || {};
-    if (!options.generate.data) {
-      options.generate.data = {
-        json: null
       };
-    }
 
-    options.generate.line = options.generate.line || {};
+      clog('Status:', 'Initialized');
 
-    if(!options.generate.line.connectNull) {
-      options.generate.line.connectNull = true;
-    }
+      var self = {};
+      var error = false;
+      var dateID = "_eonDatetime";
 
-    options.flow = options.flow || false;
-    if (options.flow) {
-      if (typeof(options.flow) == "boolean") {
-        options.flow = {};
-      }
-      options.flow.length = options.flow.length || 0;
-    }
-    options.history = options.history || false;
+      self.chart = false;
+      self.isDead = false;
 
-    options.message = options.message || function() {};
-    options.connect = options.connect || function() {};
+      self.pubnub = options.pubnub || PubNub || false;
 
-    // x axis definition
-    options.xType = options.xType || "auto";
-    options.xId = options.xId || "x";
-
-    options.rate = options.rate || 1000;
-
-    if (options.xType == "custom") {
-
-      options.generate.data.x = options.xId;
-
-    } else if (options.xType == "auto") {
-
-      options.xId = dateID;
-      options.generate.data.x = options.xId;
-
-    } else {
-      options.xType = false;
-    }
-
-    if (options.xType) {
-
-      clog('Setup:', 'xType Supplied');
-
-      if (!options.generate.axis) {
-        options.generate.axis = {}
+      if (!self.pubnub) {
+        error = "PubNub not found. See http://www.pubnub.com/docs/javascript/javascript-sdk.html#_where_do_i_get_the_code";
       }
 
-      // assume js date
-      if (!options.generate.axis.x) {
-        options.generate.axis.x = {};
-      }
-      if (!options.generate.axis.x.type) {
-        options.generate.axis.x.type = 'timeseries';
-      }
-      if (!options.generate.axis.x.tick) {
-        options.generate.axis.x.tick = {};
-      }
-      if (!options.generate.axis.x.tick.format) {
-        options.generate.axis.x.tick.format = '%Y-%m-%d %H:%M:%S';
-      }
+      options.transform = options.transform || function(m) {
+        return m
+      };
+      options.channels = options.channels || false;
+      options.channelGroups = options.channelGroups || false;
 
-    }
-
-    clog('Options:', options);
-
-    if (!options.channels && !options.channelGroups) {
-      error = "No channels or channel groups supplied.";
-    };
-
-    if (['spline', 'area', 'area-spline', 'step', 'area-step', 'scatter'].indexOf(options.generate.data.type) == -1
-      && typeof(options.generate.data.type) != "undefined") {
-      options.limit = options.limit || 1;
-    } else {
-      options.limit = options.limit || 10;
-    }
-
-    var appendDate = function(data, pubnubDate) {
-
-      if (options.xType == "auto") {
-        clog('PubNub:', 'Appending PubNub datetime to columns.');
-        var date = Math.floor(pubnubDate / 10000);
-        data[dateID] = new Date(date).getTime();
-      }
-
-      return data;
-
-    };
-
-
-    var nextData = [];
-    var dataStore = [];
-
-    // persistent data store
-    var object = {
-      json: [],
-      keys: {
-        value: [],
-        x: options.xId
-      }
-    };
-
-    // data store for flow animations
-    var fobject = {};
-    var stale = false;
-
-    var loadHistory = function() {
-
-      clog('Status:', 'Restoring from history');
-
-      for(var k in options.channels) {
-
-        var i = 0;
-
-        var page = function(timetoken) {
-
-          clog('History:', 'Retrieving messages from ' + timetoken);
-
-          self.pubnub.history({
-            count: options.limit,
-            channel: options.channels[k],
-            end: timetoken,
-            includeTimetoken: true
-          }, function(status, payload) {
-
-            var msgs = payload.messages;
-            var start = payload.startTimeToken;
-            var end = payload.endTimeToken;
-
-            clog('History:', msgs.length + ' messages found');
-
-            clog('History:', 'Complete... Rendering');
-
-            i = 0;
-            while (i < msgs.length) {
-
-              var a = msgs[i];
-
-              a.message = options.transform(a.entry);
-
-              if(a.message && (a.message.eon || a.message.eons)) {
-
-                var as = a.message.eons || [];
-
-                if(a.message.eon) {
-                  as.push(a.message.eon);
-                }
-
-                for(var j in as) {
-
-                  if(as.hasOwnProperty(j)) {
-                    as[j] = appendDate(as[j], a.timetoken)
-                    storeData(as[j], true);
-                  }
-
-                }
-
-              } else {
-                clog('Rejecting history message as improper format supplied.');
-              }
-
-
-
-              i++;
-
-            }
-
-            if (msgs.length > 1 && object.json.length < options.limit - 1) {
-              page(end);
-            } else {
-              loadData(object);
-            }
-
-          });
-
+      options.generate = options.generate || {};
+      if (!options.generate.data) {
+        options.generate.data = {
+          json: null
         };
+      }
 
-        page();
+      options.generate.line = options.generate.line || {};
+
+      if(!options.generate.line.connectNull) {
+        options.generate.line.connectNull = true;
+      }
+
+      options.flow = options.flow || false;
+      if (options.flow) {
+        if (typeof(options.flow) == "boolean") {
+          options.flow = {};
+        }
+        options.flow.length = options.flow.length || 0;
+      }
+      options.history = options.history || false;
+
+      options.message = options.message || function() {};
+      options.connect = options.connect || function() {};
+
+      // x axis definition
+      options.xType = options.xType || "auto";
+      options.xId = options.xId || "x";
+
+      options.rate = options.rate || 1000;
+
+      if (options.xType == "custom") {
+
+        options.generate.data.x = options.xId;
+
+      } else if (options.xType == "auto") {
+
+        options.xId = dateID;
+        options.generate.data.x = options.xId;
+
+      } else {
+        options.xType = false;
+      }
+
+      if (options.xType) {
+
+        clog('Setup:', 'xType Supplied');
+
+        if (!options.generate.axis) {
+          options.generate.axis = {}
+        }
+
+        // assume js date
+        if (!options.generate.axis.x) {
+          options.generate.axis.x = {};
+        }
+        if (!options.generate.axis.x.type) {
+          options.generate.axis.x.type = 'timeseries';
+        }
+        if (!options.generate.axis.x.tick) {
+          options.generate.axis.x.tick = {};
+        }
+        if (!options.generate.axis.x.tick.format) {
+          options.generate.axis.x.tick.format = '%Y-%m-%d %H:%M:%S';
+        }
 
       }
 
-    };
+      clog('Options:', options);
 
-    var boot = function() {
+      if (!options.channels && !options.channelGroups) {
+        error = "No channels or channel groups supplied.";
+      };
 
-      fobject = {
+      if (['spline', 'area', 'area-spline', 'step', 'area-step', 'scatter'].indexOf(options.generate.data.type) == -1
+        && typeof(options.generate.data.type) != "undefined") {
+        options.limit = options.limit || 1;
+      } else {
+        options.limit = options.limit || 10;
+      }
+
+      var appendDate = function(data, pubnubDate) {
+
+        if (options.xType == "auto") {
+          clog('PubNub:', 'Appending PubNub datetime to columns.');
+          var date = Math.floor(pubnubDate / 10000);
+          data[dateID] = new Date(date).getTime();
+        }
+
+        return data;
+
+      };
+
+
+      var nextData = [];
+      var dataStore = [];
+
+      // persistent data store
+      var object = {
         json: [],
         keys: {
           value: [],
@@ -19185,260 +19100,325 @@ window.eon.c = {
         }
       };
 
-      clog('Status:', 'Chart Animation Enabled');
+      // data store for flow animations
+      var fobject = {};
+      var stale = false;
 
-      self.isDead = false;
+      var loadHistory = function() {
 
-      options.generate.data.columns = [];
-      self.chart = c3.generate(options.generate);
+        clog('Status:', 'Restoring from history');
 
-    };
+        for(var k in options.channels) {
 
-    var uniqueAppend = function(array, append) {
+          var i = 0;
 
-      // see if value is in array of keys
-      var exists = false;
-      for (var l = 0; l < array.length; l++) {
-        if (array[l] == append) {
-          exists = true;
+          var page = function(timetoken) {
+
+            clog('History:', 'Retrieving messages from ' + timetoken);
+
+            self.pubnub.history({
+              count: options.limit,
+              channel: options.channels[k],
+              end: timetoken,
+              includeTimetoken: true
+            }, function(status, payload) {
+
+              var msgs = payload.messages;
+              var start = payload.startTimeToken;
+              var end = payload.endTimeToken;
+
+              clog('History:', msgs.length + ' messages found');
+
+              clog('History:', 'Complete... Rendering');
+
+              i = 0;
+              while (i < msgs.length) {
+
+                var a = msgs[i];
+
+                a.message = options.transform(a.entry);
+
+                if(a.message && (a.message.eon || a.message.eons)) {
+
+                  var as = a.message.eons || [];
+
+                  if(a.message.eon) {
+                    as.push(a.message.eon);
+                  }
+
+                  for(var j in as) {
+
+                    if(as.hasOwnProperty(j)) {
+                      as[j] = appendDate(as[j], a.timetoken)
+                      storeData(as[j], true);
+                    }
+
+                  }
+
+                } else {
+                  clog('Rejecting history message as improper format supplied.');
+                }
+
+
+
+                i++;
+
+              }
+
+              if (msgs.length > 1 && object.json.length < options.limit - 1) {
+                page(end);
+              } else {
+                loadData(object);
+              }
+
+            });
+
+          };
+
+          page();
+
         }
-      }
-
-      if (!exists) {
-        array.push(append);
-      }
-
-      return array;
-
-    };
-
-    var flowLength = 0;
-
-    var mapAppend = function(object) {
-
-      // this just keeps a list of used keys in the object
-      for (var i = 0; i < object.json.length; i++) {
-        for (var key in object.json[i]) {
-          object.keys.value = uniqueAppend(object.keys.value, key);
-        }
-      }
-
-      return object;
-
-    }
-
-    var storeData = function(data, isHistory) {
-
-      object.json.push(data);
-
-      if(object.json.length > (options.limit * options.channels.length)) {
-        object.json.shift();
-        flowLength++;
-      }
-
-      mapAppend(object);
-
-      if (options.flow && !isHistory) {
-
-        fobject.json.push(data);
-        mapAppend(fobject);
 
       };
 
-    };
+      var boot = function() {
 
-    var loadData = function(data) {
-      flowLength = 0;
-      clog('Load Data')
-      self.chart.load(data);
-    }
-
-    Visibility.every(options.rate, function () {
-        clog('Status:', 'Rendering');
-
-        if (!stale) {
-          clog('Render:', 'No new data');
-        } else if(self.isDead) {
-          clog('Render:', 'Tab out of focus.');
-        } else {
-
-          if(fobject.json.length) {
-
-            fobject.length = flowLength;
-
-            self.chart.flow(fobject);
-
-            fobject = {
-              json: [],
-              keys: {
-                value: [],
-                x: options.xId
-              }
-            };
-
-            flowLength = 0;
-
-          } else {
-            loadData(object);
+        fobject = {
+          json: [],
+          keys: {
+            value: [],
+            x: options.xId
           }
+        };
 
-          stale = false;
+        clog('Status:', 'Chart Animation Enabled');
 
-          clog('Render:', 'Complete');
+        self.isDead = false;
 
+        options.generate.data.columns = [];
+        self.chart = c3.generate(options.generate);
+
+      };
+
+      var uniqueAppend = function(array, append) {
+
+        // see if value is in array of keys
+        var exists = false;
+        for (var l = 0; l < array.length; l++) {
+          if (array[l] == append) {
+            exists = true;
+          }
         }
 
-    });
+        if (!exists) {
+          array.push(append);
+        }
 
-    var elog = function(text) {
-      console.error("EON:" + text);
-    };
+        return array;
 
-    var subscribe = function() {
+      };
 
-      self.pubnub.addListener({
-        status: function(statusEvent) {
-          if (statusEvent.category === "PNConnectedCategory") {
-            options.connect();
+      var flowLength = 0;
+
+      var mapAppend = function(object) {
+
+        // this just keeps a list of used keys in the object
+        for (var i = 0; i < object.json.length; i++) {
+          for (var key in object.json[i]) {
+            object.keys.value = uniqueAppend(object.keys.value, key);
           }
-        },
-        message: function(m) {
+        }
 
-          if(options.channels.indexOf(m.subscribedChannel) > -1) {
+        return object;
 
-            clog('PubNub:', '-------------------');
-            clog('PubNub:', 'Received Message', m);
+      }
 
-            clog('PubNub:', 'Transforming Message using options.transform');
+      var storeData = function(data, isHistory) {
 
-            var message = options.transform(m.message);
+        object.json.push(data);
 
-            if(message && (message.eon || message.eons)) {
+        if(object.json.length > (options.limit * options.channels.length)) {
+          object.json.shift();
+          flowLength++;
+        }
 
-              var ms = message.eons || [];
+        mapAppend(object);
 
-              if(message.eon) {
-                ms.push(message.eon);
-              }
+        if (options.flow && !isHistory) {
 
-              for(var i in ms) {
+          fobject.json.push(data);
+          mapAppend(fobject);
 
-                if(ms.hasOwnProperty(i)) {
+        };
 
-                  ms[i] = appendDate(ms[i], m.timetoken);
-                  clog('PubNub:', 'Message Result', ms[i]);
+      };
 
-                  stale = true;
-                  storeData(ms[i], false);
+      var loadData = function(data) {
+        flowLength = 0;
+        clog('Load Data')
+        self.chart.load(data);
+      }
 
+      Visibility.every(options.rate, function () {
+          clog('Status:', 'Rendering');
+
+          if (!stale) {
+            clog('Render:', 'No new data');
+          } else if(self.isDead) {
+            clog('Render:', 'Tab out of focus.');
+          } else {
+
+            if(fobject.json.length) {
+
+              fobject.length = flowLength;
+
+              self.chart.flow(fobject);
+
+              fobject = {
+                json: [],
+                keys: {
+                  value: [],
+                  x: options.xId
                 }
+              };
 
-              }
-
-              clog('PubNub:', 'Calling options.message');
+              flowLength = 0;
 
             } else {
-
-                if(message && !message.eon) {
-                  console.error('Eon messages must be in proper format. For example:',  {eon: [1,2,3]})
-                } else {
-                  clog('EON:', 'Message rejected');
-                }
-
+              loadData(object);
             }
 
-            options.message(message, m.timetoken, m.channel);
+            stale = false;
+
+            clog('Render:', 'Complete');
 
           }
 
-        }
       });
 
-      if(options.channelGroups) {
+      var elog = function(text) {
+        console.error("EON:" + text);
+      };
 
-        // assuming an intialized PubNub instance already exists
-        pubnub.channelGroups.listChannels({
-            channelGroup: options.channelGroups
-          }, function (status, response) {
+      var subscribe = function() {
 
-            if (status.error) {
-              clog("operation failed w/ error:", status);
-              return;
+        self.pubnub.addListener({
+          status: function(statusEvent) {
+            if (statusEvent.category === "PNConnectedCategory") {
+              options.connect();
             }
+          },
+          message: function(m) {
 
-            options.channels = response.channels;
+            if(options.channels.indexOf(m.subscribedChannel) > -1) {
 
-            if(options.history) {
-              loadHistory();
+              clog('PubNub:', '-------------------');
+              clog('PubNub:', 'Received Message', m);
+
+              clog('PubNub:', 'Transforming Message using options.transform');
+
+              var message = options.transform(m.message);
+
+              if(message && (message.eon || message.eons)) {
+
+                var ms = message.eons || [];
+
+                if(message.eon) {
+                  ms.push(message.eon);
+                }
+
+                for(var i in ms) {
+
+                  if(ms.hasOwnProperty(i)) {
+
+                    ms[i] = appendDate(ms[i], m.timetoken);
+                    clog('PubNub:', 'Message Result', ms[i]);
+
+                    stale = true;
+                    storeData(ms[i], false);
+
+                  }
+
+                }
+
+                clog('PubNub:', 'Calling options.message');
+
+              } else {
+
+                  if(message && !message.eon) {
+                    console.error('Eon messages must be in proper format. For example:',  {eon: [1,2,3]})
+                  } else {
+                    clog('EON:', 'Message rejected');
+                  }
+
+              }
+
+              options.message(message, m.timetoken, m.channel);
+
             }
-
-            self.pubnub.subscribe({
-              channelGroups: options.channelGroups
-            });
 
           }
-        );
-
-      } else {
-
-        if(options.history) {
-          loadHistory();
-        }
-
-        self.pubnub.subscribe({
-          channels: options.channels
         });
 
-      }
+        if(options.channelGroups) {
 
-    };
+          // assuming an intialized PubNub instance already exists
+          pubnub.channelGroups.listChannels({
+              channelGroup: options.channelGroups
+            }, function (status, response) {
 
-    var init = function() {
+              if (status.error) {
+                clog("operation failed w/ error:", status);
+                return;
+              }
 
-      clog('PubNub:', 'Subscribed to ' + options.channels);
-      subscribe();
+              options.channels = response.channels;
 
-    };
+              if(options.history) {
+                loadHistory();
+              }
 
-    if (error) {
-      elog(error);
-    } else {
-      init();
-      boot();
+              self.pubnub.subscribe({
+                channelGroups: options.channelGroups
+              });
 
-    }
+            }
+          );
 
-    return self.chart;
+        } else {
 
-  },
-  flatten: function(ob) {
+          if(options.history) {
+            loadHistory();
+          }
 
-    var toReturn = {};
+          self.pubnub.subscribe({
+            channels: options.channels
+          });
 
-    for (var i in ob) {
-      if (!ob.hasOwnProperty(i)) continue;
-
-      if ((typeof ob[i]) == 'object') {
-        var flatObject = eon.c.flatten(ob[i]);
-        for (var x in flatObject) {
-          if (!flatObject.hasOwnProperty(x)) continue;
-
-          toReturn[i + '.' + x] = flatObject[x];
         }
+
+      };
+
+      var init = function() {
+
+        clog('PubNub:', 'Subscribed to ' + options.channels);
+        subscribe();
+
+      };
+
+      if (error) {
+        elog(error);
       } else {
-        toReturn[i] = ob[i];
+        init();
+        boot();
+
       }
-    }
 
-    return toReturn;
+      return self.chart;
 
-  }
-};
-window.eon.chart = function(o) {
-  return new window.eon.c.create(o);
-};
-module.exports = window.eon;
+}
 
 
 /***/ })
 /******/ ]);
+});
