@@ -487,3 +487,4 @@ window.eon.c = {
 window.eon.chart = function(o) {
   return new window.eon.c.create(o);
 };
+module.exports = window.eon.chart;
