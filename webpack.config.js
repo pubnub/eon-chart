@@ -4,7 +4,8 @@ module.exports = {
   entry:   "./entry.js",
   output:  {
     path:     __dirname,
-    filename: "eon-chart.js"
+    filename: "eon-chart.js",
+    library: "eon"
   },
   module: {
     loaders: [

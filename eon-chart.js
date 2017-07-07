@@ -1,3 +1,4 @@
+var eon =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -72,6 +73,7 @@ window.PubNub = __webpack_require__(3);
 window.Visibility = __webpack_require__(4);
 __webpack_require__(7);
 module.exports = __webpack_require__(12);
+console.log(module.exports)
 
 
 /***/ }),
@@ -19435,7 +19437,7 @@ window.eon.c = {
 window.eon.chart = function(o) {
   return new window.eon.c.create(o);
 };
-module.exports = window.eon.chart;
+module.exports = window.eon;
 
 
 /***/ })
