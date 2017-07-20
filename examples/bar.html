@@ -64,21 +64,6 @@
     </script>
 
     <script>
-
-      eon.chart({
-        channels: [channel],
-        flow: true,
-        pubnub: pubnub,
-        generate: {
-          bindto: '#chart3',
-          data: {
-            type: 'spline',
-            labels: false
-          }
-        }
-      });
-    </script>
-    <script>
       setInterval(function(){
 
         pubnub.publish({

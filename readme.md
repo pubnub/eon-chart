@@ -167,7 +167,7 @@ pubnub.publish({
 
 ### Category
 
-Eon charts supports both time series bar charts and point of time bar charts. If you'd like to represent a bar chart in a single point of time, supply ```category``` as your ```xType``` and only the latest data will appear in the chart categorized by key.
+Eon charts supports both time series bar charts and point of time bar charts. If you'd like to represent a bar chart in a single point of time, supply ```category``` as your ```xType``` and only the latest data will appear in the chart categorized by key. See ```examples/bar.html``` for an example.
 
 ## Multiple Points Per Payload
 
