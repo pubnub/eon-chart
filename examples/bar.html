@@ -1,15 +1,21 @@
 <html>
   <head>
-    <script type="text/javascript" src="https://pubnub.github.io/eon/v/eon/1.0.0/eon.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://pubnub.github.io/eon/v/eon/1.0.0/eon.css"/>
+    <script type="text/javascript" src="../eon-chart.js"></script>
   </head>
   <body>
+    <style type="text/css">
+      #chart, #chart2 {
+        height: 200px;
+      }
+    </style>
     <div id="chart"></div>
+    <div id="chart2"></div>
+    <div id="chart3"></div>
     <script>
 
       var pubnub = new PubNub({
-        publishKey: 'your_pub_key',
-        subscribeKey: 'your_sub_key'
+            publishKey: 'pub-c-923938f1-a4c1-4253-b15a-9c24087904c9',
+            subscribeKey: 'sub-c-bd9ab0d6-6e02-11e5-8d3b-0619f8945a4f'
       });
 
       var channel = "c3-bar-test" + Math.random();
@@ -17,6 +23,7 @@
       eon.chart({
         pubnub: pubnub,
         channels: [channel],
+        limit: 10,
         generate: {
           bindto: '#chart',
           data: {
@@ -27,10 +34,35 @@
             width: {
               ratio: 0.5
             }
+          },
+          axis: {
+              // rotated: true
+          }
+        }
+      });
+
+      eon.chart({
+        pubnub: pubnub,
+        channels: [channel + '1'],
+        xType: 'category',
+        generate: {
+          bindto: '#chart2',
+          data: {
+            labels: true,
+            type: 'bar'
+          },
+          bar: {
+            width: {
+              ratio: 0.5
+            }
+          },
+          axis: {
+              rotated: true
           }
         }
       });
     </script>
+
     <script>
       setInterval(function(){
 
@@ -46,7 +78,22 @@
           }
         });
 
-      }, 700);
+      }, 1000);
+      setInterval(function(){
+
+        pubnub.publish({
+          channel: channel + '1',
+          message: {
+            eon: {
+              'Austin': Math.floor(Math.random() * 99),
+              'New York': Math.floor(Math.random() * 99),
+              'San Francisco': Math.floor(Math.random() * 99),
+              'Portland': Math.floor(Math.random() * 99)
+            }
+          }
+        });
+
+      }, 1000);
     </script>
   </body>
 </html>

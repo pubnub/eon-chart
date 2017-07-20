@@ -1,15 +1,14 @@
 <html>
   <head>
-    <script type="text/javascript" src="https://pubnub.github.io/eon/v/eon/1.0.0/eon.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://pubnub.github.io/eon/v/eon/1.0.0/eon.css"/>
+    <script type="text/javascript" src="../eon-chart.js"></script>
   </head>
   <body>
     <div id="chart"></div>
     <script>
 
       var pubnub = new PubNub({
-          publishKey: 'pub-c-923938f1-a4c1-4253-b15a-9c24087904c9',
-          subscribeKey: 'sub-c-bd9ab0d6-6e02-11e5-8d3b-0619f8945a4f'
+        publishKey: 'demo',
+        subscribeKey: 'demo'
       });
 
       var channel = "c3-spline" + Math.random();
@@ -43,7 +42,7 @@
           }
         });
 
-      }, 100);
+      }, 1000);
     </script>
   </body>
 </html>

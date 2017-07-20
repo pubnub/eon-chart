@@ -1,15 +1,14 @@
 <html>
   <head>
-    <script type="text/javascript" src="https://pubnub.github.io/eon/v/eon/1.0.0/eon.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://pubnub.github.io/eon/v/eon/1.0.0/eon.css"/>
+    <script type="text/javascript" src="../eon-chart.js"></script>
   </head>
   <body>
     <div id="chart"></div>
     <script>
 
       var pubnub = new PubNub({
-        publishKey: 'your_pub_key',
-        subscribeKey: 'your_sub_key'
+        publishKey: 'demo',
+        subscribeKey: 'demo'
       });
 
       var channels = ['pubnub-c3-1', 'pubnub-c3-2', 'pubnub-c3-3'];
@@ -19,7 +18,7 @@
           {
               channels: channels,
               channelGroup: "pubnub-c3-example"
-          }, 
+          },
           function(status) {
               if (status.error) {
                   console.log("operation failed w/ status: ", status);
@@ -30,13 +29,13 @@
                   pubnub.channelGroups.listChannels(
                     {
                       channelGroup: "pubnub-c3-example"
-                    }, 
+                    },
                     function (status, response) {
                       if (status.error) {
                         console.log("operation failed w/ error:", status);
                         return;
                       }
-                       
+
                       console.log("listing push channel for device")
                       response.channels.forEach( function (channel) {
                         console.log(channel)
