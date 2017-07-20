@@ -3,7 +3,14 @@
     <script type="text/javascript" src="../eon-chart.js"></script>
   </head>
   <body>
+    <style type="text/css">
+      #chart, #chart2 {
+        height: 200px;
+      }
+    </style>
     <div id="chart"></div>
+    <div id="chart2"></div>
+    <div id="chart3"></div>
     <script>
 
       var pubnub = new PubNub({
@@ -16,7 +23,7 @@
       eon.chart({
         pubnub: pubnub,
         channels: [channel],
-        xType: 'category',
+        limit: 10,
         generate: {
           bindto: '#chart',
           data: {
@@ -50,6 +57,22 @@
         });
 
       }, 700);
+    </script>
+
+    <script>
+
+      eon.chart({
+        channels: [channel],
+        flow: true,
+        pubnub: pubnub,
+        generate: {
+          bindto: '#chart3',
+          data: {
+            type: 'spline',
+            labels: false
+          }
+        }
+      });
     </script>
   </body>
 </html>
