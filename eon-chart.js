@@ -19253,7 +19253,7 @@ module.exports = function(options) {
 
       };
 
-      var loadData = function(data) {
+      var categorize = function(data) {
 
         var newobj = JSON.parse(JSON.stringify(data));
 
@@ -19261,7 +19261,6 @@ module.exports = function(options) {
 
         var newData = [];
         for(var i in data.json[0]) {
-          console.log(i, data.json[0][i])
 
           var whatever = {
             name: i,
@@ -19272,7 +19271,6 @@ module.exports = function(options) {
 
         }
 
-
         newobj.json = newData;
 
         newobj.keys = {
@@ -19280,13 +19278,19 @@ module.exports = function(options) {
           value: ['value']
         }
 
+        return newobj;
+
+      }
+
+      var loadData = function(data) {
+
+        if(options.generate.data.type == 'bar') {
+          data = categorize(data);
+        }
+
         flowLength = 0;
         clog('Load Data')
-
-        console.log(newobj)
-
-
-        self.chart.load(newobj);
+        self.chart.load(data);
       }
 
       Visibility.every(options.rate, function () {
