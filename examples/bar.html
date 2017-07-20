@@ -14,8 +14,8 @@
     <script>
 
       var pubnub = new PubNub({
-        publishKey: 'demo',
-        subscribeKey: 'demo'
+            publishKey: 'pub-c-923938f1-a4c1-4253-b15a-9c24087904c9',
+            subscribeKey: 'sub-c-bd9ab0d6-6e02-11e5-8d3b-0619f8945a4f'
       });
 
       var channel = "c3-bar-test" + Math.random();
@@ -40,23 +40,27 @@
           }
         }
       });
-    </script>
-    <script>
-      setInterval(function(){
 
-        pubnub.publish({
-          channel: channel,
-          message: {
-            eon: {
-              'Austin': Math.floor(Math.random() * 99),
-              'New York': Math.floor(Math.random() * 99),
-              'San Francisco': Math.floor(Math.random() * 99),
-              'Portland': Math.floor(Math.random() * 99)
+      eon.chart({
+        pubnub: pubnub,
+        channels: [channel + '1'],
+        xType: 'category',
+        generate: {
+          bindto: '#chart2',
+          data: {
+            labels: true,
+            type: 'bar'
+          },
+          bar: {
+            width: {
+              ratio: 0.5
             }
+          },
+          axis: {
+              rotated: true
           }
-        });
-
-      }, 700);
+        }
+      });
     </script>
 
     <script>
@@ -73,6 +77,38 @@
           }
         }
       });
+    </script>
+    <script>
+      setInterval(function(){
+
+        pubnub.publish({
+          channel: channel,
+          message: {
+            eon: {
+              'Austin': Math.floor(Math.random() * 99),
+              'New York': Math.floor(Math.random() * 99),
+              'San Francisco': Math.floor(Math.random() * 99),
+              'Portland': Math.floor(Math.random() * 99)
+            }
+          }
+        });
+
+      }, 1000);
+      setInterval(function(){
+
+        pubnub.publish({
+          channel: channel + '1',
+          message: {
+            eon: {
+              'Austin': Math.floor(Math.random() * 99),
+              'New York': Math.floor(Math.random() * 99),
+              'San Francisco': Math.floor(Math.random() * 99),
+              'Portland': Math.floor(Math.random() * 99)
+            }
+          }
+        });
+
+      }, 1000);
     </script>
   </body>
 </html>

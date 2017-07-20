@@ -404,7 +404,10 @@ module.exports = function(options, c3, Visibility, PubNub) {
     }, options.rate);
 
     var listener = Visibility.change(function (e, state) {
-      self.isDead = !Visibility.hidden();
+
+      console.log('hidden', Visibility.hidden())
+
+      self.isDead = Visibility.hidden();
     });
 
     self.elog = function(text) {

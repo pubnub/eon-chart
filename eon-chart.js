@@ -78,10 +78,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports, __webpack_require__) {
 
 window.PubNub = __webpack_require__(1);
-__webpack_require__(5);
+__webpack_require__(2);
 module.exports = function(options) {
-    eonChart = __webpack_require__(10);
-    return new eonChart(options, __webpack_require__(11), __webpack_require__(2));
+    eonChart = __webpack_require__(7);
+    return new eonChart(options, __webpack_require__(8), __webpack_require__(10));
 };
 
 
@@ -97,383 +97,10 @@ null!=i&&(c.reverse=i.toString()),c}function h(e,t){var n={messages:[],startTime
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(3)
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-;(function (window) {
-    "use strict";
-
-    var lastTimer = -1;
-
-    var install = function (Visibility) {
-
-        // Run callback every `interval` milliseconds if page is visible and
-        // every `hiddenInterval` milliseconds if page is hidden.
-        //
-        //   Visibility.every(60 * 1000, 5 * 60 * 1000, function () {
-        //       checkNewMails();
-        //   });
-        //
-        // You can skip `hiddenInterval` and callback will be called only if
-        // page is visible.
-        //
-        //   Visibility.every(1000, function () {
-        //       updateCountdown();
-        //   });
-        //
-        // It is analog of `setInterval(callback, interval)` but use visibility
-        // state.
-        //
-        // It return timer ID, that you can use in `Visibility.stop(id)` to stop
-        // timer (`clearInterval` analog).
-        // Warning: timer ID is different from interval ID from `setInterval`,
-        // so don’t use it in `clearInterval`.
-        //
-        // On change state from hidden to visible timers will be execute.
-        Visibility.every = function (interval, hiddenInterval, callback) {
-            Visibility._time();
-
-            if ( !callback ) {
-                callback = hiddenInterval;
-                hiddenInterval = null;
-            }
-
-            lastTimer += 1;
-            var number = lastTimer;
-
-            Visibility._timers[number] = {
-                visible:  interval,
-                hidden:   hiddenInterval,
-                callback: callback
-            };
-            Visibility._run(number, false);
-
-            if ( Visibility.isSupported() ) {
-                Visibility._listen();
-            }
-            return number;
-        };
-
-        // Stop timer from `every` method by it ID (`every` method return it).
-        //
-        //   slideshow = Visibility.every(5 * 1000, function () {
-        //       changeSlide();
-        //   });
-        //   $('.stopSlideshow').click(function () {
-        //       Visibility.stop(slideshow);
-        //   });
-        Visibility.stop = function(id) {
-            if ( !Visibility._timers[id] ) {
-                return false;
-            }
-            Visibility._stop(id);
-            delete Visibility._timers[id];
-            return true;
-        };
-
-        // Callbacks and intervals added by `every` method.
-        Visibility._timers = { };
-
-        // Initialize variables on page loading.
-        Visibility._time = function () {
-            if ( Visibility._timed ) {
-                return;
-            }
-            Visibility._timed     = true;
-            Visibility._wasHidden = Visibility.hidden();
-
-            Visibility.change(function () {
-                Visibility._stopRun();
-                Visibility._wasHidden = Visibility.hidden();
-            });
-        };
-
-        // Try to run timer from every method by it’s ID. It will be use
-        // `interval` or `hiddenInterval` depending on visibility state.
-        // If page is hidden and `hiddenInterval` is null,
-        // it will not run timer.
-        //
-        // Argument `runNow` say, that timers must be execute now too.
-        Visibility._run = function (id, runNow) {
-            var interval,
-                timer = Visibility._timers[id];
-
-            if ( Visibility.hidden() ) {
-                if ( null === timer.hidden ) {
-                    return;
-                }
-                interval = timer.hidden;
-            } else {
-                interval = timer.visible;
-            }
-
-            var runner = function () {
-                timer.last = new Date();
-                timer.callback.call(window);
-            }
-
-            if ( runNow ) {
-                var now  = new Date();
-                var last = now - timer.last ;
-
-                if ( interval > last ) {
-                    timer.delay = setTimeout(function () {
-                        timer.id = setInterval(runner, interval);
-                        runner();
-                    }, interval - last);
-                } else {
-                    timer.id = setInterval(runner, interval);
-                    runner();
-                }
-
-            } else {
-              timer.id = setInterval(runner, interval);
-            }
-        };
-
-        // Stop timer from `every` method by it’s ID.
-        Visibility._stop = function (id) {
-            var timer = Visibility._timers[id];
-            clearInterval(timer.id);
-            clearTimeout(timer.delay);
-            delete timer.id;
-            delete timer.delay;
-        };
-
-        // Listener for `visibilitychange` event.
-        Visibility._stopRun = function (event) {
-            var isHidden  = Visibility.hidden(),
-                wasHidden = Visibility._wasHidden;
-
-            if ( (isHidden && !wasHidden) || (!isHidden && wasHidden) ) {
-                for ( var i in Visibility._timers ) {
-                    Visibility._stop(i);
-                    Visibility._run(i, !isHidden);
-                }
-            }
-        };
-
-        return Visibility;
-    }
-
-    if ( typeof(module) != 'undefined' && module.exports ) {
-        module.exports = install(__webpack_require__(4));
-    } else {
-        install(window.Visibility)
-    }
-
-})(window);
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-;(function (global) {
-    "use strict";
-
-    var lastId = -1;
-
-    // Visibility.js allow you to know, that your web page is in the background
-    // tab and thus not visible to the user. This library is wrap under
-    // Page Visibility API. It fix problems with different vendor prefixes and
-    // add high-level useful functions.
-    var self = {
-
-        // Call callback only when page become to visible for user or
-        // call it now if page is visible now or Page Visibility API
-        // doesn’t supported.
-        //
-        // Return false if API isn’t supported, true if page is already visible
-        // or listener ID (you can use it in `unbind` method) if page isn’t
-        // visible now.
-        //
-        //   Visibility.onVisible(function () {
-        //       startIntroAnimation();
-        //   });
-        onVisible: function (callback) {
-            var support = self.isSupported();
-            if ( !support || !self.hidden() ) {
-                callback();
-                return support;
-            }
-
-            var listener = self.change(function (e, state) {
-                if ( !self.hidden() ) {
-                    self.unbind(listener);
-                    callback();
-                }
-            });
-            return listener;
-        },
-
-        // Call callback when visibility will be changed. First argument for
-        // callback will be original event object, second will be visibility
-        // state name.
-        //
-        // Return listener ID to unbind listener by `unbind` method.
-        //
-        // If Page Visibility API doesn’t supported method will be return false
-        // and callback never will be called.
-        //
-        //   Visibility.change(function(e, state) {
-        //       Statistics.visibilityChange(state);
-        //   });
-        //
-        // It is just proxy to `visibilitychange` event, but use vendor prefix.
-        change: function (callback) {
-            if ( !self.isSupported() ) {
-                return false;
-            }
-            lastId += 1;
-            var number = lastId;
-            self._callbacks[number] = callback;
-            self._listen();
-            return number;
-        },
-
-        // Remove `change` listener by it ID.
-        //
-        //   var id = Visibility.change(function(e, state) {
-        //       firstChangeCallback();
-        //       Visibility.unbind(id);
-        //   });
-        unbind: function (id) {
-            delete self._callbacks[id];
-        },
-
-        // Call `callback` in any state, expect “prerender”. If current state
-        // is “prerender” it will wait until state will be changed.
-        // If Page Visibility API doesn’t supported, it will call `callback`
-        // immediately.
-        //
-        // Return false if API isn’t supported, true if page is already after
-        // prerendering or listener ID (you can use it in `unbind` method)
-        // if page is prerended now.
-        //
-        //   Visibility.afterPrerendering(function () {
-        //       Statistics.countVisitor();
-        //   });
-        afterPrerendering: function (callback) {
-            var support   = self.isSupported();
-            var prerender = 'prerender';
-
-            if ( !support || prerender != self.state() ) {
-                callback();
-                return support;
-            }
-
-            var listener = self.change(function (e, state) {
-                if ( prerender != state ) {
-                    self.unbind(listener);
-                    callback();
-                }
-            });
-            return listener;
-        },
-
-        // Return true if page now isn’t visible to user.
-        //
-        //   if ( !Visibility.hidden() ) {
-        //       VideoPlayer.play();
-        //   }
-        //
-        // It is just proxy to `document.hidden`, but use vendor prefix.
-        hidden: function () {
-            return !!(self._doc.hidden || self._doc.webkitHidden);
-        },
-
-        // Return visibility state: 'visible', 'hidden' or 'prerender'.
-        //
-        //   if ( 'prerender' == Visibility.state() ) {
-        //       Statistics.pageIsPrerendering();
-        //   }
-        //
-        // Don’t use `Visibility.state()` to detect, is page visible, because
-        // visibility states can extend in next API versions.
-        // Use more simpler and general `Visibility.hidden()` for this cases.
-        //
-        // It is just proxy to `document.visibilityState`, but use
-        // vendor prefix.
-        state: function () {
-            return self._doc.visibilityState       ||
-                   self._doc.webkitVisibilityState ||
-                   'visible';
-        },
-
-        // Return true if browser support Page Visibility API.
-        //
-        //   if ( Visibility.isSupported() ) {
-        //       Statistics.startTrackingVisibility();
-        //       Visibility.change(function(e, state)) {
-        //           Statistics.trackVisibility(state);
-        //       });
-        //   }
-        isSupported: function () {
-            return !!(self._doc.visibilityState ||
-                      self._doc.webkitVisibilityState);
-        },
-
-        // Link to document object to change it in tests.
-        _doc: document || {},
-
-        // Callbacks from `change` method, that wait visibility changes.
-        _callbacks: { },
-
-        // Listener for `visibilitychange` event.
-        _change: function(event) {
-            var state = self.state();
-
-            for ( var i in self._callbacks ) {
-                self._callbacks[i].call(self._doc, event, state);
-            }
-        },
-
-        // Set listener for `visibilitychange` event.
-        _listen: function () {
-            if ( self._init ) {
-                return;
-            }
-
-            var event = 'visibilitychange';
-            if ( self._doc.webkitVisibilityState ) {
-                event = 'webkit' + event;
-            }
-
-            var listener = function () {
-                self._change.apply(self, arguments);
-            };
-            if ( self._doc.addEventListener ) {
-                self._doc.addEventListener(event, listener);
-            } else {
-                self._doc.attachEvent(event, listener);
-            }
-            self._init = true;
-        }
-
-    };
-
-    if ( typeof(module) != 'undefined' && module.exports ) {
-        module.exports = self;
-    } else {
-        global.Visibility = self;
-    }
-
-})(this);
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(6);
+var content = __webpack_require__(3);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -481,7 +108,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(8)(content, options);
+var update = __webpack_require__(5)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -498,10 +125,10 @@ if(false) {
 }
 
 /***/ }),
-/* 6 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(7)(undefined);
+exports = module.exports = __webpack_require__(4)(undefined);
 // imports
 
 
@@ -512,7 +139,7 @@ exports.push([module.i, "/*-- Chart --*/\n.c3 svg {\n  font: 10px sans-serif;\n 
 
 
 /***/ }),
-/* 7 */
+/* 4 */
 /***/ (function(module, exports) {
 
 /*
@@ -594,7 +221,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 8 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -640,7 +267,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(9);
+var	fixUrls = __webpack_require__(6);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -953,7 +580,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 9 */
+/* 6 */
 /***/ (function(module, exports) {
 
 
@@ -1048,7 +675,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 10 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1458,7 +1085,10 @@ module.exports = function(options, c3, Visibility, PubNub) {
     }, options.rate);
 
     var listener = Visibility.change(function (e, state) {
-      self.isDead = !Visibility.hidden();
+
+      console.log('hidden', Visibility.hidden())
+
+      self.isDead = Visibility.hidden();
     });
 
     self.elog = function(text) {
@@ -1585,7 +1215,7 @@ module.exports = function(options, c3, Visibility, PubNub) {
 
 
 /***/ }),
-/* 11 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function (global, factory) {
@@ -2486,7 +2116,7 @@ function Chart(config) {
 
 function ChartInternal(api) {
     var $$ = this;
-    $$.d3 = window.d3 ? window.d3 :  true ? __webpack_require__(12) : undefined;
+    $$.d3 = window.d3 ? window.d3 :  true ? __webpack_require__(9) : undefined;
     $$.api = api;
     $$.config = $$.getDefaultConfig();
     $$.data = {};
@@ -9927,7 +9557,7 @@ return c3$1;
 
 
 /***/ }),
-/* 12 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;!function() {
@@ -19488,6 +19118,379 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;!function() {
 				__WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); else if (typeof module === "object" && module.exports) module.exports = d3; else this.d3 = d3;
 }();
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(11)
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+;(function (window) {
+    "use strict";
+
+    var lastTimer = -1;
+
+    var install = function (Visibility) {
+
+        // Run callback every `interval` milliseconds if page is visible and
+        // every `hiddenInterval` milliseconds if page is hidden.
+        //
+        //   Visibility.every(60 * 1000, 5 * 60 * 1000, function () {
+        //       checkNewMails();
+        //   });
+        //
+        // You can skip `hiddenInterval` and callback will be called only if
+        // page is visible.
+        //
+        //   Visibility.every(1000, function () {
+        //       updateCountdown();
+        //   });
+        //
+        // It is analog of `setInterval(callback, interval)` but use visibility
+        // state.
+        //
+        // It return timer ID, that you can use in `Visibility.stop(id)` to stop
+        // timer (`clearInterval` analog).
+        // Warning: timer ID is different from interval ID from `setInterval`,
+        // so don’t use it in `clearInterval`.
+        //
+        // On change state from hidden to visible timers will be execute.
+        Visibility.every = function (interval, hiddenInterval, callback) {
+            Visibility._time();
+
+            if ( !callback ) {
+                callback = hiddenInterval;
+                hiddenInterval = null;
+            }
+
+            lastTimer += 1;
+            var number = lastTimer;
+
+            Visibility._timers[number] = {
+                visible:  interval,
+                hidden:   hiddenInterval,
+                callback: callback
+            };
+            Visibility._run(number, false);
+
+            if ( Visibility.isSupported() ) {
+                Visibility._listen();
+            }
+            return number;
+        };
+
+        // Stop timer from `every` method by it ID (`every` method return it).
+        //
+        //   slideshow = Visibility.every(5 * 1000, function () {
+        //       changeSlide();
+        //   });
+        //   $('.stopSlideshow').click(function () {
+        //       Visibility.stop(slideshow);
+        //   });
+        Visibility.stop = function(id) {
+            if ( !Visibility._timers[id] ) {
+                return false;
+            }
+            Visibility._stop(id);
+            delete Visibility._timers[id];
+            return true;
+        };
+
+        // Callbacks and intervals added by `every` method.
+        Visibility._timers = { };
+
+        // Initialize variables on page loading.
+        Visibility._time = function () {
+            if ( Visibility._timed ) {
+                return;
+            }
+            Visibility._timed     = true;
+            Visibility._wasHidden = Visibility.hidden();
+
+            Visibility.change(function () {
+                Visibility._stopRun();
+                Visibility._wasHidden = Visibility.hidden();
+            });
+        };
+
+        // Try to run timer from every method by it’s ID. It will be use
+        // `interval` or `hiddenInterval` depending on visibility state.
+        // If page is hidden and `hiddenInterval` is null,
+        // it will not run timer.
+        //
+        // Argument `runNow` say, that timers must be execute now too.
+        Visibility._run = function (id, runNow) {
+            var interval,
+                timer = Visibility._timers[id];
+
+            if ( Visibility.hidden() ) {
+                if ( null === timer.hidden ) {
+                    return;
+                }
+                interval = timer.hidden;
+            } else {
+                interval = timer.visible;
+            }
+
+            var runner = function () {
+                timer.last = new Date();
+                timer.callback.call(window);
+            }
+
+            if ( runNow ) {
+                var now  = new Date();
+                var last = now - timer.last ;
+
+                if ( interval > last ) {
+                    timer.delay = setTimeout(function () {
+                        timer.id = setInterval(runner, interval);
+                        runner();
+                    }, interval - last);
+                } else {
+                    timer.id = setInterval(runner, interval);
+                    runner();
+                }
+
+            } else {
+              timer.id = setInterval(runner, interval);
+            }
+        };
+
+        // Stop timer from `every` method by it’s ID.
+        Visibility._stop = function (id) {
+            var timer = Visibility._timers[id];
+            clearInterval(timer.id);
+            clearTimeout(timer.delay);
+            delete timer.id;
+            delete timer.delay;
+        };
+
+        // Listener for `visibilitychange` event.
+        Visibility._stopRun = function (event) {
+            var isHidden  = Visibility.hidden(),
+                wasHidden = Visibility._wasHidden;
+
+            if ( (isHidden && !wasHidden) || (!isHidden && wasHidden) ) {
+                for ( var i in Visibility._timers ) {
+                    Visibility._stop(i);
+                    Visibility._run(i, !isHidden);
+                }
+            }
+        };
+
+        return Visibility;
+    }
+
+    if ( typeof(module) != 'undefined' && module.exports ) {
+        module.exports = install(__webpack_require__(12));
+    } else {
+        install(window.Visibility)
+    }
+
+})(window);
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+;(function (global) {
+    "use strict";
+
+    var lastId = -1;
+
+    // Visibility.js allow you to know, that your web page is in the background
+    // tab and thus not visible to the user. This library is wrap under
+    // Page Visibility API. It fix problems with different vendor prefixes and
+    // add high-level useful functions.
+    var self = {
+
+        // Call callback only when page become to visible for user or
+        // call it now if page is visible now or Page Visibility API
+        // doesn’t supported.
+        //
+        // Return false if API isn’t supported, true if page is already visible
+        // or listener ID (you can use it in `unbind` method) if page isn’t
+        // visible now.
+        //
+        //   Visibility.onVisible(function () {
+        //       startIntroAnimation();
+        //   });
+        onVisible: function (callback) {
+            var support = self.isSupported();
+            if ( !support || !self.hidden() ) {
+                callback();
+                return support;
+            }
+
+            var listener = self.change(function (e, state) {
+                if ( !self.hidden() ) {
+                    self.unbind(listener);
+                    callback();
+                }
+            });
+            return listener;
+        },
+
+        // Call callback when visibility will be changed. First argument for
+        // callback will be original event object, second will be visibility
+        // state name.
+        //
+        // Return listener ID to unbind listener by `unbind` method.
+        //
+        // If Page Visibility API doesn’t supported method will be return false
+        // and callback never will be called.
+        //
+        //   Visibility.change(function(e, state) {
+        //       Statistics.visibilityChange(state);
+        //   });
+        //
+        // It is just proxy to `visibilitychange` event, but use vendor prefix.
+        change: function (callback) {
+            if ( !self.isSupported() ) {
+                return false;
+            }
+            lastId += 1;
+            var number = lastId;
+            self._callbacks[number] = callback;
+            self._listen();
+            return number;
+        },
+
+        // Remove `change` listener by it ID.
+        //
+        //   var id = Visibility.change(function(e, state) {
+        //       firstChangeCallback();
+        //       Visibility.unbind(id);
+        //   });
+        unbind: function (id) {
+            delete self._callbacks[id];
+        },
+
+        // Call `callback` in any state, expect “prerender”. If current state
+        // is “prerender” it will wait until state will be changed.
+        // If Page Visibility API doesn’t supported, it will call `callback`
+        // immediately.
+        //
+        // Return false if API isn’t supported, true if page is already after
+        // prerendering or listener ID (you can use it in `unbind` method)
+        // if page is prerended now.
+        //
+        //   Visibility.afterPrerendering(function () {
+        //       Statistics.countVisitor();
+        //   });
+        afterPrerendering: function (callback) {
+            var support   = self.isSupported();
+            var prerender = 'prerender';
+
+            if ( !support || prerender != self.state() ) {
+                callback();
+                return support;
+            }
+
+            var listener = self.change(function (e, state) {
+                if ( prerender != state ) {
+                    self.unbind(listener);
+                    callback();
+                }
+            });
+            return listener;
+        },
+
+        // Return true if page now isn’t visible to user.
+        //
+        //   if ( !Visibility.hidden() ) {
+        //       VideoPlayer.play();
+        //   }
+        //
+        // It is just proxy to `document.hidden`, but use vendor prefix.
+        hidden: function () {
+            return !!(self._doc.hidden || self._doc.webkitHidden);
+        },
+
+        // Return visibility state: 'visible', 'hidden' or 'prerender'.
+        //
+        //   if ( 'prerender' == Visibility.state() ) {
+        //       Statistics.pageIsPrerendering();
+        //   }
+        //
+        // Don’t use `Visibility.state()` to detect, is page visible, because
+        // visibility states can extend in next API versions.
+        // Use more simpler and general `Visibility.hidden()` for this cases.
+        //
+        // It is just proxy to `document.visibilityState`, but use
+        // vendor prefix.
+        state: function () {
+            return self._doc.visibilityState       ||
+                   self._doc.webkitVisibilityState ||
+                   'visible';
+        },
+
+        // Return true if browser support Page Visibility API.
+        //
+        //   if ( Visibility.isSupported() ) {
+        //       Statistics.startTrackingVisibility();
+        //       Visibility.change(function(e, state)) {
+        //           Statistics.trackVisibility(state);
+        //       });
+        //   }
+        isSupported: function () {
+            return !!(self._doc.visibilityState ||
+                      self._doc.webkitVisibilityState);
+        },
+
+        // Link to document object to change it in tests.
+        _doc: document || {},
+
+        // Callbacks from `change` method, that wait visibility changes.
+        _callbacks: { },
+
+        // Listener for `visibilitychange` event.
+        _change: function(event) {
+            var state = self.state();
+
+            for ( var i in self._callbacks ) {
+                self._callbacks[i].call(self._doc, event, state);
+            }
+        },
+
+        // Set listener for `visibilitychange` event.
+        _listen: function () {
+            if ( self._init ) {
+                return;
+            }
+
+            var event = 'visibilitychange';
+            if ( self._doc.webkitVisibilityState ) {
+                event = 'webkit' + event;
+            }
+
+            var listener = function () {
+                self._change.apply(self, arguments);
+            };
+            if ( self._doc.addEventListener ) {
+                self._doc.addEventListener(event, listener);
+            } else {
+                self._doc.attachEvent(event, listener);
+            }
+            self._init = true;
+        }
+
+    };
+
+    if ( typeof(module) != 'undefined' && module.exports ) {
+        module.exports = self;
+    } else {
+        global.Visibility = self;
+    }
+
+})(this);
+
 
 /***/ })
 /******/ ]);
