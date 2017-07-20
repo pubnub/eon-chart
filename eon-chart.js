@@ -19254,9 +19254,39 @@ module.exports = function(options) {
       };
 
       var loadData = function(data) {
+
+        var newobj = JSON.parse(JSON.stringify(data));
+
+        delete data.json[0]['_eonDatetime']
+
+        var newData = [];
+        for(var i in data.json[0]) {
+          console.log(i, data.json[0][i])
+
+          var whatever = {
+            name: i,
+            value: data.json[0][i]
+          };
+
+          newData.push(whatever);
+
+        }
+
+
+        newobj.json = newData;
+
+        newobj.keys = {
+          x :'name',
+          value: ['value']
+        }
+
         flowLength = 0;
         clog('Load Data')
-        self.chart.load(data);
+
+        console.log(newobj)
+
+
+        self.chart.load(newobj);
       }
 
       Visibility.every(options.rate, function () {
