@@ -19051,6 +19051,7 @@ module.exports = function(options) {
 
       }
 
+      // bar chart needs to be of type "category"
       if(options.generate.data.type == "bar") {
 
         generateXAxis();
@@ -19269,6 +19270,7 @@ module.exports = function(options) {
 
       };
 
+      // function to reformat data into categories for bar chart
       var categorize = function(data) {
 
         var newobj = JSON.parse(JSON.stringify(data));

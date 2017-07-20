@@ -1,7 +1,6 @@
 <!DOCTYPE html>
   <head>
-    <script type="text/javascript" src="https://pubnub.github.io/eon/v/eon/1.0.0/eon.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://pubnub.github.io/eon/v/eon/1.0.0/eon.css"/>
+    <script type="text/javascript" src="../eon-chart.js"></script>
   </head>
 <body>
 
@@ -11,7 +10,7 @@
     <div id = "buttonDiv">
 
     <script type="text/javascript">
-        
+
         // the voting channel
         var chan = "voting-channel";
 
@@ -47,7 +46,7 @@
                         // update the polldata with what we found in history
                         // note, eon.chart below will update itself in the same way just by
                         // providing ```history: true```
-                        pollData = msg[0][0];   
+                        pollData = msg[0][0];
                     }
                 },
             });
@@ -73,7 +72,7 @@
                 });
 
             }
-            
+
         }
 
         // draw the buttons on the webpage
@@ -92,7 +91,7 @@
 
         }
         createVoteButtons();
-    
+
         // draw our chart
         eon.chart({
             pubnub: pb,             // use shared pubnub var

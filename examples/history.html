@@ -1,20 +1,19 @@
 <html>
   <head>
-    <script type="text/javascript" src="https://pubnub.github.io/eon/v/eon/1.0.0/eon.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://pubnub.github.io/eon/v/eon/1.0.0/eon.css"/>
+    <script type="text/javascript" src="../eon-chart.js"></script>
   </head>
   <body>
     <div id="chart"></div>
     <script>
 
       var pubnub = new PubNub({
-        publishKey: 'your_pub_key',
-        subscribeKey: 'your_sub_key'
+        publishKey: 'demo',
+        subscribeKey: 'demo'
       });
 
       var channels = [
-        'pubnub-c3-history-1', 
-        'pubnub-c3-history-2', 
+        'pubnub-c3-history-1',
+        'pubnub-c3-history-2',
         'pubnub-c3-history-3'];
 
       eon.chart({
