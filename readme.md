@@ -99,7 +99,7 @@ Parameter | Value | Default
 | limit | The size of your buffer. How many values to display on the chart before shifting the first value off and appending a new value. This is not native to C3. | ```10```
 | rate | Interval at which new datapoints are drawn on the chart in milliseconds. | ```1000```
 | history | Fill the buffer by using PubNub history call to retrieve last ```limit``` messages. Requires [PubNub storage](http://www.pubnub.com/how-it-works/storage-and-playback/) to be enabled. | ```false```
-| xType | Your x axis configuration. Can be ```"auto"```, ```"custom"```, ```category```, or ```false```. Read more about ```xType``` below. | ```"auto"```
+| xType | Your x axis configuration. Can be ```"auto"```, ```"custom"```, ```"category"```, or ```false```. Read more about ```xType``` below. | ```"auto"```
 | xId | Your x axis source if ```xType == "custom"``` | ```"x"```
 | message | A function to call everytime a PubNub message is recieved. See [PubNub subscribe](http://www.pubnub.com/docs/javascript/api/reference.html#subscribe) | ```function(message, env, channel){}``` |
 | transform | Method for changing the payload format of your stream. See [example](https://github.com/pubnub/eon-chart/blob/master/examples/transform.html)| ```function(m){return m}```
@@ -167,7 +167,7 @@ pubnub.publish({
 
 ### Category
 
-Eon charts supports both time series bar charts and point of time bar charts. If you'd like to represent a bar chart in a single point of time, supply ```category``` as your ```xType``` and only the latest data will appear in the chart categorized by key. See ```examples/bar.html``` for an example.
+Eon charts supports both time series bar charts and point of time bar charts. If you'd like to represent a bar chart in a single point of time, supply ```xType: "category"``` and only the latest data will appear in the chart categorized by key. See ```examples/bar.html``` for an example.
 
 ## Multiple Points Per Payload
 
