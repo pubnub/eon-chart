@@ -19038,9 +19038,7 @@ module.exports = function(options) {
         options.xType = false;
       }
 
-      if (options.xType) {
-
-        clog('Setup:', 'xType Supplied');
+      var generateXAxis = function() {
 
         if (!options.generate.axis) {
           options.generate.axis = {}
@@ -19050,6 +19048,24 @@ module.exports = function(options) {
         if (!options.generate.axis.x) {
           options.generate.axis.x = {};
         }
+
+      }
+
+      if(options.generate.data.type == "bar") {
+
+        generateXAxis();
+        if (!options.generate.axis.x.type) {
+          options.generate.axis.x.type = 'category';
+        }
+
+      }
+
+      if (options.xType) {
+
+        clog('Setup:', 'xType Supplied');
+
+        generateXAxis();
+
         if (!options.generate.axis.x.type) {
           options.generate.axis.x.type = 'timeseries';
         }
