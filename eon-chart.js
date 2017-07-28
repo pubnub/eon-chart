@@ -78,10 +78,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports, __webpack_require__) {
 
 window.PubNub = __webpack_require__(1);
-__webpack_require__(2);
+window.c3 = __webpack_require__(2);
+__webpack_require__(4);
 module.exports = function(options) {
-    eonChart = __webpack_require__(7);
-    return new eonChart(options, __webpack_require__(8), __webpack_require__(10));
+    eonChart = __webpack_require__(9);
+    return new eonChart(options, window.c3, __webpack_require__(10), window.PubNub);
 };
 
 
@@ -95,1127 +96,6 @@ null!=i&&(c.reverse=i.toString()),c}function h(e,t){var n={messages:[],startTime
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(3);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(5)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../css-loader/index.js!./c3.css", function() {
-			var newContent = require("!!../css-loader/index.js!./c3.css");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(4)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "/*-- Chart --*/\n.c3 svg {\n  font: 10px sans-serif;\n  -webkit-tap-highlight-color: transparent; }\n\n.c3 path, .c3 line {\n  fill: none;\n  stroke: #000; }\n\n.c3 text {\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  user-select: none; }\n\n.c3-legend-item-tile,\n.c3-xgrid-focus,\n.c3-ygrid,\n.c3-event-rect,\n.c3-bars path {\n  shape-rendering: crispEdges; }\n\n.c3-chart-arc path {\n  stroke: #fff; }\n\n.c3-chart-arc text {\n  fill: #fff;\n  font-size: 13px; }\n\n/*-- Axis --*/\n/*-- Grid --*/\n.c3-grid line {\n  stroke: #aaa; }\n\n.c3-grid text {\n  fill: #aaa; }\n\n.c3-xgrid, .c3-ygrid {\n  stroke-dasharray: 3 3; }\n\n/*-- Text on Chart --*/\n.c3-text.c3-empty {\n  fill: #808080;\n  font-size: 2em; }\n\n/*-- Line --*/\n.c3-line {\n  stroke-width: 1px; }\n\n/*-- Point --*/\n.c3-circle._expanded_ {\n  stroke-width: 1px;\n  stroke: white; }\n\n.c3-selected-circle {\n  fill: white;\n  stroke-width: 2px; }\n\n/*-- Bar --*/\n.c3-bar {\n  stroke-width: 0; }\n\n.c3-bar._expanded_ {\n  fill-opacity: 0.75; }\n\n/*-- Focus --*/\n.c3-target.c3-focused {\n  opacity: 1; }\n\n.c3-target.c3-focused path.c3-line, .c3-target.c3-focused path.c3-step {\n  stroke-width: 2px; }\n\n.c3-target.c3-defocused {\n  opacity: 0.3 !important; }\n\n/*-- Region --*/\n.c3-region {\n  fill: steelblue;\n  fill-opacity: .1; }\n\n/*-- Brush --*/\n.c3-brush .extent {\n  fill-opacity: .1; }\n\n/*-- Select - Drag --*/\n/*-- Legend --*/\n.c3-legend-item {\n  font-size: 12px; }\n\n.c3-legend-item-hidden {\n  opacity: 0.15; }\n\n.c3-legend-background {\n  opacity: 0.75;\n  fill: white;\n  stroke: lightgray;\n  stroke-width: 1; }\n\n/*-- Title --*/\n.c3-title {\n  font: 14px sans-serif; }\n\n/*-- Tooltip --*/\n.c3-tooltip-container {\n  z-index: 10; }\n\n.c3-tooltip {\n  border-collapse: collapse;\n  border-spacing: 0;\n  background-color: #fff;\n  empty-cells: show;\n  -webkit-box-shadow: 7px 7px 12px -9px #777777;\n  -moz-box-shadow: 7px 7px 12px -9px #777777;\n  box-shadow: 7px 7px 12px -9px #777777;\n  opacity: 0.9; }\n\n.c3-tooltip tr {\n  border: 1px solid #CCC; }\n\n.c3-tooltip th {\n  background-color: #aaa;\n  font-size: 14px;\n  padding: 2px 5px;\n  text-align: left;\n  color: #FFF; }\n\n.c3-tooltip td {\n  font-size: 13px;\n  padding: 3px 6px;\n  background-color: #fff;\n  border-left: 1px dotted #999; }\n\n.c3-tooltip td > span {\n  display: inline-block;\n  width: 10px;\n  height: 10px;\n  margin-right: 6px; }\n\n.c3-tooltip td.value {\n  text-align: right; }\n\n/*-- Area --*/\n.c3-area {\n  stroke-width: 0;\n  opacity: 0.2; }\n\n/*-- Arc --*/\n.c3-chart-arcs-title {\n  dominant-baseline: middle;\n  font-size: 1.3em; }\n\n.c3-chart-arcs .c3-chart-arcs-background {\n  fill: #e0e0e0;\n  stroke: none; }\n\n.c3-chart-arcs .c3-chart-arcs-gauge-unit {\n  fill: #000;\n  font-size: 16px; }\n\n.c3-chart-arcs .c3-chart-arcs-gauge-max {\n  fill: #777; }\n\n.c3-chart-arcs .c3-chart-arcs-gauge-min {\n  fill: #777; }\n\n.c3-chart-arc .c3-gauge-value {\n  fill: #000;\n  /*  font-size: 28px !important;*/ }\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-
-var stylesInDom = {};
-
-var	memoize = function (fn) {
-	var memo;
-
-	return function () {
-		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-		return memo;
-	};
-};
-
-var isOldIE = memoize(function () {
-	// Test for IE <= 9 as proposed by Browserhacks
-	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
-	// Tests for existence of standard globals is to allow style-loader
-	// to operate correctly into non-standard environments
-	// @see https://github.com/webpack-contrib/style-loader/issues/177
-	return window && document && document.all && !window.atob;
-});
-
-var getElement = (function (fn) {
-	var memo = {};
-
-	return function(selector) {
-		if (typeof memo[selector] === "undefined") {
-			memo[selector] = fn.call(this, selector);
-		}
-
-		return memo[selector]
-	};
-})(function (target) {
-	return document.querySelector(target)
-});
-
-var singleton = null;
-var	singletonCounter = 0;
-var	stylesInsertedAtTop = [];
-
-var	fixUrls = __webpack_require__(6);
-
-module.exports = function(list, options) {
-	if (typeof DEBUG !== "undefined" && DEBUG) {
-		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-	}
-
-	options = options || {};
-
-	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
-
-	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-	// tags it will allow on a page
-	if (!options.singleton) options.singleton = isOldIE();
-
-	// By default, add <style> tags to the <head> element
-	if (!options.insertInto) options.insertInto = "head";
-
-	// By default, add <style> tags to the bottom of the target
-	if (!options.insertAt) options.insertAt = "bottom";
-
-	var styles = listToStyles(list, options);
-
-	addStylesToDom(styles, options);
-
-	return function update (newList) {
-		var mayRemove = [];
-
-		for (var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-
-			domStyle.refs--;
-			mayRemove.push(domStyle);
-		}
-
-		if(newList) {
-			var newStyles = listToStyles(newList, options);
-			addStylesToDom(newStyles, options);
-		}
-
-		for (var i = 0; i < mayRemove.length; i++) {
-			var domStyle = mayRemove[i];
-
-			if(domStyle.refs === 0) {
-				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
-
-				delete stylesInDom[domStyle.id];
-			}
-		}
-	};
-};
-
-function addStylesToDom (styles, options) {
-	for (var i = 0; i < styles.length; i++) {
-		var item = styles[i];
-		var domStyle = stylesInDom[item.id];
-
-		if(domStyle) {
-			domStyle.refs++;
-
-			for(var j = 0; j < domStyle.parts.length; j++) {
-				domStyle.parts[j](item.parts[j]);
-			}
-
-			for(; j < item.parts.length; j++) {
-				domStyle.parts.push(addStyle(item.parts[j], options));
-			}
-		} else {
-			var parts = [];
-
-			for(var j = 0; j < item.parts.length; j++) {
-				parts.push(addStyle(item.parts[j], options));
-			}
-
-			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-		}
-	}
-}
-
-function listToStyles (list, options) {
-	var styles = [];
-	var newStyles = {};
-
-	for (var i = 0; i < list.length; i++) {
-		var item = list[i];
-		var id = options.base ? item[0] + options.base : item[0];
-		var css = item[1];
-		var media = item[2];
-		var sourceMap = item[3];
-		var part = {css: css, media: media, sourceMap: sourceMap};
-
-		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
-		else newStyles[id].parts.push(part);
-	}
-
-	return styles;
-}
-
-function insertStyleElement (options, style) {
-	var target = getElement(options.insertInto)
-
-	if (!target) {
-		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
-	}
-
-	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
-
-	if (options.insertAt === "top") {
-		if (!lastStyleElementInsertedAtTop) {
-			target.insertBefore(style, target.firstChild);
-		} else if (lastStyleElementInsertedAtTop.nextSibling) {
-			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
-		} else {
-			target.appendChild(style);
-		}
-		stylesInsertedAtTop.push(style);
-	} else if (options.insertAt === "bottom") {
-		target.appendChild(style);
-	} else {
-		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
-	}
-}
-
-function removeStyleElement (style) {
-	if (style.parentNode === null) return false;
-	style.parentNode.removeChild(style);
-
-	var idx = stylesInsertedAtTop.indexOf(style);
-	if(idx >= 0) {
-		stylesInsertedAtTop.splice(idx, 1);
-	}
-}
-
-function createStyleElement (options) {
-	var style = document.createElement("style");
-
-	options.attrs.type = "text/css";
-
-	addAttrs(style, options.attrs);
-	insertStyleElement(options, style);
-
-	return style;
-}
-
-function createLinkElement (options) {
-	var link = document.createElement("link");
-
-	options.attrs.type = "text/css";
-	options.attrs.rel = "stylesheet";
-
-	addAttrs(link, options.attrs);
-	insertStyleElement(options, link);
-
-	return link;
-}
-
-function addAttrs (el, attrs) {
-	Object.keys(attrs).forEach(function (key) {
-		el.setAttribute(key, attrs[key]);
-	});
-}
-
-function addStyle (obj, options) {
-	var style, update, remove, result;
-
-	// If a transform function was defined, run it on the css
-	if (options.transform && obj.css) {
-	    result = options.transform(obj.css);
-
-	    if (result) {
-	    	// If transform returns a value, use that instead of the original css.
-	    	// This allows running runtime transformations on the css.
-	    	obj.css = result;
-	    } else {
-	    	// If the transform function returns a falsy value, don't add this css.
-	    	// This allows conditional loading of css
-	    	return function() {
-	    		// noop
-	    	};
-	    }
-	}
-
-	if (options.singleton) {
-		var styleIndex = singletonCounter++;
-
-		style = singleton || (singleton = createStyleElement(options));
-
-		update = applyToSingletonTag.bind(null, style, styleIndex, false);
-		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
-
-	} else if (
-		obj.sourceMap &&
-		typeof URL === "function" &&
-		typeof URL.createObjectURL === "function" &&
-		typeof URL.revokeObjectURL === "function" &&
-		typeof Blob === "function" &&
-		typeof btoa === "function"
-	) {
-		style = createLinkElement(options);
-		update = updateLink.bind(null, style, options);
-		remove = function () {
-			removeStyleElement(style);
-
-			if(style.href) URL.revokeObjectURL(style.href);
-		};
-	} else {
-		style = createStyleElement(options);
-		update = applyToTag.bind(null, style);
-		remove = function () {
-			removeStyleElement(style);
-		};
-	}
-
-	update(obj);
-
-	return function updateStyle (newObj) {
-		if (newObj) {
-			if (
-				newObj.css === obj.css &&
-				newObj.media === obj.media &&
-				newObj.sourceMap === obj.sourceMap
-			) {
-				return;
-			}
-
-			update(obj = newObj);
-		} else {
-			remove();
-		}
-	};
-}
-
-var replaceText = (function () {
-	var textStore = [];
-
-	return function (index, replacement) {
-		textStore[index] = replacement;
-
-		return textStore.filter(Boolean).join('\n');
-	};
-})();
-
-function applyToSingletonTag (style, index, remove, obj) {
-	var css = remove ? "" : obj.css;
-
-	if (style.styleSheet) {
-		style.styleSheet.cssText = replaceText(index, css);
-	} else {
-		var cssNode = document.createTextNode(css);
-		var childNodes = style.childNodes;
-
-		if (childNodes[index]) style.removeChild(childNodes[index]);
-
-		if (childNodes.length) {
-			style.insertBefore(cssNode, childNodes[index]);
-		} else {
-			style.appendChild(cssNode);
-		}
-	}
-}
-
-function applyToTag (style, obj) {
-	var css = obj.css;
-	var media = obj.media;
-
-	if(media) {
-		style.setAttribute("media", media)
-	}
-
-	if(style.styleSheet) {
-		style.styleSheet.cssText = css;
-	} else {
-		while(style.firstChild) {
-			style.removeChild(style.firstChild);
-		}
-
-		style.appendChild(document.createTextNode(css));
-	}
-}
-
-function updateLink (link, options, obj) {
-	var css = obj.css;
-	var sourceMap = obj.sourceMap;
-
-	/*
-		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
-		and there is no publicPath defined then lets turn convertToAbsoluteUrls
-		on by default.  Otherwise default to the convertToAbsoluteUrls option
-		directly
-	*/
-	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
-
-	if (options.convertToAbsoluteUrls || autoFixUrls) {
-		css = fixUrls(css);
-	}
-
-	if (sourceMap) {
-		// http://stackoverflow.com/a/26603875
-		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-	}
-
-	var blob = new Blob([css], { type: "text/css" });
-
-	var oldSrc = link.href;
-
-	link.href = URL.createObjectURL(blob);
-
-	if(oldSrc) URL.revokeObjectURL(oldSrc);
-}
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-
-/**
- * When source maps are enabled, `style-loader` uses a link element with a data-uri to
- * embed the css on the page. This breaks all relative urls because now they are relative to a
- * bundle instead of the current page.
- *
- * One solution is to only use full urls, but that may be impossible.
- *
- * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
- *
- * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
- *
- */
-
-module.exports = function (css) {
-  // get current location
-  var location = typeof window !== "undefined" && window.location;
-
-  if (!location) {
-    throw new Error("fixUrls requires window.location");
-  }
-
-	// blank or null?
-	if (!css || typeof css !== "string") {
-	  return css;
-  }
-
-  var baseUrl = location.protocol + "//" + location.host;
-  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
-
-	// convert each url(...)
-	/*
-	This regular expression is just a way to recursively match brackets within
-	a string.
-
-	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
-	   (  = Start a capturing group
-	     (?:  = Start a non-capturing group
-	         [^)(]  = Match anything that isn't a parentheses
-	         |  = OR
-	         \(  = Match a start parentheses
-	             (?:  = Start another non-capturing groups
-	                 [^)(]+  = Match anything that isn't a parentheses
-	                 |  = OR
-	                 \(  = Match a start parentheses
-	                     [^)(]*  = Match anything that isn't a parentheses
-	                 \)  = Match a end parentheses
-	             )  = End Group
-              *\) = Match anything and then a close parens
-          )  = Close non-capturing group
-          *  = Match anything
-       )  = Close capturing group
-	 \)  = Match a close parens
-
-	 /gi  = Get all matches, not the first.  Be case insensitive.
-	 */
-	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
-		// strip quotes (if they exist)
-		var unquotedOrigUrl = origUrl
-			.trim()
-			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
-			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
-
-		// already a full url? no change
-		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(unquotedOrigUrl)) {
-		  return fullMatch;
-		}
-
-		// convert the url to a full url
-		var newUrl;
-
-		if (unquotedOrigUrl.indexOf("//") === 0) {
-		  	//TODO: should we add protocol?
-			newUrl = unquotedOrigUrl;
-		} else if (unquotedOrigUrl.indexOf("/") === 0) {
-			// path should be relative to the base url
-			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
-		} else {
-			// path should be relative to current directory
-			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
-		}
-
-		// send back the fixed url(...)
-		return "url(" + JSON.stringify(newUrl) + ")";
-	});
-
-	// send back the fixed css
-	return fixedCss;
-};
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function(options, c3, Visibility, PubNub) {
-
-  console.log(PubNub)
-
-  console.log(options)
-
-    options.debug = options.debug || false;
-
-    var self = this;
-
-    self.clog = function(s, o, e) {
-
-      if (options.debug) {
-        if (e) {
-          console.log('EON-CHART:', s, o, e);
-        } else {
-          console.log('EON-CHART:', s, o);
-        }
-      }
-    };
-
-    self.clog('Status:', 'Initialized');
-
-    self.error = false;
-    self.dateID = "_eonDatetime";
-
-    self.chart = false;
-    self.isDead = false;
-
-    self.pubnub = options.pubnub || PubNub || false;
-
-    if (!self.pubnub) {
-      self.error = "PubNub not found. See http://www.pubnub.com/docs/javascript/javascript-sdk.html#_where_do_i_get_the_code";
-    }
-
-    options.transform = options.transform || function(m) {
-      return m
-    };
-    options.channels = options.channels || false;
-    options.channelGroups = options.channelGroups || false;
-
-    options.generate = options.generate || {};
-    if (!options.generate.data) {
-      options.generate.data = {
-        json: null
-      };
-    }
-
-    options.generate.line = options.generate.line || {};
-
-    if(!options.generate.line.connectNull) {
-      options.generate.line.connectNull = true;
-    }
-
-    options.flow = options.flow || false;
-    if (options.flow) {
-      if (typeof(options.flow) == "boolean") {
-        options.flow = {};
-      }
-      options.flow.length = options.flow.length || 0;
-    }
-    options.history = options.history || false;
-
-    options.message = options.message || function() {};
-    options.connect = options.connect || function() {};
-
-    // x axis definition
-    options.xType = options.xType || "auto";
-    options.xId = options.xId || "x";
-
-    options.rate = options.rate || 1000;
-
-    if (options.xType == "custom") {
-
-      options.generate.data.x = options.xId;
-
-    } else if (options.xType == "category") {
-        // just so xtype is not false
-    } else if (options.xType == "auto") {
-
-      options.xId = self.dateID;
-      options.generate.data.x = options.xId;
-
-    } else {
-      options.xType = false;
-    }
-
-    self.generateXAxis = function() {
-
-      if (!options.generate.axis) {
-        options.generate.axis = {}
-      }
-
-      // assume js date
-      if (!options.generate.axis.x) {
-        options.generate.axis.x = {};
-      }
-
-    }
-
-    if (options.xType) {
-
-      self.clog('Setup:', 'xType Supplied');
-
-      self.generateXAxis();
-
-      // bar chart needs to be of type "category"
-      if(options.xType == "category") {
-
-        console.log(options.xType)
-        console.log('running this')
-
-        if (!options.generate.axis.x.type) {
-          options.generate.axis.x.type = 'category';
-        }
-
-      } else {
-
-        if (!options.generate.axis.x.type) {
-          options.generate.axis.x.type = 'timeseries';
-        }
-        if (!options.generate.axis.x.tick) {
-          options.generate.axis.x.tick = {};
-        }
-        if (!options.generate.axis.x.tick.format) {
-          options.generate.axis.x.tick.format = '%Y-%m-%d %H:%M:%S';
-        }
-
-      }
-
-    }
-
-    self.clog('Options:', options);
-
-    if (!options.channels && !options.channelGroups) {
-      self.error = "No channels or channel groups supplied.";
-    };
-
-    if (['spline', 'area', 'area-spline', 'step', 'area-step', 'scatter'].indexOf(options.generate.data.type) == -1
-      && typeof(options.generate.data.type) != "undefined") {
-      options.limit = options.limit || 1;
-    } else {
-      options.limit = options.limit || 10;
-    }
-
-    self.appendDate = function(data, pubnubDate) {
-
-      if (options.xType == "auto") {
-        self.clog('PubNub:', 'Appending PubNub datetime to columns.');
-        var date = Math.floor(pubnubDate / 10000);
-        data[self.dateID] = new Date(date).getTime();
-      }
-
-      return data;
-
-    };
-
-
-    self.nextData = [];
-    self.dataStore = [];
-
-    // persistent data store
-    self.object = {
-      json: [],
-      keys: {
-        value: [],
-        x: options.xId
-      }
-    };
-
-    // data store for flow animations
-    self.fobject = {};
-    self.stale = false;
-
-    self.loadHistory = function() {
-
-      self.clog('Status:', 'Restoring from history');
-
-      for(var k in options.channels) {
-
-        var i = 0;
-
-        var page = function(timetoken) {
-
-          self.clog('History:', 'Retrieving messages from ' + timetoken);
-
-          self.pubnub.history({
-            count: options.limit,
-            channel: options.channels[k],
-            end: timetoken,
-            includeTimetoken: true
-          }, function(status, payload) {
-
-            var msgs = payload.messages;
-            var start = payload.startTimeToken;
-            var end = payload.endTimeToken;
-
-            self.clog('History:', msgs.length + ' messages found');
-
-            self.clog('History:', 'Complete... Rendering');
-
-            i = 0;
-            while (i < msgs.length) {
-
-              var a = msgs[i];
-
-              a.message = options.transform(a.entry);
-
-              if(a.message && (a.message.eon || a.message.eons)) {
-
-                var as = a.message.eons || [];
-
-                if(a.message.eon) {
-                  as.push(a.message.eon);
-                }
-
-                for(var j in as) {
-
-                  if(as.hasOwnProperty(j)) {
-                    as[j] = self.appendDate(as[j], a.timetoken)
-                    self.storeData(as[j], true);
-                  }
-
-                }
-
-              } else {
-                self.clog('Rejecting history message as improper format supplied.');
-              }
-
-
-
-              i++;
-
-            }
-
-            if (msgs.length > 1 && self.object.json.length < options.limit - 1) {
-              page(end);
-            } else {
-              self.loadData(self.object);
-            }
-
-          });
-
-        };
-
-        page();
-
-      }
-
-    };
-
-    self.boot = function() {
-
-      self.fobject = {
-        json: [],
-        keys: {
-          value: [],
-          x: options.xId
-        }
-      };
-
-      self.clog('Status:', 'Chart Animation Enabled');
-
-      self.isDead = false;
-
-      options.generate.data.columns = [];
-      self.chart = c3.generate(options.generate);
-
-    };
-
-    self.uniqueAppend = function(array, append) {
-
-      // see if value is in array of keys
-      var exists = false;
-      for (var l = 0; l < array.length; l++) {
-        if (array[l] == append) {
-          exists = true;
-        }
-      }
-
-      if (!exists) {
-        array.push(append);
-      }
-
-      return array;
-
-    };
-
-    self.flowLength = 0;
-
-    self.mapAppend = function(object) {
-
-      // this just keeps a list of used keys in the object
-      for (var i = 0; i < object.json.length; i++) {
-        for (var key in object.json[i]) {
-          object.keys.value = self.uniqueAppend(object.keys.value, key);
-        }
-      }
-
-      return object;
-
-    }
-
-    self.storeData = function(data, isHistory) {
-
-      self.object.json.push(data);
-
-      if(self.object.json.length > (options.limit * options.channels.length)) {
-        self.object.json.shift();
-        self.flowLength++;
-      }
-
-      self.mapAppend(self.object);
-
-      if (options.flow && !isHistory) {
-
-        self.fobject.json.push(data);
-        self.mapAppend(self.fobject);
-
-      };
-
-    };
-
-    // function to reformat data into categories for bar chart
-    self.categorize = function(data) {
-
-      var newobj = JSON.parse(JSON.stringify(data));
-
-      delete data.json[0]['_eonDatetime']
-
-      var newData = [];
-      for(var i in data.json[0]) {
-
-        var whatever = {
-          name: i,
-          value: data.json[0][i]
-        };
-
-        newData.push(whatever);
-
-      }
-
-      newobj.json = newData;
-
-      newobj.keys = {
-        x :'name',
-        value: ['value']
-      }
-
-      return newobj;
-
-    }
-
-    self.loadData = function(data) {
-
-      if(options.xType == 'category') {
-        console.log('self.categorize')
-        data = self.categorize(data);
-      }
-
-      self.flowLength = 0;
-      self.clog('Load Data')
-      self.chart.load(data);
-    }
-
-    setInterval(function() {
-
-      self.clog('Status:', 'Rendering');
-
-      if (!self.stale) {
-        self.clog('Render:', 'No new data');
-      } else if(self.isDead) {
-        self.clog('Render:', 'Tab out of focus.');
-      } else {
-
-        if(self.fobject.json.length) {
-
-          self.fobject.length = self.flowLength;
-
-          self.chart.flow(self.fobject);
-
-          self.fobject = {
-            json: [],
-            keys: {
-              value: [],
-              x: options.xId
-            }
-          };
-
-          self.flowLength = 0;
-
-        } else {
-          self.loadData(self.object);
-        }
-
-        self.stale = false;
-
-        self.clog('Render:', 'Complete');
-
-      }
-
-    }, options.rate);
-
-    var listener = Visibility.change(function (e, state) {
-
-      console.log('hidden', Visibility.hidden())
-
-      self.isDead = Visibility.hidden();
-    });
-
-    self.elog = function(text) {
-      console.error("EON:" + text);
-    };
-
-    self.subscribe = function() {
-
-      self.pubnub.addListener({
-        status: function(statusEvent) {
-          if (statusEvent.category === "PNConnectedCategory") {
-            options.connect();
-          }
-        },
-        message: function(m) {
-
-          if(options.channels.indexOf(m.subscribedChannel) > -1) {
-
-            self.clog('PubNub:', '-------------------');
-            self.clog('PubNub:', 'Received Message', m);
-
-            self.clog('PubNub:', 'Transforming Message using options.transform');
-
-            var message = options.transform(m.message);
-
-            if(message && (message.eon || message.eons)) {
-
-              var ms = message.eons || [];
-
-              if(message.eon) {
-                ms.push(message.eon);
-              }
-
-              for(var i in ms) {
-
-                if(ms.hasOwnProperty(i)) {
-
-                  ms[i] = self.appendDate(ms[i], m.timetoken);
-                  self.clog('PubNub:', 'Message Result', ms[i]);
-
-                  self.stale = true;
-                  self.storeData(ms[i], false);
-
-                }
-
-              }
-
-              self.clog('PubNub:', 'Calling options.message');
-
-            } else {
-
-                if(message && !message.eon) {
-                  console.error('Eon messages must be in proper format. For example:',  {eon: [1,2,3]})
-                } else {
-                  self.clog('EON:', 'Message rejected');
-                }
-
-            }
-
-            options.message(message, m.timetoken, m.channel);
-
-          }
-
-        }
-      });
-
-      if(options.channelGroups) {
-
-        // assuming an intialized PubNub instance already exists
-        pubnub.channelGroups.listChannels({
-            channelGroup: options.channelGroups
-          }, function (status, response) {
-
-            if (status.error) {
-              self.clog("operation failed w/ error:", status);
-              return;
-            }
-
-            options.channels = response.channels;
-
-            if(options.history) {
-              self.loadHistory();
-            }
-
-            self.pubnub.subscribe({
-              channelGroups: options.channelGroups
-            });
-
-          }
-        );
-
-      } else {
-
-        if(options.history) {
-          self.loadHistory();
-        }
-
-        self.pubnub.subscribe({
-          channels: options.channels
-        });
-
-      }
-
-    };
-
-    self.init = function() {
-
-      self.clog('PubNub:', 'self.subscribed to ' + options.channels);
-      self.subscribe();
-
-    };
-
-    if (self.error) {
-      self.elog(self.error);
-    } else {
-      self.init();
-      self.boot();
-
-    }
-
-    return self.chart;
-
-}
-
-
-/***/ }),
-/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function (global, factory) {
@@ -2116,7 +996,7 @@ function Chart(config) {
 
 function ChartInternal(api) {
     var $$ = this;
-    $$.d3 = window.d3 ? window.d3 :  true ? __webpack_require__(9) : undefined;
+    $$.d3 = window.d3 ? window.d3 :  true ? __webpack_require__(3) : undefined;
     $$.api = api;
     $$.config = $$.getDefaultConfig();
     $$.data = {};
@@ -9557,7 +8437,7 @@ return c3$1;
 
 
 /***/ }),
-/* 9 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;!function() {
@@ -19118,6 +17998,1127 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;!function() {
 				__WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); else if (typeof module === "object" && module.exports) module.exports = d3; else this.d3 = d3;
 }();
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(5);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(7)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../css-loader/index.js!./c3.css", function() {
+			var newContent = require("!!../css-loader/index.js!./c3.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(6)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "/*-- Chart --*/\n.c3 svg {\n  font: 10px sans-serif;\n  -webkit-tap-highlight-color: transparent; }\n\n.c3 path, .c3 line {\n  fill: none;\n  stroke: #000; }\n\n.c3 text {\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  user-select: none; }\n\n.c3-legend-item-tile,\n.c3-xgrid-focus,\n.c3-ygrid,\n.c3-event-rect,\n.c3-bars path {\n  shape-rendering: crispEdges; }\n\n.c3-chart-arc path {\n  stroke: #fff; }\n\n.c3-chart-arc text {\n  fill: #fff;\n  font-size: 13px; }\n\n/*-- Axis --*/\n/*-- Grid --*/\n.c3-grid line {\n  stroke: #aaa; }\n\n.c3-grid text {\n  fill: #aaa; }\n\n.c3-xgrid, .c3-ygrid {\n  stroke-dasharray: 3 3; }\n\n/*-- Text on Chart --*/\n.c3-text.c3-empty {\n  fill: #808080;\n  font-size: 2em; }\n\n/*-- Line --*/\n.c3-line {\n  stroke-width: 1px; }\n\n/*-- Point --*/\n.c3-circle._expanded_ {\n  stroke-width: 1px;\n  stroke: white; }\n\n.c3-selected-circle {\n  fill: white;\n  stroke-width: 2px; }\n\n/*-- Bar --*/\n.c3-bar {\n  stroke-width: 0; }\n\n.c3-bar._expanded_ {\n  fill-opacity: 0.75; }\n\n/*-- Focus --*/\n.c3-target.c3-focused {\n  opacity: 1; }\n\n.c3-target.c3-focused path.c3-line, .c3-target.c3-focused path.c3-step {\n  stroke-width: 2px; }\n\n.c3-target.c3-defocused {\n  opacity: 0.3 !important; }\n\n/*-- Region --*/\n.c3-region {\n  fill: steelblue;\n  fill-opacity: .1; }\n\n/*-- Brush --*/\n.c3-brush .extent {\n  fill-opacity: .1; }\n\n/*-- Select - Drag --*/\n/*-- Legend --*/\n.c3-legend-item {\n  font-size: 12px; }\n\n.c3-legend-item-hidden {\n  opacity: 0.15; }\n\n.c3-legend-background {\n  opacity: 0.75;\n  fill: white;\n  stroke: lightgray;\n  stroke-width: 1; }\n\n/*-- Title --*/\n.c3-title {\n  font: 14px sans-serif; }\n\n/*-- Tooltip --*/\n.c3-tooltip-container {\n  z-index: 10; }\n\n.c3-tooltip {\n  border-collapse: collapse;\n  border-spacing: 0;\n  background-color: #fff;\n  empty-cells: show;\n  -webkit-box-shadow: 7px 7px 12px -9px #777777;\n  -moz-box-shadow: 7px 7px 12px -9px #777777;\n  box-shadow: 7px 7px 12px -9px #777777;\n  opacity: 0.9; }\n\n.c3-tooltip tr {\n  border: 1px solid #CCC; }\n\n.c3-tooltip th {\n  background-color: #aaa;\n  font-size: 14px;\n  padding: 2px 5px;\n  text-align: left;\n  color: #FFF; }\n\n.c3-tooltip td {\n  font-size: 13px;\n  padding: 3px 6px;\n  background-color: #fff;\n  border-left: 1px dotted #999; }\n\n.c3-tooltip td > span {\n  display: inline-block;\n  width: 10px;\n  height: 10px;\n  margin-right: 6px; }\n\n.c3-tooltip td.value {\n  text-align: right; }\n\n/*-- Area --*/\n.c3-area {\n  stroke-width: 0;\n  opacity: 0.2; }\n\n/*-- Arc --*/\n.c3-chart-arcs-title {\n  dominant-baseline: middle;\n  font-size: 1.3em; }\n\n.c3-chart-arcs .c3-chart-arcs-background {\n  fill: #e0e0e0;\n  stroke: none; }\n\n.c3-chart-arcs .c3-chart-arcs-gauge-unit {\n  fill: #000;\n  font-size: 16px; }\n\n.c3-chart-arcs .c3-chart-arcs-gauge-max {\n  fill: #777; }\n\n.c3-chart-arcs .c3-chart-arcs-gauge-min {\n  fill: #777; }\n\n.c3-chart-arc .c3-gauge-value {\n  fill: #000;\n  /*  font-size: 28px !important;*/ }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+
+var stylesInDom = {};
+
+var	memoize = function (fn) {
+	var memo;
+
+	return function () {
+		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+		return memo;
+	};
+};
+
+var isOldIE = memoize(function () {
+	// Test for IE <= 9 as proposed by Browserhacks
+	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+	// Tests for existence of standard globals is to allow style-loader
+	// to operate correctly into non-standard environments
+	// @see https://github.com/webpack-contrib/style-loader/issues/177
+	return window && document && document.all && !window.atob;
+});
+
+var getElement = (function (fn) {
+	var memo = {};
+
+	return function(selector) {
+		if (typeof memo[selector] === "undefined") {
+			memo[selector] = fn.call(this, selector);
+		}
+
+		return memo[selector]
+	};
+})(function (target) {
+	return document.querySelector(target)
+});
+
+var singleton = null;
+var	singletonCounter = 0;
+var	stylesInsertedAtTop = [];
+
+var	fixUrls = __webpack_require__(8);
+
+module.exports = function(list, options) {
+	if (typeof DEBUG !== "undefined" && DEBUG) {
+		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
+
+	options = options || {};
+
+	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
+
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (!options.singleton) options.singleton = isOldIE();
+
+	// By default, add <style> tags to the <head> element
+	if (!options.insertInto) options.insertInto = "head";
+
+	// By default, add <style> tags to the bottom of the target
+	if (!options.insertAt) options.insertAt = "bottom";
+
+	var styles = listToStyles(list, options);
+
+	addStylesToDom(styles, options);
+
+	return function update (newList) {
+		var mayRemove = [];
+
+		for (var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+
+		if(newList) {
+			var newStyles = listToStyles(newList, options);
+			addStylesToDom(newStyles, options);
+		}
+
+		for (var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+
+			if(domStyle.refs === 0) {
+				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
+
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
+};
+
+function addStylesToDom (styles, options) {
+	for (var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+
+		if(domStyle) {
+			domStyle.refs++;
+
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
+}
+
+function listToStyles (list, options) {
+	var styles = [];
+	var newStyles = {};
+
+	for (var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = options.base ? item[0] + options.base : item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+
+		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
+		else newStyles[id].parts.push(part);
+	}
+
+	return styles;
+}
+
+function insertStyleElement (options, style) {
+	var target = getElement(options.insertInto)
+
+	if (!target) {
+		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
+	}
+
+	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
+
+	if (options.insertAt === "top") {
+		if (!lastStyleElementInsertedAtTop) {
+			target.insertBefore(style, target.firstChild);
+		} else if (lastStyleElementInsertedAtTop.nextSibling) {
+			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			target.appendChild(style);
+		}
+		stylesInsertedAtTop.push(style);
+	} else if (options.insertAt === "bottom") {
+		target.appendChild(style);
+	} else {
+		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+	}
+}
+
+function removeStyleElement (style) {
+	if (style.parentNode === null) return false;
+	style.parentNode.removeChild(style);
+
+	var idx = stylesInsertedAtTop.indexOf(style);
+	if(idx >= 0) {
+		stylesInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement (options) {
+	var style = document.createElement("style");
+
+	options.attrs.type = "text/css";
+
+	addAttrs(style, options.attrs);
+	insertStyleElement(options, style);
+
+	return style;
+}
+
+function createLinkElement (options) {
+	var link = document.createElement("link");
+
+	options.attrs.type = "text/css";
+	options.attrs.rel = "stylesheet";
+
+	addAttrs(link, options.attrs);
+	insertStyleElement(options, link);
+
+	return link;
+}
+
+function addAttrs (el, attrs) {
+	Object.keys(attrs).forEach(function (key) {
+		el.setAttribute(key, attrs[key]);
+	});
+}
+
+function addStyle (obj, options) {
+	var style, update, remove, result;
+
+	// If a transform function was defined, run it on the css
+	if (options.transform && obj.css) {
+	    result = options.transform(obj.css);
+
+	    if (result) {
+	    	// If transform returns a value, use that instead of the original css.
+	    	// This allows running runtime transformations on the css.
+	    	obj.css = result;
+	    } else {
+	    	// If the transform function returns a falsy value, don't add this css.
+	    	// This allows conditional loading of css
+	    	return function() {
+	    		// noop
+	    	};
+	    }
+	}
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+
+		style = singleton || (singleton = createStyleElement(options));
+
+		update = applyToSingletonTag.bind(null, style, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+
+	} else if (
+		obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function"
+	) {
+		style = createLinkElement(options);
+		update = updateLink.bind(null, style, options);
+		remove = function () {
+			removeStyleElement(style);
+
+			if(style.href) URL.revokeObjectURL(style.href);
+		};
+	} else {
+		style = createStyleElement(options);
+		update = applyToTag.bind(null, style);
+		remove = function () {
+			removeStyleElement(style);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle (newObj) {
+		if (newObj) {
+			if (
+				newObj.css === obj.css &&
+				newObj.media === obj.media &&
+				newObj.sourceMap === obj.sourceMap
+			) {
+				return;
+			}
+
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag (style, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (style.styleSheet) {
+		style.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = style.childNodes;
+
+		if (childNodes[index]) style.removeChild(childNodes[index]);
+
+		if (childNodes.length) {
+			style.insertBefore(cssNode, childNodes[index]);
+		} else {
+			style.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag (style, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		style.setAttribute("media", media)
+	}
+
+	if(style.styleSheet) {
+		style.styleSheet.cssText = css;
+	} else {
+		while(style.firstChild) {
+			style.removeChild(style.firstChild);
+		}
+
+		style.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink (link, options, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	/*
+		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
+		and there is no publicPath defined then lets turn convertToAbsoluteUrls
+		on by default.  Otherwise default to the convertToAbsoluteUrls option
+		directly
+	*/
+	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
+
+	if (options.convertToAbsoluteUrls || autoFixUrls) {
+		css = fixUrls(css);
+	}
+
+	if (sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = link.href;
+
+	link.href = URL.createObjectURL(blob);
+
+	if(oldSrc) URL.revokeObjectURL(oldSrc);
+}
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+
+/**
+ * When source maps are enabled, `style-loader` uses a link element with a data-uri to
+ * embed the css on the page. This breaks all relative urls because now they are relative to a
+ * bundle instead of the current page.
+ *
+ * One solution is to only use full urls, but that may be impossible.
+ *
+ * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
+ *
+ * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
+ *
+ */
+
+module.exports = function (css) {
+  // get current location
+  var location = typeof window !== "undefined" && window.location;
+
+  if (!location) {
+    throw new Error("fixUrls requires window.location");
+  }
+
+	// blank or null?
+	if (!css || typeof css !== "string") {
+	  return css;
+  }
+
+  var baseUrl = location.protocol + "//" + location.host;
+  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
+
+	// convert each url(...)
+	/*
+	This regular expression is just a way to recursively match brackets within
+	a string.
+
+	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
+	   (  = Start a capturing group
+	     (?:  = Start a non-capturing group
+	         [^)(]  = Match anything that isn't a parentheses
+	         |  = OR
+	         \(  = Match a start parentheses
+	             (?:  = Start another non-capturing groups
+	                 [^)(]+  = Match anything that isn't a parentheses
+	                 |  = OR
+	                 \(  = Match a start parentheses
+	                     [^)(]*  = Match anything that isn't a parentheses
+	                 \)  = Match a end parentheses
+	             )  = End Group
+              *\) = Match anything and then a close parens
+          )  = Close non-capturing group
+          *  = Match anything
+       )  = Close capturing group
+	 \)  = Match a close parens
+
+	 /gi  = Get all matches, not the first.  Be case insensitive.
+	 */
+	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
+		// strip quotes (if they exist)
+		var unquotedOrigUrl = origUrl
+			.trim()
+			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
+			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
+
+		// already a full url? no change
+		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(unquotedOrigUrl)) {
+		  return fullMatch;
+		}
+
+		// convert the url to a full url
+		var newUrl;
+
+		if (unquotedOrigUrl.indexOf("//") === 0) {
+		  	//TODO: should we add protocol?
+			newUrl = unquotedOrigUrl;
+		} else if (unquotedOrigUrl.indexOf("/") === 0) {
+			// path should be relative to the base url
+			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
+		} else {
+			// path should be relative to current directory
+			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
+		}
+
+		// send back the fixed url(...)
+		return "url(" + JSON.stringify(newUrl) + ")";
+	});
+
+	// send back the fixed css
+	return fixedCss;
+};
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function(options, c3, Visibility, PubNub) {
+
+  console.log(PubNub)
+
+  console.log(options)
+
+    options.debug = options.debug || false;
+
+    var self = this;
+
+    self.clog = function(s, o, e) {
+
+      if (options.debug) {
+        if (e) {
+          console.log('EON-CHART:', s, o, e);
+        } else {
+          console.log('EON-CHART:', s, o);
+        }
+      }
+    };
+
+    self.clog('Status:', 'Initialized');
+
+    self.error = false;
+    self.dateID = "_eonDatetime";
+
+    self.chart = false;
+    self.isDead = false;
+
+    self.pubnub = options.pubnub || PubNub || false;
+
+    if (!self.pubnub) {
+      self.error = "PubNub not found. See http://www.pubnub.com/docs/javascript/javascript-sdk.html#_where_do_i_get_the_code";
+    }
+
+    options.transform = options.transform || function(m) {
+      return m
+    };
+    options.channels = options.channels || false;
+    options.channelGroups = options.channelGroups || false;
+
+    options.generate = options.generate || {};
+    if (!options.generate.data) {
+      options.generate.data = {
+        json: null
+      };
+    }
+
+    options.generate.line = options.generate.line || {};
+
+    if(!options.generate.line.connectNull) {
+      options.generate.line.connectNull = true;
+    }
+
+    options.flow = options.flow || false;
+    if (options.flow) {
+      if (typeof(options.flow) == "boolean") {
+        options.flow = {};
+      }
+      options.flow.length = options.flow.length || 0;
+    }
+    options.history = options.history || false;
+
+    options.message = options.message || function() {};
+    options.connect = options.connect || function() {};
+
+    // x axis definition
+    options.xType = options.xType || "auto";
+    options.xId = options.xId || "x";
+
+    options.rate = options.rate || 1000;
+
+    if (options.xType == "custom") {
+
+      options.generate.data.x = options.xId;
+
+    } else if (options.xType == "category") {
+        // just so xtype is not false
+    } else if (options.xType == "auto") {
+
+      options.xId = self.dateID;
+      options.generate.data.x = options.xId;
+
+    } else {
+      options.xType = false;
+    }
+
+    self.generateXAxis = function() {
+
+      if (!options.generate.axis) {
+        options.generate.axis = {}
+      }
+
+      // assume js date
+      if (!options.generate.axis.x) {
+        options.generate.axis.x = {};
+      }
+
+    }
+
+    if (options.xType) {
+
+      self.clog('Setup:', 'xType Supplied');
+
+      self.generateXAxis();
+
+      // bar chart needs to be of type "category"
+      if(options.xType == "category") {
+
+        console.log(options.xType)
+        console.log('running this')
+
+        if (!options.generate.axis.x.type) {
+          options.generate.axis.x.type = 'category';
+        }
+
+      } else {
+
+        if (!options.generate.axis.x.type) {
+          options.generate.axis.x.type = 'timeseries';
+        }
+        if (!options.generate.axis.x.tick) {
+          options.generate.axis.x.tick = {};
+        }
+        if (!options.generate.axis.x.tick.format) {
+          options.generate.axis.x.tick.format = '%Y-%m-%d %H:%M:%S';
+        }
+
+      }
+
+    }
+
+    self.clog('Options:', options);
+
+    if (!options.channels && !options.channelGroups) {
+      self.error = "No channels or channel groups supplied.";
+    };
+
+    if (['spline', 'area', 'area-spline', 'step', 'area-step', 'scatter'].indexOf(options.generate.data.type) == -1
+      && typeof(options.generate.data.type) != "undefined") {
+      options.limit = options.limit || 1;
+    } else {
+      options.limit = options.limit || 10;
+    }
+
+    self.appendDate = function(data, pubnubDate) {
+
+      if (options.xType == "auto") {
+        self.clog('PubNub:', 'Appending PubNub datetime to columns.');
+        var date = Math.floor(pubnubDate / 10000);
+        data[self.dateID] = new Date(date).getTime();
+      }
+
+      return data;
+
+    };
+
+
+    self.nextData = [];
+    self.dataStore = [];
+
+    // persistent data store
+    self.object = {
+      json: [],
+      keys: {
+        value: [],
+        x: options.xId
+      }
+    };
+
+    // data store for flow animations
+    self.fobject = {};
+    self.stale = false;
+
+    self.loadHistory = function() {
+
+      self.clog('Status:', 'Restoring from history');
+
+      for(var k in options.channels) {
+
+        var i = 0;
+
+        var page = function(timetoken) {
+
+          self.clog('History:', 'Retrieving messages from ' + timetoken);
+
+          self.pubnub.history({
+            count: options.limit,
+            channel: options.channels[k],
+            end: timetoken,
+            includeTimetoken: true
+          }, function(status, payload) {
+
+            var msgs = payload.messages;
+            var start = payload.startTimeToken;
+            var end = payload.endTimeToken;
+
+            self.clog('History:', msgs.length + ' messages found');
+
+            self.clog('History:', 'Complete... Rendering');
+
+            i = 0;
+            while (i < msgs.length) {
+
+              var a = msgs[i];
+
+              a.message = options.transform(a.entry);
+
+              if(a.message && (a.message.eon || a.message.eons)) {
+
+                var as = a.message.eons || [];
+
+                if(a.message.eon) {
+                  as.push(a.message.eon);
+                }
+
+                for(var j in as) {
+
+                  if(as.hasOwnProperty(j)) {
+                    as[j] = self.appendDate(as[j], a.timetoken)
+                    self.storeData(as[j], true);
+                  }
+
+                }
+
+              } else {
+                self.clog('Rejecting history message as improper format supplied.');
+              }
+
+
+
+              i++;
+
+            }
+
+            if (msgs.length > 1 && self.object.json.length < options.limit - 1) {
+              page(end);
+            } else {
+              self.loadData(self.object);
+            }
+
+          });
+
+        };
+
+        page();
+
+      }
+
+    };
+
+    self.boot = function() {
+
+      self.fobject = {
+        json: [],
+        keys: {
+          value: [],
+          x: options.xId
+        }
+      };
+
+      self.clog('Status:', 'Chart Animation Enabled');
+
+      self.isDead = false;
+
+      options.generate.data.columns = [];
+      self.chart = c3.generate(options.generate);
+
+    };
+
+    self.uniqueAppend = function(array, append) {
+
+      // see if value is in array of keys
+      var exists = false;
+      for (var l = 0; l < array.length; l++) {
+        if (array[l] == append) {
+          exists = true;
+        }
+      }
+
+      if (!exists) {
+        array.push(append);
+      }
+
+      return array;
+
+    };
+
+    self.flowLength = 0;
+
+    self.mapAppend = function(object) {
+
+      // this just keeps a list of used keys in the object
+      for (var i = 0; i < object.json.length; i++) {
+        for (var key in object.json[i]) {
+          object.keys.value = self.uniqueAppend(object.keys.value, key);
+        }
+      }
+
+      return object;
+
+    }
+
+    self.storeData = function(data, isHistory) {
+
+      self.object.json.push(data);
+
+      if(self.object.json.length > (options.limit * options.channels.length)) {
+        self.object.json.shift();
+        self.flowLength++;
+      }
+
+      self.mapAppend(self.object);
+
+      if (options.flow && !isHistory) {
+
+        self.fobject.json.push(data);
+        self.mapAppend(self.fobject);
+
+      };
+
+    };
+
+    // function to reformat data into categories for bar chart
+    self.categorize = function(data) {
+
+      var newobj = JSON.parse(JSON.stringify(data));
+
+      delete data.json[0]['_eonDatetime']
+
+      var newData = [];
+      for(var i in data.json[0]) {
+
+        var whatever = {
+          name: i,
+          value: data.json[0][i]
+        };
+
+        newData.push(whatever);
+
+      }
+
+      newobj.json = newData;
+
+      newobj.keys = {
+        x :'name',
+        value: ['value']
+      }
+
+      return newobj;
+
+    }
+
+    self.loadData = function(data) {
+
+      if(options.xType == 'category') {
+        console.log('self.categorize')
+        data = self.categorize(data);
+      }
+
+      self.flowLength = 0;
+      self.clog('Load Data')
+      self.chart.load(data);
+    }
+
+    setInterval(function() {
+
+      self.clog('Status:', 'Rendering');
+
+      if (!self.stale) {
+        self.clog('Render:', 'No new data');
+      } else if(self.isDead) {
+        self.clog('Render:', 'Tab out of focus.');
+      } else {
+
+        if(self.fobject.json.length) {
+
+          self.fobject.length = self.flowLength;
+
+          self.chart.flow(self.fobject);
+
+          self.fobject = {
+            json: [],
+            keys: {
+              value: [],
+              x: options.xId
+            }
+          };
+
+          self.flowLength = 0;
+
+        } else {
+          self.loadData(self.object);
+        }
+
+        self.stale = false;
+
+        self.clog('Render:', 'Complete');
+
+      }
+
+    }, options.rate);
+
+    var listener = Visibility.change(function (e, state) {
+
+      console.log('hidden', Visibility.hidden())
+
+      self.isDead = Visibility.hidden();
+    });
+
+    self.elog = function(text) {
+      console.error("EON:" + text);
+    };
+
+    self.subscribe = function() {
+
+      self.pubnub.addListener({
+        status: function(statusEvent) {
+          if (statusEvent.category === "PNConnectedCategory") {
+            options.connect();
+          }
+        },
+        message: function(m) {
+
+          if(options.channels.indexOf(m.subscribedChannel) > -1) {
+
+            self.clog('PubNub:', '-------------------');
+            self.clog('PubNub:', 'Received Message', m);
+
+            self.clog('PubNub:', 'Transforming Message using options.transform');
+
+            var message = options.transform(m.message);
+
+            if(message && (message.eon || message.eons)) {
+
+              var ms = message.eons || [];
+
+              if(message.eon) {
+                ms.push(message.eon);
+              }
+
+              for(var i in ms) {
+
+                if(ms.hasOwnProperty(i)) {
+
+                  ms[i] = self.appendDate(ms[i], m.timetoken);
+                  self.clog('PubNub:', 'Message Result', ms[i]);
+
+                  self.stale = true;
+                  self.storeData(ms[i], false);
+
+                }
+
+              }
+
+              self.clog('PubNub:', 'Calling options.message');
+
+            } else {
+
+                if(message && !message.eon) {
+                  console.error('Eon messages must be in proper format. For example:',  {eon: [1,2,3]})
+                } else {
+                  self.clog('EON:', 'Message rejected');
+                }
+
+            }
+
+            options.message(message, m.timetoken, m.channel);
+
+          }
+
+        }
+      });
+
+      if(options.channelGroups) {
+
+        // assuming an intialized PubNub instance already exists
+        pubnub.channelGroups.listChannels({
+            channelGroup: options.channelGroups
+          }, function (status, response) {
+
+            if (status.error) {
+              self.clog("operation failed w/ error:", status);
+              return;
+            }
+
+            options.channels = response.channels;
+
+            if(options.history) {
+              self.loadHistory();
+            }
+
+            self.pubnub.subscribe({
+              channelGroups: options.channelGroups
+            });
+
+          }
+        );
+
+      } else {
+
+        if(options.history) {
+          self.loadHistory();
+        }
+
+        self.pubnub.subscribe({
+          channels: options.channels
+        });
+
+      }
+
+    };
+
+    self.init = function() {
+
+      self.clog('PubNub:', 'self.subscribed to ' + options.channels);
+      self.subscribe();
+
+    };
+
+    if (self.error) {
+      self.elog(self.error);
+    } else {
+      self.init();
+      self.boot();
+
+    }
+
+    return self.chart;
+
+}
+
 
 /***/ }),
 /* 10 */
