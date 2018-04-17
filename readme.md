@@ -26,7 +26,7 @@ Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.o
 bower install eon-chart --save
 ```
 
-Check out our [bower example](https://github.com/pubnub/eon-chart/examples/bower.html).
+Check out our [bower example](https://github.com/pubnub/eon-chart/blob/master/examples/bower.html).
 
 ### NPM
 
