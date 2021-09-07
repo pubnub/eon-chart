@@ -72,10 +72,10 @@ features:
 sdks:
   - full-name: EON Charts Framework
     short-name: EON Charts
+    tier: 3
     artifacts:
       - artifact-type: framework
         language: JavaScript
-        tier: 3
         tags: 
           - Web
         source-repository: https://github.com/pubnub/eon-chart
