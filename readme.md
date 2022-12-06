@@ -1,3 +1,7 @@
+## Please note that this project is no longer actively maintained or accepting Pull Requests.  The EON library remains available on npm, bower, or through hotlink.
+
+--------------------------------
+
 # EON Charts
 
 Realtime animated graphs with [PubNub](http://pubnub.com) and [C3](http://c3js.org/).
