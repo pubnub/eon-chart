@@ -1,0 +1,151 @@
+---
+name: eon-chart
+scm: https://github.com/pubnub/eon-chart
+version: "1.3.1"
+schema: 1
+files:
+  - ./eon-chart.js
+changelog:
+  - version: 1.3.1
+    date: 2017-07-29
+    changes:
+      - type: improvement
+        text: "Export `c3` as `window.c3`."
+  - version: 1.3.0
+    date: 2017-07-20
+    changes:
+      - type: feat
+        text: "Add `category` option for `xType`."
+  - version: 1.2.7
+    date: 2017-07-07
+    changes:
+      - type: improvement
+        text: "Remove package info from bower"
+      - type: bug
+        text: "Fix Webpack export."
+  - version: 1.2.2
+    date: 2017-07-07
+    changes:
+      - type: improvement
+        text: "Update Webpack export for globals"
+  - version: 1.2.0
+    date: 2017-07-07
+    changes:
+      - type: improvement
+        text: "Move from Bower builds to Webpack"
+  - version: 1.1.0
+    date: 2016-11-17
+    changes:
+      - type: bug
+        text: "Fix console errors upon losing page visibility."
+  - version: 1.0.2
+    date: 2016-10-25
+    changes:
+      - type: bug
+        text: "`subscribedChannel` should be used instead of `channel`."
+  - version: 1.0.1
+    date: 2016-10-19
+    changes:
+      - type: improvement
+        text: "Update demos to use hotlink."
+  - version: 1.0.0
+    date: 2016-10-18
+    changes:
+      - type: feature
+        text: "Support subscribing to array of PubNub channels."
+      - type: feature
+        text: "Add support for channel groups."
+      - type: bug
+        text: "Fix demo applications."
+features:
+  channel-groups:
+    - CHANNEL-GROUPS-LIST-CHANNELS-IN-GROUP
+  storage:
+    - STORAGE-INCLUDE-TIMETOKEN
+    - STORAGE-START-END
+    - STORAGE-COUNT
+    - STORAGE-FETCH-MESSAGES
+  subscribe:
+    - SUBSCRIBE-CHANNELS
+    - SUBSCRIBE-CHANNEL-GROUPS
+    - SUBSCRIBE-PUBSUB-V2
+sdks:
+  - full-name: EON Charts Framework
+    short-name: EON Charts
+    tier: 3
+    artifacts:
+      - artifact-type: framework
+        language: JavaScript
+        tags: 
+          - Web
+        source-repository: https://github.com/pubnub/eon-chart
+        documentation: https://www.pubnub.com/developers/eon
+        distributions:
+          - distribution-type: source
+            distribution-repository: GitHub release
+            package-name: EON Charts Framework
+            location: https://github.com/pubnub/eon-chart/releases/tag/1.3.1
+            supported-platforms:
+              supported-browsers:
+                minimun-supported-version:
+                  - Safari 10.0
+                  - Mozilla Firefox 51.0
+                  - Google Chrome 56.0
+                  - Opera 41.0
+                  - Microsoft Edge 38
+            requires:
+              - name: c3
+                min-version: 0.4.14
+                max-version: 0.4.24
+                location: Shipped within framework
+                license: MIT
+                license-url: https://github.com/c3js/c3/blob/master/LICENSE
+                is-required: Required
+              - name: pubnub
+                min-version: 4.12.0
+                max-version: 4.32.0
+                location: Shipped within framework
+                license: MIT
+                license-url: https://github.com/pubnub/javascript/blob/master/LICENSE
+                is-required: Required
+              - name: visibilityjs
+                min-version: 1.2.4
+                max-version: 1.2.8
+                location: Shipped within framework
+                license: MIT
+                license-url: https://github.com/ai/visibilityjs/blob/master/LICENSE
+                is-required: Required
+          - distribution-type: package
+            distribution-repository: NPM
+            package-name: EON Charts Framework
+            location: https://www.npmjs.com/package/eon-chart
+            supported-platforms:
+              supported-browsers:
+                minimun-supported-version:
+                  - Safari 10.0
+                  - Mozilla Firefox 51.0
+                  - Google Chrome 56.0
+                  - Opera 41.0
+                  - Microsoft Edge 38
+            requires:
+              - name: c3
+                min-version: 0.4.14
+                max-version: 0.4.24
+                location: Shipped within framework
+                license: MIT
+                license-url: https://github.com/c3js/c3/blob/master/LICENSE
+                is-required: Required
+              - name: pubnub
+                min-version: 4.12.0
+                max-version: 4.32.0
+                location: Shipped within framework
+                license: MIT
+                license-url: https://github.com/pubnub/javascript/blob/master/LICENSE
+                is-required: Required
+              - name: visibilityjs
+                min-version: 1.2.4
+                max-version: 1.2.8
+                location: Shipped within framework
+                license: MIT
+                license-url: https://github.com/ai/visibilityjs/blob/master/LICENSE
+                is-required: Required
